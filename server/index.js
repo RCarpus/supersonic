@@ -21,7 +21,7 @@ const app = express();
 /* This is the line I will use when pushing to the host site */
 // mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 /* This is the connection I will use when developing and using online database */
-// mongoose.connect('https://url-for-my-db.com', { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect('mongodb+srv://user:10cryingPENs@cluster0.yvlij.mongodb.net/supersonic?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true });
 
 /* CORS configuration. Currently set to allow access from all origings.
   I can change this by uncommenting the code block beneath. */
@@ -47,6 +47,51 @@ app.use(express.static('public'));
 /**
  * This is where all of my endpoints will go
  */
+app.post('./users/register',
+[
+  //check with express-validator
+  check('Username', 'Username must be alphanumeric').isAlphanumeric(),
+  check('Password', 'Password must be at least 8 characters').isLength({ min: 8 }),
+  check('Email', 'Email does not appear to be valid').isEmail()
+], (req, res) => {
+  /* If there were validation errors, send that back */
+  let errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    console.log(errors.array());
+    return res.status(422).json({ errors: errors.array() });
+  }
+
+  /* If there were no errors in the POST format, attempt to register the user */
+  let hashedPassword = Users.hashPassword(req.body.Password);
+  /* If there is already a user with that username, do not register */
+  Users.findOne({ Username: req.body.Username })
+    .then((user) => {
+      if (user) {
+        return res.status(400).send(req.body.Username + ' already exists');
+      } else { // It is alright to register the user now
+        Users.create({
+          Username: req.body.Username,
+          Password: hashedPassword,
+          Email: req.body.Email,
+          Settings: {
+            NoteDuration: 1000,
+            SoundWaveType: 'SINE'
+          },
+          Stats: []
+        })
+        // send the new user data back in the response
+        .then((user) => { res.status(201).json(user) })
+        .catch((error) => {
+          console.error(error);
+          res.status(500).send('Error: ' + error);
+        })
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).send('Error: ' + error);
+    });
+});
 
 
 // endpoint for home page
