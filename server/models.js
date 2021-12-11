@@ -9,7 +9,7 @@ let userSchema = mongoose.Schema({
     NoteDuration: Number,
     SoundWaveType: String
   },
-  Stats: [ Object ]
+  Stats: Array
 });
 
 /* Function hashes password, used before saving to server */

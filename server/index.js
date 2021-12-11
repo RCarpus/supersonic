@@ -4,16 +4,18 @@ const express = require('express'),
       uuid = require('uuid'),
       mongoose = require('mongoose'),
       bodyParser = require('body-parser'),
-      cors = require('cors');;
+      cors = require('cors'),
+      Models = require('./models.js');
 
 // functions used for validation prior to sending to server
 const { check, validationResult } = require('express-validator');
 
-// initialize express
+// initialize express and immediately user bodyParser
 const app = express();
+app.use(bodyParser.json());
 
 // import Models here
-// ---------------------------------
+const Users = Models.User;
 
 /* Connect to mongodb */
 /* This is an example connection if we are using a locally installed DB */
@@ -47,17 +49,17 @@ app.use(express.static('public'));
 /**
  * This is where all of my endpoints will go
  */
-app.post('./users/register',
+app.post('/users/register',
 [
   //check with express-validator
   check('Username', 'Username must be alphanumeric').isAlphanumeric(),
   check('Password', 'Password must be at least 8 characters').isLength({ min: 8 }),
   check('Email', 'Email does not appear to be valid').isEmail()
-], (req, res) => {
+], 
+(req, res) => {
   /* If there were validation errors, send that back */
   let errors = validationResult(req);
   if (!errors.isEmpty()) {
-    console.log(errors.array());
     return res.status(422).json({ errors: errors.array() });
   }
 
@@ -92,6 +94,20 @@ app.post('./users/register',
       res.status(500).send('Error: ' + error);
     });
 });
+
+// test endpoint to check connection to DB
+// endpoint to get all users
+app.get('/users', (req, res) => {
+  Users.find()
+    .then((users) => {
+      res.status(201).json(users);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    });
+});
+
 
 
 // endpoint for home page
