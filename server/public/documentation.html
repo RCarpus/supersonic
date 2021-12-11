@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>supersonic api - documentation</title>
+    <style>
+      table {border: 1px solid black;}
+      th {border: 1px solid black}
+      td {border: 1px solid black}
+    </style>
+  </head>
+
+  <body>
+
+    <h1>Supersonic Ear Training API Documentation</h1>
+    <h2>Author: Ryan Carpus</h2>
+    <p>This API provides an interface with the Supersonic ear training app to handle user login/registration and store and retrieve saved user data.</p>
+
+    <h3>Navigation</h3>
+    <ul>
+      <li>
+        <a href="#register-a-new-user">Register a new user</a>
+      </li>
+    </ul>
+
+    <table>
+      <th>Function</th>
+      <th>Endpoint URL</th>
+      <th>HTTP Method</th>
+      <th>Request body data format</th>
+      <th>Response body data format</th>
+
+      <tr id="register-a-new-user">
+        <td>
+          <p>Register a new user</p>
+          <a href="#">back to top</a>
+        </td>
+        <td>/users/register</td>
+        <td>POST</td>
+        <td>
+          A JSON object holding data for a new user<br>
+          example:<br>
+          {<br>
+            "Username": "johndoe"<br>
+            "Password": "aStrongPasSwOOrd"<br>
+            "Email": "johndoe@gmail.com",<br>
+          }<br>
+        </td>
+        <td>
+          A JSON object holding data for the new user.<br>
+          example:<br>
+          {<br>
+            "_id" : "619b8cfc843f95b8e96b8e66",<br>
+            "Username": "johndoe"<br>
+            "Password": "$2b$10$FXkr5zcaRCIgY1icGUrESuPq2WzfRXdY1.oISy9FWvY9MQlgQQ/ei"<br>
+            "Email": "johndoe@gmail.com",<br>
+            "Data": "format not yet set in stone"<br>
+          }<br>
+        </td>
+      </tr>
+
+      <tr>
+        <td id="login">
+          <p>Login</p>
+          <a href="#">back to top</a>
+        </td>
+        <td>/login?Username=[Username]&Password=[Password]</td>
+        <td>POST</td>
+        <td>None</td>
+        <td>
+          A JSON object holding the user data and JWT required for subsequent requests<br>
+          example: <br>
+          {<br>
+            "user": {<br>
+                "_id": "619b8cfc843f95b8e96b8e66",<br>
+                "Username": "johndoe",<br>
+                "Password": "$2b$10$FXkr5zcaRCIgY1icGUrESuPq2WzfRXdY1.oISy9FWvY9MQlgQQ/ei",<br>
+                "Email": "johndoe@gmail.com",<br>
+                "Data": "alsdfjalsdf"<br>
+            },<br>
+            "token": "eyJhbICrOYSYeL_zM"<br>
+        }
+        </td>
+      </tr>
+
+      <tr id="update-a-users-basic-info">
+        <td>
+          <p>Update a user's basic info</p>
+          <a href="#">back to top</a>
+        </td>
+        <td>/users/[Username]</td>
+        <td>PUT</td>
+        <td>A JSON object holding the data to be updated for the user. Email, Password, and Settings are all optional fields which may be included.<br>
+          example:<br>
+          {<br>
+            "email" : "KILLALLHUMANS@robots.com"<br>
+            "Password": "IhateHumaNs"<br>
+          }
+        </td>
+        <td>
+          A JSON object holding the complete updated user data.<br>
+          example:<br>
+          {<br>
+            "_id" : "6197ba7e5ba878fd0afa7415",<br>
+            "Username" : "KillerRobot",<br>
+            "Password" : "$2b$10$FXkr5zcaRCIgY1icGUrESuPq2WzfRXdY1.oISy9FWvY9MQlgQQ/ei",<br>
+            "Email" : "KILLALLHUMANS@robots.com",<br>
+            "Data" : "l;aksdfa"<br>
+          }
+        </td>
+      </tr>
+
+      <tr id="delete-an-existing-user">
+        <td>
+          <p>Delete an existing user</p>
+          <a href="#">back to top</a>
+        </td>
+        <td>/users/deregister/[Username]</td>
+        <td>DELETE</td>
+        <td>None</td>
+        <td>
+          A text message indicating that a user was deleted<br>
+          example:<br>
+          "KillerRobot was deleted."
+        </td>
+      </tr>
+
+      <tr id="retrieve-data-for-a-specific-user">
+        <td>
+          <p>Retrieve data for a specific user</p>
+          <a href="#">back to top</a>
+        </td>
+        <td>/users/[Username]</td>
+        <td>GET</td>
+        <td>None</td>
+        <td>
+          A JSON object holding all data for the specified user.<br>
+          example:<br>
+          {<br>
+            "_id": "619be5ae289da980ef297162",<br>
+            "Username": "KillerRobot",<br>
+            "Password": "$2b$10$FXkr5zcaRCIgY1icGUrESuPq2WzfRXdY1.oISy9FWvY9MQlgQQ/ei",<br>
+            "Email": "KILLALLHUaMANS@robots.com",<br>
+            "Settings" : settings object<br>
+            "Data" : data object<br>
+          },<br>
+
+        </td>
+      </tr>
+
+    </table>
+
+  </body>
+</html>
