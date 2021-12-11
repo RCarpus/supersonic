@@ -22,6 +22,24 @@
       <li>
         <a href="#register-a-new-user">Register a new user</a>
       </li>
+      <li>
+        <a href="#login">Login</a>
+      </li>
+      <li>
+        <a href="#update-a-users-basic-info">Update a user's basic info and settings</a>
+      </li>
+      <li>
+        <a href="#delete-an-existing-user">Delete an existing user</a>
+      </li>
+      <li>
+        <a href="#retrieve-data-for-a-specific-user">Retrieve data for a specific user</a>
+      </li>
+      <li>
+        <a href="#add-training-record">Add a new training record</a>
+      </li>
+      <li>
+        <a href="#delete-custom-training-session">Delete a custom training session and all of it's records</a>
+      </li>
     </ul>
 
     <table>
@@ -42,20 +60,24 @@
           A JSON object holding data for a new user<br>
           example:<br>
           {<br>
-            "Username": "johndoe"<br>
-            "Password": "aStrongPasSwOOrd"<br>
-            "Email": "johndoe@gmail.com",<br>
+            &nbsp;&nbsp;"Username": "johndoe"<br>
+            &nbsp;&nbsp;"Password": "aStrongPasSwOOrd"<br>
+            &nbsp;&nbsp;"Email": "johndoe@gmail.com",<br>
           }<br>
         </td>
         <td>
           A JSON object holding data for the new user.<br>
           example:<br>
           {<br>
-            "_id" : "619b8cfc843f95b8e96b8e66",<br>
-            "Username": "johndoe"<br>
-            "Password": "$2b$10$FXkr5zcaRCIgY1icGUrESuPq2WzfRXdY1.oISy9FWvY9MQlgQQ/ei"<br>
-            "Email": "johndoe@gmail.com",<br>
-            "Data": "format not yet set in stone"<br>
+            &nbsp;&nbsp;"_id" : "619b8cfc843f95b8e96b8e66",<br>
+            &nbsp;&nbsp;"Username": "johndoe"<br>
+            &nbsp;&nbsp;"Password": "$2b$10$FXkr5zcaRCIgY1icGUFWvY9MQlgQQ/ei"<br>
+            &nbsp;&nbsp;"Email": "johndoe@gmail.com",<br>
+            &nbsp;&nbsp;"Settings" : {<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;"NoteDuration" : "1000",<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;"SoundWaveType" : "sine"<br>
+              &nbsp;&nbsp;},<br>
+              &nbsp;&nbsp;"Stats": []<br> 
           }<br>
         </td>
       </tr>
@@ -72,21 +94,25 @@
           A JSON object holding the user data and JWT required for subsequent requests<br>
           example: <br>
           {<br>
-            "user": {<br>
-                "_id": "619b8cfc843f95b8e96b8e66",<br>
-                "Username": "johndoe",<br>
-                "Password": "$2b$10$FXkr5zcaRCIgY1icGUrESuPq2WzfRXdY1.oISy9FWvY9MQlgQQ/ei",<br>
-                "Email": "johndoe@gmail.com",<br>
-                "Data": "alsdfjalsdf"<br>
-            },<br>
-            "token": "eyJhbICrOYSYeL_zM"<br>
-        }
+            &nbsp;&nbsp;"userData" : {<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;"_id" : "619b8cfc843f95b8e96b8e66",<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;"Username": "johndoe"<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;"Password": "$2b$10$FXkr5zcaRCIgY1icGUFWvY9MQlgQQ/ei"<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;"Email": "johndoe@gmail.com",<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;"Settings" : {<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"NoteDuration" : "1000",<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"SoundWaveType" : "sine"<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;},<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;"Stats": []<br> 
+                &nbsp;&nbsp;},<br>
+            &nbsp;&nbsp;"token" : askdjfaasdfoa8wr9wjerf<br>
+        }<br>
         </td>
       </tr>
 
       <tr id="update-a-users-basic-info">
         <td>
-          <p>Update a user's basic info</p>
+          <p>Update a user's basic info and settings</p>
           <a href="#">back to top</a>
         </td>
         <td>/users/[Username]</td>
@@ -148,6 +174,30 @@
 
         </td>
       </tr>
+
+      <tr id="add-training-record">
+        <td>
+          <p>Add a new training record</p>
+          <a href="#">back to top</a>
+        </td>
+        <td>/users/[Username]/records</td>
+        <td>POST</td>
+        <td>An object containing data for the training record to be added</td>
+        <td>An object containing the updated user data</td>
+      </tr>
+
+      <tr id="delete-custom-training-session">
+        <td>
+          <p>Delete a custom training session and all of it's records</p>
+          <a href="#">back to top</a>
+        </td>
+        <td>/users/[Username]/records/[customSessionName]</td>
+        <td>DELETE</td>
+        <td>None</td>
+        <td>An object containing the updated user data</td>
+      </tr>
+
+
 
     </table>
 
