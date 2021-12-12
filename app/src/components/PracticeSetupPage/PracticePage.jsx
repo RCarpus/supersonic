@@ -5,20 +5,23 @@ import { connect } from 'react-redux';
 import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 
 // import actions
-import setUserData from '../actions/actions';
+// no actions needed for this element
 
 // import necessary components
 // import SomeComponent from '../components/SomeComponent';
 /* ---------------------- */
 
 // import stylesheet
-import './App.scss';
 
-class App extends React.Component {
+class PracticeSetupPage extends React.Component {
 
   render() {
     return (
-      <p>Hello, app!</p>
+      <div>
+        <p>This is the Practice setup page.</p>
+
+      </div>
+
     )
   }
 }
@@ -31,4 +34,4 @@ let mapStateToProps = state => {
 }
 
 // The second parameter object contains the state actions we imported at the top
-export default connect(mapStateToProps, { setUserData })(App);
+export default connect(mapStateToProps, null)(PracticeSetupPage);

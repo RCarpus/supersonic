@@ -1,0 +1,40 @@
+#home-page {
+  // display: block;
+  font-family: 'Abel', sans-serif;
+}
+
+h1 {
+  color: #3B7A00;
+}
+
+#home-page__title {
+  width: 90%;
+  margin: auto;
+  text-align: center;
+  padding: 0.5em;
+}
+
+#home-page__content {
+  width: 90%;
+  margin: auto;
+  text-align: center;
+}
+
+#home-page__content__info {
+  margin-bottom: 2em;
+}
+
+#home-page__banner {
+  width: 100%;
+  background-color: black;
+}
+
+#home-page__button-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  row-gap: 10px;
+}
+
+button {
+  width: 100px;
+}
