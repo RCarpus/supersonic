@@ -11,7 +11,7 @@ import './index.scss';
 ////////////////////////////
 
 // import components
-/////////////////////////////
+import App from './components/App';
 
 const store = createStore(supersonicReducers, devToolsEnhancer());
 
@@ -36,7 +36,7 @@ class Supersonic extends React.Component {
       <Provider store={store}>
         <BrowserRouter>
           {/* <MainView /> */}
-          <p>Hello, world</p>
+          <App />
         </BrowserRouter>
       </Provider>
     );
