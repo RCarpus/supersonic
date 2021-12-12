@@ -14,6 +14,12 @@ const { check, validationResult } = require('express-validator');
 const app = express();
 app.use(bodyParser.json());
 
+// Imports related to auth
+const passport = require('passport');
+app.use(passport.initialize());
+require('./passport');
+let auth = require('./auth')(app);
+
 // import Models here
 const Users = Models.User;
 
@@ -108,6 +114,111 @@ app.get('/users', (req, res) => {
     });
 });
 
+// endpoint to delete a user
+app.delete('/users/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
+  Users.findOneAndRemove({ Username: req.params.Username })
+    .then((user) => {
+      if (!user) {
+        res.status(400).send(req.params.Username + ' was not found');
+      } else {
+        res.status(200).send(req.params.Username + ' was deleted');
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    });
+});
+
+// endpoint to get a specific user
+app.get('/users/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
+  Users.findOne({ Username: req.params.Username })
+    .then((user) => {
+      res.json(user);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    });
+});
+
+
+// endpoint to change user info of a specific user
+/* Expect Jason in this format
+{
+  Username: String, (optional)
+  Password: String, (optional)
+  Email: String, (optional)
+  Settings: object (optional)
+}
+*/
+app.put('/users/:Username', passport.authenticate('jwt', { session: false }),
+  [
+    // check for valid inputs using express-validator
+    check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
+    check('Password', 'Password must be at least 8 characters').optional().isLength({ min: 8 }),
+    check('Email', 'Email does not appear to be valid').optional().isEmail()
+  ], (req, res) => {
+    // send back list of errors if present, for parameters that were entered
+    let errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }
+
+    let hashedPassword;
+    if (req.body.Password) {
+      hashedPassword = Users.hashPassword(req.body.Password);
+    }
+
+    Users.findOneAndUpdate({ Username: req.params.Username }, {
+      $set:
+      {
+        Username: req.body.Username,
+        Password: hashedPassword,
+        Email: req.body.Email,
+        Settings: req.body.Settings
+      }
+    },
+      { new: true })
+      .then((updatedUser) => {
+        res.status(201).json(updatedUser);
+      })
+      .catch((err) => {
+        console.error(err);
+        res.status(500).send('Error: ' + err);
+      });
+  });
+
+// endpoint to add a record to a user's records
+app.post('/users/:Username/records', passport.authenticate('jwt', { session: false }), (req, res) => {
+  Users.findOneAndUpdate({ Username: req.params.Username }, {
+    $push: { Stats: req.body }
+  },
+    { new: true })
+    .then((updatedUser) => {
+      res.json(updatedUser);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    });
+});
+
+// endpoint to remove a group of records from a user's list of favorites
+// This removes all records from a certain session type
+app.delete('/users/:Username/records/:recordName', passport.authenticate('jwt', { session: false }), (req, res) => {
+  Users.findOneAndUpdate({ Username: req.params.Username }, 
+    { "$pull": { "Stats": { "name": req.params.recordName } }},
+    { new: true })
+    .then((updatedUser) => {
+      res.json(updatedUser);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    });
+});
 
 
 // endpoint for home page
