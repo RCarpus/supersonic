@@ -9,7 +9,7 @@ import {
 } from "react-router-dom";
 
 // import actions
-import setUserData from '../../actions/actions';
+import { setUserData } from '../../actions/actions';
 
 // import necessary components
 import HomePage from '../HomePage/HomePage';
@@ -21,7 +21,18 @@ import StatsPage from '../StatsPage/StatsPage';
 // import stylesheet
 import './App.scss';
 
+// import mockUserData
+import { mockUserData } from '../../mock-userData';
+
 class App extends React.Component {
+
+  constructor(props) {
+    super(props);
+  };
+
+  componentDidMount() {
+    this.props.setUserData(mockUserData);
+  }
 
   render() {
     return (
