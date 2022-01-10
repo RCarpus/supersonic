@@ -27,14 +27,15 @@ const notes = {
   A5: 880
 }
 
-/**
+
+const playNote = function (shape = 'sine', duration = 1000, frequency = 440, detune = 0) {
+  /**
  * Play a sound with a specified wave form, with a specific duration, 
  * with a specific frequency,
  * with a specific detuning in cents, and then stop.
  * Gain node is currently doing nothing, but ideally
  * I want to use this to gently fade the note
  */
-const playNote = function (shape = 'sine', duration = 1000, frequency = 440, detune = 0) {
   // start by creating a new AudioContext
   let audioContext = new AudioContext();
   // create the audio source. In this case it is an oscillator,
@@ -55,7 +56,7 @@ const playNote = function (shape = 'sine', duration = 1000, frequency = 440, det
   }, duration);
 }
 
-const playNoteSequence = async function (shape = 'sine', duration = 1000, frequency1 = 440, frequency2 = 659.25, detune = 0, harmonic=true) {
+const playNoteSequence = async function (shape = 'sine', duration = 1000, frequency1 = 440, frequency2 = 659.25, detune = 0, harmonic = true) {
   /**
    * Play two notes in sequence OR simultaneously.
    * detune refers to the detuning of the second note
@@ -67,6 +68,72 @@ const playNoteSequence = async function (shape = 'sine', duration = 1000, freque
   setTimeout(() => {
     playNote(shape, duration, frequency2, detune);
   }, harmonic ? 0 : duration);
+}
+
+class PracticeSession {
+  constructor(numIntervals = 20, shape = 'sine', duration = 1000, baseFrequency = 40, detune = 50) {
+    this.numIntervals = numIntervals,
+    this.shape = shape;
+    this.duration = duration;
+    this.baseFrequency = baseFrequency;
+    this.detune = detune;
+
+    // Initialize the intervals list
+    // This is populated by the generateIntervals method
+    this.intervals = [];
+
+    // Initialize the submitted answers list
+    this.submittedAnswers = []
+
+  }
+
+  generateIntervals() {
+    // Create a specified number of intervals
+    for (let i=0; i<this.numIntervals; i++) {
+      // Randomly determine if the interval will be flat, perfect, or sharp
+      // This corresponds to -1, 0, 1
+      // Then add this to the intervals array
+      let tuning = 1 - Math.floor(Math.random()*3);
+      this.intervals.push(tuning);
+    }
+    console.log(this.intervals);
+  }
+
+  submitAnswer(answer) {
+    /**
+     * Adds an answer to the submittedAnswers array.
+     * Answer is expected to be an integer of value -1, 0, or 1.
+     * The user is forced to handle intervals in sequence, 
+     * so when I push an answer to the array,
+     * it automatically corresoponds to the appropriate interval
+     */
+    this.submittedAnswers.push(answer);
+  }
+
+  isCorrectAnswer(intervalIndex) {
+    /**
+     * Checks the correct answer against the submitted answer for an interval.
+     * Returns true if correct, false if incorrect
+     */
+    return this.intervals[intervalIndex] === this.submittedAnswers[intervalIndex] ?
+      true : false;
+  }
+
+  grade() {
+    /**
+     * counts the number of correct answers submitted
+     * and divides by the number of intervals
+     * returns grade as a decimal value between 0 and 1
+     */
+    let correctArray = this.intervals.map((interval, index) => {
+      return interval === this.submittedAnswers[index] ? 1 : 0;
+    });
+    let total = correctArray.reduce((x, y) => { return x + y});
+    let grade = total / this.numIntervals;
+    return grade;
+  }
+
+
 }
 
 const button1 = document.getElementById('button-1');
@@ -87,4 +154,33 @@ button3.addEventListener('click', () => {
 const button4 = document.getElementById('button-4');
 button4.addEventListener('click', () => {
   playNoteSequence('square', 500, 440, 659.25, 0, true);
+})
+
+let myTest = new PracticeSession();
+myTest.generateIntervals();
+myTest.submitAnswer(myTest.intervals[0]);
+myTest.submitAnswer(1 - myTest.intervals[1]);
+console.log(myTest.submittedAnswers);
+console.log(myTest.isCorrectAnswer(0));
+console.log(myTest.isCorrectAnswer(1));
+console.log(myTest.grade());
+
+const button5 = document.getElementById('button-5');
+let testDetune;
+  switch(myTest.intervals[0]) {
+    case -1:
+      testDetune = -50;
+      break;
+    case 0:
+      testDetune = 0;
+      break;
+    case 1:
+      testDetune = 50;
+      break;
+    default:
+      break;
+}
+
+button5.addEventListener('click', () => {
+  playNoteSequence('sine', 1000,  440, 659.25, testDetune, true);
 })
