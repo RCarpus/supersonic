@@ -13,7 +13,7 @@ import { setUserData } from '../../actions/actions';
 
 // import necessary components
 import HomePage from '../HomePage/HomePage';
-import PracticeSetupPage from '../PracticeSetupPage/PracticePage';
+import PracticePage from '../PracticePage/PracticePage';
 import SettingsPage from '../SettingsPage/SettingsPage';
 import ProfilePage from '../ProfilePage/ProfilePage';
 import StatsPage from '../StatsPage/StatsPage';
@@ -42,7 +42,7 @@ class App extends React.Component {
           <Route path="/" element={<HomePage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/settings" element={<SettingsPage />} />
-          <Route path="/practice" element={<PracticeSetupPage />} />
+          <Route path="/practice" element={<PracticePage />} />
           <Route path="/stats" element={<StatsPage />} />
 
         </Routes>

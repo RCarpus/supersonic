@@ -9,7 +9,7 @@ import { BrowserRouter as Router, Route, Redirect, Link } from "react-router-dom
 
 // import necessary components
 // import SomeComponent from '../components/SomeComponent';
-import PracticeSetupPage from '../PracticeSetupPage/PracticePage';
+import PracticePage from '../PracticePage/PracticePage';
 import SettingsPage from '../SettingsPage/SettingsPage';
 import ProfilePage from '../ProfilePage/ProfilePage';
 import StatsPage from '../StatsPage/StatsPage';

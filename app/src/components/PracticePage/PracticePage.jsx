@@ -10,17 +10,37 @@ import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 // import necessary components
 // import SomeComponent from '../components/SomeComponent';
 import TrainingSession from '../TrainingSession/TrainingSession';
+import PracticeOptionsMenu from '../practice-options-menu/PracticeOptionsMenu';
 /* ---------------------- */
 
 // import stylesheet
 
-class PracticeSetupPage extends React.Component {
+class PracticePage extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      setupComplete: false,
+      options: undefined,
+    }
+  }
+
+  confirmSetupOptions(options) {
+    /**
+     * Saves the training setup options into state. 
+     * This method is called from PracticeOptionsMenu
+     */
+    this.setState({ options, setupComplete: true });
+  }
 
   render() {
+    const { setupComplete } = this.state;
     return (
       <div>
         <p>This is the Practice setup page.</p>
-        <TrainingSession />
+        {!setupComplete && <PracticeOptionsMenu
+          confirmSetupOptions={(options) => this.confirmSetupOptions(options)} />}
+        {setupComplete && <TrainingSession />}
+
       </div>
 
     )
@@ -35,4 +55,4 @@ let mapStateToProps = state => {
 }
 
 // The second parameter object contains the state actions we imported at the top
-export default connect(mapStateToProps, null)(PracticeSetupPage);
+export default connect(mapStateToProps, null)(PracticePage);
