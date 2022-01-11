@@ -23,7 +23,7 @@ export default class TrainingSession extends React.Component {
        */
       noteDuration: { name: 'MEDIUM', value: 1000 },
       soundWaveType: 'sine',
-      practiceStyle: { name: 'MELODIC', value: false},
+      practiceStyle: { name: 'MELODIC', value: false },
     };
 
     // Try to pull settings from localStorage, uses defaults if not found
@@ -31,6 +31,7 @@ export default class TrainingSession extends React.Component {
 
     this.state = {
       started: false,
+      finished: false,
       currentInterval: 0,
       currentCorrectAnswer: undefined, // This is -1, 0, or 1, not to be confused with currentAnswerCorrect
       currentSubmittedAnswer: undefined,
@@ -39,6 +40,7 @@ export default class TrainingSession extends React.Component {
       intervalGroup: undefined,
       currentAnswerCorrect: undefined, // This is boolean, not to be confused with currentCorrectAnswer
       settings: settings,
+      grade: undefined,
     };
   }
 
@@ -51,6 +53,7 @@ export default class TrainingSession extends React.Component {
     // pull settings from state to put into IntervalGroup object
     this.setState({
       started: true,
+      finished: false,
       intervalGroup: new IntervalGroup(5),
     }, () => {
       this.state.intervalGroup.generateIntervals();
@@ -131,28 +134,68 @@ export default class TrainingSession extends React.Component {
 
   handleFinish() {
     console.log('finished');
+    const grade = this.calculateGrade();
+    this.setState({
+      grade,
+      currentAnswerCorrect: null,
+      started: false,
+      finished: true
+    });
+  }
+
+  calculateGrade() {
+    /**
+     * Calculates the user's grade and returns as a decimal between 0 and 1.
+     * This works the same as the grade() function within the IntervalGroup class,
+     * But because this app isn't saving the submitted answers in that instance,
+     * we need to calcuate the grade outside of the class as well.
+     */
+    let correctArray = this.state.intervalGroup.intervals.map((interval, index) => {
+      return interval === this.state.submittedAnswers[index] ? 1 : 0;
+    });
+    let total = correctArray.reduce((x, y) => { return x + y });
+    let grade = total / this.state.numIntervals;
+    return grade;
+  }
+
+  handleRestart() {
+    /**
+     * Brings the user back to the practice setup view. 
+     * Practice settings selected before last session should be remembered and pre-selected.
+     */
+    this.setState({
+      started: false,
+      finished: false,
+      currentInterval: 0,
+      currentCorrectAnswer: undefined, // This is -1, 0, or 1, not to be confused with currentAnswerCorrect
+      currentSubmittedAnswer: undefined,
+      submittedAnswers: [],
+      intervalGroup: undefined,
+      currentAnswerCorrect: undefined, // This is boolean, not to be confused with currentCorrectAnswer
+      grade: undefined,
+    })
   }
 
   render() {
-    const { started, currentAnswerCorrect, currentInterval, numIntervals,
-      currentCorrectAnswer, currentSubmittedAnswer } = this.state;
+    const { started, finished, currentAnswerCorrect, currentInterval, numIntervals,
+      currentCorrectAnswer, currentSubmittedAnswer, grade } = this.state;
     const lastInterval = currentInterval === numIntervals - 1;
-    const finished = currentInterval === numIntervals;
 
     return (
       <div>
-        <h2>This is a training session.</h2>
-        {!started && <button onClick={() => this.startPractice()}>click to start</button>}
+        {/* Message container displays various messages to the user depending on content*/}
+        <div className='message-container'>
+          {currentAnswerCorrect && <p className='message correct'>Correct!</p>}
+          {currentAnswerCorrect === false && <p className='message incorrect'>Incorrect</p>}
+          {grade && <p>Finished! You got {Math.round(grade * 100)}% correct.</p>}
+        </div>
+
+        {!started && !finished && <button onClick={() => this.startPractice()}>click to start</button>}
         {started && !finished &&
           <div>
+
             <h3>The session has begun</h3>
 
-            {/* This will display a message telling the user if they have gotten the correct
-              or incorrect answer. This is necessarily in case people have CSS disabled or are colorblind. */}
-            <div className='message-container'>
-              {currentAnswerCorrect && <p className='message correct'>Correct!</p>}
-              {currentAnswerCorrect === false && <p className='message incorrect'>Incorrect</p>}
-            </div>
 
             <button onClick={() => this.playCurrentInterval()}>hear again</button>
 
@@ -186,7 +229,9 @@ export default class TrainingSession extends React.Component {
         }
         {started && currentAnswerCorrect != null && lastInterval &&
           <button onClick={() => this.handleFinish()}>finish</button>
-
+        }
+        {finished &&
+          <button onClick={() => this.handleRestart()}>Restart</button>
         }
 
 
