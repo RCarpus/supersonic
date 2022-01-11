@@ -28,6 +28,15 @@ export default class PracticeOptionsMenu extends React.Component {
     document.getElementById(`${this.state.fixedStartNote}`).classList.add('active');
   }
 
+  clickDifficulty(value) {
+    // updates the difficulty setting in state
+    // updates the UI accordingly
+    this.setState({ difficulty: value });
+    document.querySelectorAll('.practice-setup__difficulty__button')
+      .forEach(elem => { elem.classList.remove('active') });
+    document.getElementById(`${value}`).classList.add('active');
+  }
+
   clickInterval(value) {
     // updates the interval setting in state
     // updates the UI accordingly
@@ -63,9 +72,9 @@ export default class PracticeOptionsMenu extends React.Component {
         <h2>Setup</h2>
         <div className="practice-setup__difficulty">
           <h3 className="practice-setup__category-header">Difficulty</h3>
-          <button className="practice-setup__difficulty__button" id="EASY">Easy</button>
-          <button className="practice-setup__difficulty__button" id="MEDIUM">Medium</button>
-          <button className="practice-setup__difficulty__button" id="HARD">Hard</button>
+          <button className="practice-setup__difficulty__button" id="EASY" onClick={() => this.clickDifficulty('EASY')}>Easy</button>
+          <button className="practice-setup__difficulty__button" id="MEDIUM" onClick={() => this.clickDifficulty('MEDIUM')}>Medium</button>
+          <button className="practice-setup__difficulty__button" id="HARD" onClick={() => this.clickDifficulty('HARD')}>Hard</button>
         </div>
         <div className="practice-setup__interval">
           <h3 className="practice-setup__category-header">Interval</h3>

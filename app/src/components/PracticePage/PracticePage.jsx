@@ -39,7 +39,7 @@ class PracticePage extends React.Component {
         <p>This is the Practice setup page.</p>
         {!setupComplete && <PracticeOptionsMenu
           confirmSetupOptions={(options) => this.confirmSetupOptions(options)} />}
-        {setupComplete && <TrainingSession />}
+        {setupComplete && <TrainingSession options={this.state.options}/>}
 
       </div>
 

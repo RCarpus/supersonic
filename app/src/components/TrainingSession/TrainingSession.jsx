@@ -44,6 +44,22 @@ export default class TrainingSession extends React.Component {
     };
   }
 
+  mapDifficultyToCents(difficulty) {
+    /**
+     * translates the difficulty from a semantic string to a usable integer
+     */
+    switch(difficulty) {
+      case 'EASY':
+        return 50;
+      case 'MEDIUM':
+        return 25;
+      case 'HARD':
+        return 10;
+      default:
+        return 25;
+    }
+  }
+
   startPractice() {
     /**
      * Starts the practice session.
@@ -69,7 +85,7 @@ export default class TrainingSession extends React.Component {
      * settings are hardcoded.
      */
     let index = this.state.currentInterval;
-    let detuneMagnitude = 50;
+    let detuneMagnitude = this.state.detuneMagnitude;
     let detune;
     const noteDuration = this.state.settings.noteDuration.value;
     const soundWaveType = this.state.settings.soundWaveType;
@@ -238,6 +254,12 @@ export default class TrainingSession extends React.Component {
       </div>
 
     )
+  }
+
+  componentDidMount() {
+    this.setState({
+      detuneMagnitude: this.mapDifficultyToCents(this.props.options.difficulty),
+    })
   }
 
   componentDidUpdate() {
