@@ -12,9 +12,9 @@ export default class SettingsPage extends React.Component {
       /**
        * Default settings are used when no data is saved in localStorage
        */
-      noteDuration: 'MEDIUM',
-      soundWaveType: 'SINE',
-      practiceStyle: 'MELODIC',
+      noteDuration: { name: 'MEDIUM', value: 1000 },
+      soundWaveType: 'sine',
+      practiceStyle: { name: 'MELODIC', value: false},
     };
 
     // Try to pull settings from localStorage, uses defaults if not found
@@ -30,9 +30,9 @@ export default class SettingsPage extends React.Component {
   }
 
   componentDidMount() {
-    document.getElementById(`${this.state.settings.noteDuration}-button`).classList.add('active');
+    document.getElementById(`${this.state.settings.noteDuration.name}-button`).classList.add('active');
     document.getElementById(`${this.state.settings.soundWaveType}-button`).classList.add('active');
-    document.getElementById(`${this.state.settings.practiceStyle}-button`).classList.add('active');
+    document.getElementById(`${this.state.settings.practiceStyle.name}-button`).classList.add('active');
   }
 
   clickNoteDuration(value) {
@@ -41,8 +41,8 @@ export default class SettingsPage extends React.Component {
     this.updateSettings('noteDuration', value);
 
     document.querySelectorAll('.settings__note-duration__button')
-      .forEach(elem => {elem.classList.remove('active')});
-    document.getElementById(`${value}-button`).classList.add('active');
+      .forEach(elem => { elem.classList.remove('active') });
+    document.getElementById(`${value.name}-button`).classList.add('active');
   }
 
   clickSoundWaveType(value) {
@@ -51,7 +51,7 @@ export default class SettingsPage extends React.Component {
     this.updateSettings('soundWaveType', value);
 
     document.querySelectorAll('.settings__sound-wave-button')
-      .forEach(elem => {elem.classList.remove('active')});
+      .forEach(elem => { elem.classList.remove('active') });
     document.getElementById(`${value}-button`).classList.add('active');
   }
 
@@ -61,8 +61,8 @@ export default class SettingsPage extends React.Component {
     this.updateSettings('practiceStyle', value);
 
     document.querySelectorAll('.settings__practice-style__button')
-      .forEach(elem => {elem.classList.remove('active')});
-    document.getElementById(`${value}-button`).classList.add('active');
+      .forEach(elem => { elem.classList.remove('active') });
+    document.getElementById(`${value.name}-button`).classList.add('active');
   }
 
   updateSettings(setting, value) {
@@ -75,39 +75,45 @@ export default class SettingsPage extends React.Component {
 
   render() {
     const { settings } = this.props;
+    const short = { name: 'SHORT', value: 500 };
+    const medium = { name: 'MEDIUM', value: 1000 };
+    const long = { name: 'LONG', value: 2000 };
+    const melodic = { name: 'MELODIC', value: false};
+    const harmonic = { name: 'HARMONIC', value: true};
+
     return (
       <div className="settings">
         <h2 className="settings__title">Settings</h2>
         <div className="settings__note-duration">
           <p className="settings__note-duration__label">Note duration:</p>
-          <button onClick={() => { this.clickNoteDuration("SHORT") }}
+          <button onClick={() => { this.clickNoteDuration(short) }}
             className="settings__note-duration__button"
             id="SHORT-button">short</button>
-          <button onClick={() => { this.clickNoteDuration("MEDIUM") }}
+          <button onClick={() => { this.clickNoteDuration(medium) }}
             className="settings__note-duration__button"
             id="MEDIUM-button">medium</button>
-          <button onClick={() => { this.clickNoteDuration("LONG") }}
+          <button onClick={() => { this.clickNoteDuration(long) }}
             className="settings__note-duration__button"
             id="LONG-button">long</button>
         </div>
         <div className="settings__sound-wave-type">
           <p className="settings__sound-wave-type__label">Sound wave type</p>
-          <button onClick={() => { this.clickSoundWaveType("SINE") }}
+          <button onClick={() => { this.clickSoundWaveType("sine") }}
             className="settings__sound-wave-button"
-            id="SINE-button">sine</button>
-          <button onClick={() => { this.clickSoundWaveType("SQUARE") }}
+            id="sine-button">sine</button>
+          <button onClick={() => { this.clickSoundWaveType("square") }}
             className="settings__sound-wave-button"
-            id="SQUARE-button">square</button>
-          <button onClick={() => { this.clickSoundWaveType("SAWTOOTH") }}
+            id="square-button">square</button>
+          <button onClick={() => { this.clickSoundWaveType("sawtooth") }}
             className="settings__sound-wave-button"
-            id="SAWTOOTH-button">sawtooth</button>
+            id="sawtooth-button">sawtooth</button>
         </div>
         <div className="settings__practice-style">
           <p className="settings__practice-style__label">Practice style:</p>
-          <button onClick={() => { this.clickPracticeStyle("MELODIC") }}
+          <button onClick={() => { this.clickPracticeStyle(melodic) }}
             className="settings__practice-style__button"
             id="MELODIC-button">melodic</button>
-          <button onClick={() => { this.clickPracticeStyle("HARMONIC") }}
+          <button onClick={() => { this.clickPracticeStyle(harmonic) }}
             className="settings__practice-style__button"
             id="HARMONIC-button">harmonic</button>
         </div>

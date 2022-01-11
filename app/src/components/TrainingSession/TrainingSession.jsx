@@ -16,6 +16,19 @@ import './TrainingSession.scss';
 export default class TrainingSession extends React.Component {
   constructor(props) {
     super(props);
+
+    const defaultSettings = {
+      /**
+       * Default settings are used when no data is saved in localStorage
+       */
+      noteDuration: { name: 'MEDIUM', value: 1000 },
+      soundWaveType: 'sine',
+      practiceStyle: { name: 'MELODIC', value: false},
+    };
+
+    // Try to pull settings from localStorage, uses defaults if not found
+    let settings = JSON.parse(localStorage.getItem('settings')) || defaultSettings;
+
     this.state = {
       started: false,
       currentInterval: 0,
@@ -25,6 +38,7 @@ export default class TrainingSession extends React.Component {
       submittedAnswers: [],
       intervalGroup: undefined,
       currentAnswerCorrect: undefined, // This is boolean, not to be confused with currentCorrectAnswer
+      settings: settings,
     };
   }
 
@@ -34,6 +48,7 @@ export default class TrainingSession extends React.Component {
      * Start by setting started to true.
      * Creates a new intervalGroup and generates the intervals.
      */
+    // pull settings from state to put into IntervalGroup object
     this.setState({
       started: true,
       intervalGroup: new IntervalGroup(5),
@@ -53,6 +68,10 @@ export default class TrainingSession extends React.Component {
     let index = this.state.currentInterval;
     let detuneMagnitude = 50;
     let detune;
+    const noteDuration = this.state.settings.noteDuration.value;
+    const soundWaveType = this.state.settings.soundWaveType;
+    const practiceStyle = this.state.settings.practiceStyle.value;
+
     switch (this.state.intervalGroup.intervals[index]) {
       case -1:
         detune = - detuneMagnitude;
@@ -66,7 +85,7 @@ export default class TrainingSession extends React.Component {
       default:
         detune = 0;
     }
-    playNoteSequence('square', 500, 440, 493.88, detune, false);
+    playNoteSequence(soundWaveType, noteDuration, 440, 493.88, detune, practiceStyle);
   }
 
   submitAnswer(answer) {
@@ -81,7 +100,7 @@ export default class TrainingSession extends React.Component {
       let index = this.state.currentInterval;
       let updatedSubmittedAnswers = this.state.submittedAnswers;
       updatedSubmittedAnswers.push(answer);
-      this.setState({ 
+      this.setState({
         submittedAnswers: updatedSubmittedAnswers,
         currentCorrectAnswer: this.state.intervalGroup.intervals[index],
         currentSubmittedAnswer: answer,
@@ -115,7 +134,7 @@ export default class TrainingSession extends React.Component {
   }
 
   render() {
-    const { started, currentAnswerCorrect, currentInterval, numIntervals, 
+    const { started, currentAnswerCorrect, currentInterval, numIntervals,
       currentCorrectAnswer, currentSubmittedAnswer } = this.state;
     const lastInterval = currentInterval === numIntervals - 1;
     const finished = currentInterval === numIntervals;
@@ -139,21 +158,21 @@ export default class TrainingSession extends React.Component {
 
             {/* The response buttons submit the user's answer and change style to indicate 
               whether the submitted answer was correct or incorrect */}
-            <ResponseButton onClick={() => this.submitAnswer(-1)} 
-              text={'Flat'} 
+            <ResponseButton onClick={() => this.submitAnswer(-1)}
+              text={'Flat'}
               currentCorrectAnswer={currentCorrectAnswer}
               currentAnswerCorrect={currentAnswerCorrect}
               currentSubmittedAnswer={currentSubmittedAnswer}
               buttonAnswer={-1}
             />
-            <ResponseButton onClick={() => this.submitAnswer(0)} 
+            <ResponseButton onClick={() => this.submitAnswer(0)}
               text={'Perfect'}
               currentCorrectAnswer={currentCorrectAnswer}
               currentAnswerCorrect={currentAnswerCorrect}
               currentSubmittedAnswer={currentSubmittedAnswer}
               buttonAnswer={0}
             />
-            <ResponseButton onClick={() => this.submitAnswer(1)} 
+            <ResponseButton onClick={() => this.submitAnswer(1)}
               text={'Sharp'}
               currentCorrectAnswer={currentCorrectAnswer}
               currentAnswerCorrect={currentAnswerCorrect}
