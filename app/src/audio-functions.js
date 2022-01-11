@@ -1,4 +1,4 @@
-const notes = {
+export const notes = {
   A3: 220.00,
   Bb3: 233.08,
   B3: 246.94,
@@ -26,7 +26,7 @@ const notes = {
   A5: 880
 }
 
-const playNote = function (shape = 'sine', duration = 1000, frequency = 440, detune = 0) {
+export const playNote = function (shape = 'sine', duration = 1000, frequency = 440, detune = 0) {
   /**
  * Play a sound with a specified wave form, with a specific duration, 
  * with a specific frequency,
@@ -54,7 +54,7 @@ const playNote = function (shape = 'sine', duration = 1000, frequency = 440, det
   }, duration);
 }
 
-const playNoteSequence = async function (shape = 'sine', duration = 1000, frequency1 = 440, frequency2 = 659.25, detune = 0, harmonic = true) {
+export const playNoteSequence = async function (shape = 'sine', duration = 1000, frequency1 = 440, frequency2 = 659.25, detune = 0, harmonic = true) {
   /**
    * Play two notes in sequence OR simultaneously.
    * detune refers to the detuning of the second note
@@ -68,8 +68,8 @@ const playNoteSequence = async function (shape = 'sine', duration = 1000, freque
   }, harmonic ? 0 : duration);
 }
 
-export class PracticeSession {
-  constructor(numIntervals = 20, shape = 'sine', duration = 1000, baseFrequency = 40, detune = 50) {
+export class IntervalGroup {
+  constructor(numIntervals = 20, shape = 'sine', duration = 1000, baseFrequency = 400, detune = 50) {
     this.numIntervals = numIntervals,
     this.shape = shape;
     this.duration = duration;
@@ -94,7 +94,6 @@ export class PracticeSession {
       let tuning = 1 - Math.floor(Math.random()*3);
       this.intervals.push(tuning);
     }
-    console.log(this.intervals);
   }
 
   submitAnswer(answer) {

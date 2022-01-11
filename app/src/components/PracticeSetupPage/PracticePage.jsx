@@ -9,6 +9,7 @@ import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 
 // import necessary components
 // import SomeComponent from '../components/SomeComponent';
+import TrainingSession from '../TrainingSession/TrainingSession';
 /* ---------------------- */
 
 // import stylesheet
@@ -19,7 +20,7 @@ class PracticeSetupPage extends React.Component {
     return (
       <div>
         <p>This is the Practice setup page.</p>
-
+        <TrainingSession />
       </div>
 
     )
