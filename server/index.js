@@ -1,17 +1,21 @@
 // Import dependencies
 const express = require('express'),
-      morgan = require('morgan'),
-      uuid = require('uuid'),
-      mongoose = require('mongoose'),
-      bodyParser = require('body-parser'),
-      cors = require('cors'),
-      Models = require('./models.js');
+  morgan = require('morgan'),
+  uuid = require('uuid'),
+  mongoose = require('mongoose'),
+  bodyParser = require('body-parser'),
+  cors = require('cors'),
+  Models = require('./models.js');
+
+
+// initialize express and immediately user bodyParser
+const app = express();
+// import Models here
+const Users = Models.User;
 
 // functions used for validation prior to sending to server
 const { check, validationResult } = require('express-validator');
 
-// initialize express and immediately user bodyParser
-const app = express();
 
 /* Connect to mongodb */
 /* This is an example connection if we are using a locally installed DB */
@@ -21,22 +25,21 @@ mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnified
 /* This is the connection I will use when developing and using online database */
 // mongoose.connect('redacted', { useNewUrlParser: true, useUnifiedTopology: true });
 
-
 /* CORS configuration. Currently set to allow access from all origings.
   I can change this by uncommenting the code block beneath. */
-  app.use(cors()); // allows access from all origins
-  // let allowedOrigins = ['http://localhost:8080', 'http://localhost:1234', 'https://some-domain.com'];
-  // app.use(cors({
-  //   origin: (origin, callback) => {
-  //     if(!origin) return callback(null, true);
-  //     if(allowedOrigins.indexOf(origin) === -1){
-  //       let message = 'The CORS policy for this application doesn\'t allow access from the origin ' + origin;
-  //       return callback(new Error(message), false);
-  //     }
-  //     return callback(null, true);
-  //   }
-  // }));
-  
+app.use(cors()); // allows access from all origins
+// let allowedOrigins = ['http://localhost:8080', 'http://localhost:1234', 'https://some-domain.com'];
+// app.use(cors({
+//   origin: (origin, callback) => {
+//     if(!origin) return callback(null, true);
+//     if(allowedOrigins.indexOf(origin) === -1){
+//       let message = 'The CORS policy for this application doesn\'t allow access from the origin ' + origin;
+//       return callback(new Error(message), false);
+//     }
+//     return callback(null, true);
+//   }
+// }));
+
 app.use(bodyParser.json());
 
 // Imports related to auth
@@ -45,8 +48,6 @@ app.use(passport.initialize());
 require('./passport');
 let auth = require('./auth')(app);
 
-// import Models here
-const Users = Models.User;
 
 
 
@@ -60,50 +61,50 @@ app.use(express.static('public'));
  * This is where all of my endpoints will go
  */
 app.post('/users/register',
-[
-  //check with express-validator
-  check('Username', 'Username must be alphanumeric').isAlphanumeric(),
-  check('Password', 'Password must be at least 8 characters').isLength({ min: 8 }),
-  check('Email', 'Email does not appear to be valid').isEmail()
-], 
-(req, res) => {
-  /* If there were validation errors, send that back */
-  let errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(422).json({ errors: errors.array() });
-  }
+  [
+    //check with express-validator
+    check('Username', 'Username must be alphanumeric').isAlphanumeric(),
+    check('Password', 'Password must be at least 8 characters').isLength({ min: 8 }),
+    check('Email', 'Email does not appear to be valid').isEmail()
+  ],
+  (req, res) => {
+    /* If there were validation errors, send that back */
+    let errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }
 
-  /* If there were no errors in the POST format, attempt to register the user */
-  let hashedPassword = Users.hashPassword(req.body.Password);
-  /* If there is already a user with that username, do not register */
-  Users.findOne({ Username: req.body.Username })
-    .then((user) => {
-      if (user) {
-        return res.status(400).send(req.body.Username + ' already exists');
-      } else { // It is alright to register the user now
-        Users.create({
-          Username: req.body.Username,
-          Password: hashedPassword,
-          Email: req.body.Email,
-          Settings: {
-            NoteDuration: 1000,
-            SoundWaveType: 'SINE'
-          },
-          Stats: []
-        })
-        // send the new user data back in the response
-        .then((user) => { res.status(201).json(user) })
-        .catch((error) => {
-          console.error(error);
-          res.status(500).send('Error: ' + error);
-        })
-      }
-    })
-    .catch((error) => {
-      console.error(error);
-      res.status(500).send('Error: ' + error);
-    });
-});
+    /* If there were no errors in the POST format, attempt to register the user */
+    let hashedPassword = Users.hashPassword(req.body.Password);
+    /* If there is already a user with that username, do not register */
+    Users.findOne({ Username: req.body.Username })
+      .then((user) => {
+        if (user) {
+          return res.status(400).send(req.body.Username + ' already exists');
+        } else { // It is alright to register the user now
+          Users.create({
+            Username: req.body.Username,
+            Password: hashedPassword,
+            Email: req.body.Email,
+            Settings: {
+              NoteDuration: 1000,
+              SoundWaveType: 'SINE'
+            },
+            Stats: []
+          })
+            // send the new user data back in the response
+            .then((user) => { res.status(201).json(user) })
+            .catch((error) => {
+              console.error(error);
+              res.status(500).send('Error: ' + error);
+            })
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        res.status(500).send('Error: ' + error);
+      });
+  });
 
 // test endpoint to check connection to DB
 // endpoint to get all users
@@ -148,7 +149,7 @@ app.get('/users/:Username', passport.authenticate('jwt', { session: false }), (r
 
 
 // endpoint to change user info of a specific user
-/* Expect Jason in this format
+/* Expect Json in this format
 {
   Username: String, (optional)
   Password: String, (optional)
@@ -186,7 +187,7 @@ app.put('/users/:Username', passport.authenticate('jwt', { session: false }),
     },
       { new: true })
       .then((updatedUser) => {
-        res.status(201).json(updatedUser);
+        res.status(201).json({updatedUser});
       })
       .catch((err) => {
         console.error(err);
@@ -212,8 +213,8 @@ app.post('/users/:Username/records', passport.authenticate('jwt', { session: fal
 // endpoint to remove a group of records from a user's list of favorites
 // This removes all records from a certain session type
 app.delete('/users/:Username/records/:recordName', passport.authenticate('jwt', { session: false }), (req, res) => {
-  Users.findOneAndUpdate({ Username: req.params.Username }, 
-    { "$pull": { "Stats": { "name": req.params.recordName } }},
+  Users.findOneAndUpdate({ Username: req.params.Username },
+    { "$pull": { "Stats": { "name": req.params.recordName } } },
     { new: true })
     .then((updatedUser) => {
       res.json(updatedUser);
