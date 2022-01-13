@@ -70,6 +70,21 @@ const playNoteSequence = async function (shape = 'sine', duration = 1000, freque
   }, harmonic ? 0 : duration);
 }
 
+const playNoteSequence1 = async function (shape = 'sine', duration = 1000, frequency1 = 440, interval = 7, detune = 0, harmonic = true) {
+  /**
+   * Play two notes in sequence OR simultaneously.
+   * Interval is the number of semitones
+   * detune refers to the detuning of the second note
+   * The first note will always be in tune.
+   * If harmonic is true, the notes play simultaneously.
+   * Otherwise, the notes play in sequence
+   */
+  playNote(shape, duration, frequency1, 0);
+  setTimeout(() => {
+    playNote(shape, duration, frequency1, interval*100 + detune);
+  }, harmonic ? 0 : duration);
+}
+
 class PracticeSession {
   constructor(numIntervals = 20, shape = 'sine', duration = 1000, baseFrequency = 40, detune = 50) {
     this.numIntervals = numIntervals,
@@ -183,4 +198,9 @@ let testDetune;
 
 button5.addEventListener('click', () => {
   playNoteSequence('sine', 1000,  440, 659.25, testDetune, true);
+})
+
+const button6 = document.getElementById('button-6');
+button6.addEventListener('click', () => {
+  playNoteSequence1('sine', 1000, 440, 7, 50, true);
 })
