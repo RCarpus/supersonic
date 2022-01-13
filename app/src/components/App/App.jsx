@@ -17,6 +17,7 @@ import PracticePage from '../PracticePage/PracticePage';
 import SettingsPage from '../SettingsPage/SettingsPage';
 import ProfilePage from '../ProfilePage/ProfilePage';
 import StatsPage from '../StatsPage/StatsPage';
+import LandingPage from '../LandingPage/LandingPage';
 
 // import stylesheet
 import './App.scss';
@@ -28,13 +29,50 @@ class App extends React.Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      loggedIn: undefined
+    }
   };
 
   componentDidMount() {
-    this.props.setUserData(mockUserData);
+    /**
+     * Log the user in when the app loads.
+     * If there is no saved token, the user is taken to the landing page.
+     */
+    this.handleLogin();
+  }
+
+  handleLogin() {
+    /**
+     * Pulls the token from localStorage.
+     * If there is a token, sets the state to logged in.
+     * This function is called when the app mounts or when the user logs in
+     */
+    const token = localStorage.getItem('token');
+    if (token) {
+      this.setState({ loggedIn: true });
+    }
   }
 
   render() {
+    const { loggedIn } = this.state;
+
+    // If the user is not logged in, they should be forced to see the landing page
+    if (!loggedIn) {
+      return (
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<LandingPage handleLogin={() => this.handleLogin()}/>} />
+            <Route path="/profile" element={<LandingPage handleLogin={() => this.handleLogin()}/>} />
+            <Route path="/settings" element={<LandingPage handleLogin={() => this.handleLogin()}/>} />
+            <Route path="/practice" element={<LandingPage handleLogin={() => this.handleLogin()}/>} />
+            <Route path="/stats" element={<LandingPage handleLogin={() => this.handleLogin()}/>} />
+          </Routes>
+        </BrowserRouter>
+      )
+
+    }
+
     return (
       <BrowserRouter>
         <Routes>
