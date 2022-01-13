@@ -12,6 +12,31 @@ const { check, validationResult } = require('express-validator');
 
 // initialize express and immediately user bodyParser
 const app = express();
+
+/* Connect to mongodb */
+/* This is an example connection if we are using a locally installed DB */
+// mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
+/* This is the line I will use when pushing to the host site */
+mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+/* This is the connection I will use when developing and using online database */
+// mongoose.connect('redacted', { useNewUrlParser: true, useUnifiedTopology: true });
+
+
+/* CORS configuration. Currently set to allow access from all origings.
+  I can change this by uncommenting the code block beneath. */
+  app.use(cors()); // allows access from all origins
+  // let allowedOrigins = ['http://localhost:8080', 'http://localhost:1234', 'https://some-domain.com'];
+  // app.use(cors({
+  //   origin: (origin, callback) => {
+  //     if(!origin) return callback(null, true);
+  //     if(allowedOrigins.indexOf(origin) === -1){
+  //       let message = 'The CORS policy for this application doesn\'t allow access from the origin ' + origin;
+  //       return callback(new Error(message), false);
+  //     }
+  //     return callback(null, true);
+  //   }
+  // }));
+  
 app.use(bodyParser.json());
 
 // Imports related to auth
@@ -23,28 +48,7 @@ let auth = require('./auth')(app);
 // import Models here
 const Users = Models.User;
 
-/* Connect to mongodb */
-/* This is an example connection if we are using a locally installed DB */
-// mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
-/* This is the line I will use when pushing to the host site */
-mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
-/* This is the connection I will use when developing and using online database */
-// mongoose.connect('redacted', { useNewUrlParser: true, useUnifiedTopology: true });
 
-/* CORS configuration. Currently set to allow access from all origings.
-  I can change this by uncommenting the code block beneath. */
-app.use(cors()); // allows access from all origins
-// let allowedOrigins = ['http://localhost:8080', 'http://localhost:1234', 'https://some-domain.com'];
-// app.use(cors({
-//   origin: (origin, callback) => {
-//     if(!origin) return callback(null, true);
-//     if(allowedOrigins.indexOf(origin) === -1){
-//       let message = 'The CORS policy for this application doesn\'t allow access from the origin ' + origin;
-//       return callback(new Error(message), false);
-//     }
-//     return callback(null, true);
-//   }
-// }));
 
 /* Logging middleware. I should look into what sort of config options are available that would provide more useful input for me */
 app.use(morgan('common'));
