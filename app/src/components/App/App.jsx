@@ -51,7 +51,20 @@ class App extends React.Component {
     const token = localStorage.getItem('token');
     if (token) {
       this.setState({ loggedIn: true });
+    } else {
+      this.setState({ loggedIn: false });
     }
+  }
+
+  handleLogout() {
+    /**
+     * Removes the token and userData from localStorage.
+     * Then calls handleLogin, which will fail to find credentials
+     * and bring the user to the landing page.
+     */
+    localStorage.removeItem('token');
+    localStorage.removeItem('userData');
+    this.handleLogin();
   }
 
   render() {
@@ -77,11 +90,11 @@ class App extends React.Component {
       <BrowserRouter>
         <Routes>
 
-          <Route path="/" element={<HomePage />} />
-          <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/settings" element={<SettingsPage />} />
-          <Route path="/practice" element={<PracticePage />} />
-          <Route path="/stats" element={<StatsPage />} />
+          <Route path="/" element={<HomePage handleLogout={() => this.handleLogout()}/>} />
+          <Route path="/profile" element={<ProfilePage handleLogout={() => this.handleLogout()} />} />
+          <Route path="/settings" element={<SettingsPage handleLogout={() => this.handleLogout()} />} />
+          <Route path="/practice" element={<PracticePage handleLogout={() => this.handleLogout()} />} />
+          <Route path="/stats" element={<StatsPage handleLogout={() => this.handleLogout()} />} />
 
         </Routes>
       </BrowserRouter>

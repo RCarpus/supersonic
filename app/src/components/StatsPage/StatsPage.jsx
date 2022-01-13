@@ -18,6 +18,7 @@ class StatsSetupPage extends React.Component {
   render() {
     return (
       <div>
+        <button className="logout-button" onClick={this.props.handleLogout}>logout</button>
         <p>This is the Stats page.</p>
 
       </div>

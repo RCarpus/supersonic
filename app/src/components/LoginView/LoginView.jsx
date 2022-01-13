@@ -10,7 +10,6 @@ export default class LoginView extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.toRegistrationView = props.toRegistrationView;
     this.handleLogin = props.handleLogin;
-    console.log(props.gay, 'test');
   }
 
   handleSubmit() {

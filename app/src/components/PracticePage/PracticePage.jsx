@@ -50,6 +50,7 @@ class PracticePage extends React.Component {
     const { setupComplete } = this.state;
     return (
       <div>
+        <button className="logout-button" onClick={this.props.handleLogout}>logout</button>
         {!setupComplete && <PracticeOptionsMenu options={this.state.options}
           confirmSetupOptions={(options) => this.confirmSetupOptions(options)} />}
         {setupComplete && <TrainingSession options={this.state.options}
