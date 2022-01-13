@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { createStore } from 'redux';
-import { BrowserRouter } from 'react-router-dom'; // this works differently from V5, need to look up a tutorial
 import { Provider } from 'react-redux';
 import supersonicReducers from './reducers/reducers';
 import { devToolsEnhancer } from 'redux-devtools-extension';
@@ -11,7 +10,7 @@ import './index.scss';
 ////////////////////////////
 
 // import components
-/////////////////////////////
+import App from './components/App/App';
 
 const store = createStore(supersonicReducers, devToolsEnhancer());
 
@@ -34,10 +33,7 @@ class Supersonic extends React.Component {
   render() {
     return (
       <Provider store={store}>
-        <BrowserRouter>
-          {/* <MainView /> */}
-          <p>Hello, world</p>
-        </BrowserRouter>
+          <App />
       </Provider>
     );
   }
