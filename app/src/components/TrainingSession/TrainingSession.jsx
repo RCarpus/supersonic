@@ -189,7 +189,7 @@ export default class TrainingSession extends React.Component {
       intervalGroup: undefined,
       currentAnswerCorrect: undefined, // This is boolean, not to be confused with currentCorrectAnswer
       grade: undefined,
-    })
+    }, this.props.returnToSetup())
   }
 
   render() {

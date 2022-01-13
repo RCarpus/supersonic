@@ -15,10 +15,10 @@ export default class PracticeOptionsMenu extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      difficulty: 'MEDIUM',
-      interval: 'PERFECT-5TH',
-      fixedStartNote: 'FIXED-FALSE',
-      startNote: 'A4',
+      difficulty: props.options.difficulty,
+      interval: props.options.interval,
+      fixedStartNote: props.options.fixedStartNote,
+      startNote: props.options.startNote,
     }
   }
 

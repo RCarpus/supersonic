@@ -20,7 +20,12 @@ class PracticePage extends React.Component {
     super(props);
     this.state = {
       setupComplete: false,
-      options: undefined,
+      options: {
+        difficulty: 'MEDIUM',
+        interval: 'PERFECT-5TH',
+        fixedStartNote: 'FIXED-FALSE',
+        startNote: 'A4',
+      },
     }
   }
 
@@ -32,14 +37,25 @@ class PracticePage extends React.Component {
     this.setState({ options, setupComplete: true });
   }
 
+  returnToSetup() {
+    /**
+     * Returns the user to the practice setup view.
+     * This is done by changing the setupComplete value in state to false.
+     * The app should remember the practice setup options used the previous time.
+     */
+    this.setState({ setupComplete: false });
+  }
+
   render() {
     const { setupComplete } = this.state;
     return (
       <div>
         <p>This is the Practice setup page.</p>
-        {!setupComplete && <PracticeOptionsMenu
+        {!setupComplete && <PracticeOptionsMenu options={this.state.options}
           confirmSetupOptions={(options) => this.confirmSetupOptions(options)} />}
-        {setupComplete && <TrainingSession options={this.state.options}/>}
+        {setupComplete && <TrainingSession options={this.state.options}
+          returnToSetup={() => this.returnToSetup()}
+        />}
 
       </div>
 
