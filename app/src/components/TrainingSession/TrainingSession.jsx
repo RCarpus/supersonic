@@ -1,6 +1,6 @@
 // import libraries
 import React from 'react';
-import { notes, playNote, playNoteSequence, IntervalGroup } from '../../audio-functions';
+import { notes, intervals, playNote, playNoteSequence, IntervalGroup } from '../../audio-functions';
 // import { connect } from 'react-redux';
 
 // import actions
@@ -41,6 +41,7 @@ export default class TrainingSession extends React.Component {
       currentAnswerCorrect: undefined, // This is boolean, not to be confused with currentCorrectAnswer
       settings: settings,
       grade: undefined,
+      baseNote: 440,
     };
   }
 
@@ -60,6 +61,18 @@ export default class TrainingSession extends React.Component {
     }
   }
 
+  randomNote() {
+    /**
+     * Selects a random note and returns the frequency.
+     * This function should generate a new base note for the user
+     * for each new interval if they are note using a fixed base.
+     */
+    const numNotes = Object.keys(notes).length;
+    const index = Math.floor(numNotes * Math.random());
+    const note = notes[Object.keys(notes)[index]];
+    return notes[Object.keys(notes)[index]];
+  }
+
   startPractice() {
     /**
      * Starts the practice session.
@@ -67,9 +80,15 @@ export default class TrainingSession extends React.Component {
      * Creates a new intervalGroup and generates the intervals.
      */
     // pull settings from state to put into IntervalGroup object
+    let baseNote = this.state.baseNote;
+    if (this.props.options.fixedStartNote === 'FIXED-FALSE') {
+      baseNote = this.randomNote();
+    }
+
     this.setState({
       started: true,
       finished: false,
+      baseNote,
       intervalGroup: new IntervalGroup(5),
     }, () => {
       this.state.intervalGroup.generateIntervals();
@@ -86,10 +105,12 @@ export default class TrainingSession extends React.Component {
      */
     let index = this.state.currentInterval;
     let detuneMagnitude = this.state.detuneMagnitude;
+    let baseNote = this.state.baseNote;
     let detune;
     const noteDuration = this.state.settings.noteDuration.value;
     const soundWaveType = this.state.settings.soundWaveType;
     const practiceStyle = this.state.settings.practiceStyle.value;
+    const interval = this.state.interval;
 
     switch (this.state.intervalGroup.intervals[index]) {
       case -1:
@@ -104,7 +125,7 @@ export default class TrainingSession extends React.Component {
       default:
         detune = 0;
     }
-    playNoteSequence(soundWaveType, noteDuration, 440, 2, detune, practiceStyle);
+    playNoteSequence(soundWaveType, noteDuration, baseNote, interval, detune, practiceStyle);
   }
 
   submitAnswer(answer) {
@@ -139,8 +160,13 @@ export default class TrainingSession extends React.Component {
      * and resets currentAnswerCorrect to null.
      */
     let updatedIndex = this.state.currentInterval + 1;
+    let baseNote = this.state.baseNote;
+    if (this.props.options.fixedStartNote === 'FIXED-FALSE') {
+      baseNote = this.randomNote();
+    }
     this.setState({
       currentInterval: updatedIndex,
+      baseNote,
       currentAnswerCorrect: null,
       currentSubmittedAnswer: null,
     }, () => {
@@ -259,6 +285,8 @@ export default class TrainingSession extends React.Component {
   componentDidMount() {
     this.setState({
       detuneMagnitude: this.mapDifficultyToCents(this.props.options.difficulty),
+      interval: intervals[this.props.options.interval],
+      fixedStartNote: this.props.options.fixedStartNote,
     })
   }
 

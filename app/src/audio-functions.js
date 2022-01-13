@@ -24,7 +24,23 @@ export const notes = {
   G5: 783.99,
   Ab5: 830.61,
   A5: 880
-}
+};
+
+export const intervals = {
+  'UNISON': 0,
+  'MINOR-2ND': 1,
+  'MAJOR-2ND': 2,
+  'MINOR-3RD': 3,
+  'MAJOR-3RD': 4,
+  'PERFECT-4TH': 5,
+  'TRITONE': 6,
+  'PERFECT-5TH': 7,
+  'MINOR-6TH': 8,
+  'MAJOR-6TH': 9,
+  'MINOR-7TH': 10,
+  'MAJOR-7TH': 11,
+  'OCTAVE': 12,
+};
 
 export const playNote = function (shape = 'sine', duration = 1000, frequency = 440, detune = 0) {
   /**
