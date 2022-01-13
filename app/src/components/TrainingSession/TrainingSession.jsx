@@ -287,6 +287,7 @@ export default class TrainingSession extends React.Component {
       detuneMagnitude: this.mapDifficultyToCents(this.props.options.difficulty),
       interval: intervals[this.props.options.interval],
       fixedStartNote: this.props.options.fixedStartNote,
+      baseNote: notes[this.props.options.startNote],
     })
   }
 
