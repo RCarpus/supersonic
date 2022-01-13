@@ -218,10 +218,26 @@ export default class TrainingSession extends React.Component {
     }, this.props.returnToSetup())
   }
 
+  formatOptionsText(text) {
+    /**
+     * takes in an option formatted like "PERFECT-5TH"
+     * and returns "Perfect 5th"
+     */
+    let updatedText = text.toLowerCase();
+    updatedText = updatedText.slice(0,1).toUpperCase() + updatedText.slice(1);
+    updatedText = updatedText.replace('-', ' ');
+    return updatedText;
+  }
+
   render() {
     const { started, finished, currentAnswerCorrect, currentInterval, numIntervals,
       currentCorrectAnswer, currentSubmittedAnswer, grade } = this.state;
     const lastInterval = currentInterval === numIntervals - 1;
+    const intervalText = this.formatOptionsText(this.props.options.interval);
+    const difficultyText = this.formatOptionsText(this.props.options.difficulty);
+    const fixedStartNoteText = this.props.options.fixedStartNote === 'FIXED-FALSE' 
+      ? 'No' 
+      : this.props.options.startNote;
 
     return (
       <div>
@@ -232,7 +248,21 @@ export default class TrainingSession extends React.Component {
           {grade && <p>Finished! You got {Math.round(grade * 100)}% correct.</p>}
         </div>
 
-        {!started && !finished && <button onClick={() => this.startPractice()}>click to start</button>}
+        {!started && !finished &&
+          <div>
+            <h1>Practice Type</h1>
+            <h2>{intervalText}</h2>
+            <h1>Difficulty</h1>
+            <h2>{difficultyText}</h2>
+            <h1>Fixed start note</h1>
+            <h2>{fixedStartNoteText}</h2>
+            <h1>Number of reps</h1>
+            <h2>{numIntervals}</h2>
+
+            <button onClick={() => this.startPractice()}>click to start</button>
+          </div>
+
+        }
         {started && !finished &&
           <div>
 
