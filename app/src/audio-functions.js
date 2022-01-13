@@ -54,9 +54,10 @@ export const playNote = function (shape = 'sine', duration = 1000, frequency = 4
   }, duration);
 }
 
-export const playNoteSequence = async function (shape = 'sine', duration = 1000, frequency1 = 440, frequency2 = 659.25, detune = 0, harmonic = true) {
+export const playNoteSequence = async function (shape = 'sine', duration = 1000, frequency1 = 440, interval = 7, detune = 0, harmonic = true) {
   /**
    * Play two notes in sequence OR simultaneously.
+   * Interval is the number of semitones
    * detune refers to the detuning of the second note
    * The first note will always be in tune.
    * If harmonic is true, the notes play simultaneously.
@@ -64,7 +65,7 @@ export const playNoteSequence = async function (shape = 'sine', duration = 1000,
    */
   playNote(shape, duration, frequency1, 0);
   setTimeout(() => {
-    playNote(shape, duration, frequency2, detune);
+    playNote(shape, duration, frequency1, interval*100 + detune);
   }, harmonic ? 0 : duration);
 }
 

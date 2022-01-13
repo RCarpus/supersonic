@@ -48,7 +48,7 @@ export default class TrainingSession extends React.Component {
     /**
      * translates the difficulty from a semantic string to a usable integer
      */
-    switch(difficulty) {
+    switch (difficulty) {
       case 'EASY':
         return 50;
       case 'MEDIUM':
@@ -104,7 +104,7 @@ export default class TrainingSession extends React.Component {
       default:
         detune = 0;
     }
-    playNoteSequence(soundWaveType, noteDuration, 440, 493.88, detune, practiceStyle);
+    playNoteSequence(soundWaveType, noteDuration, 440, 2, detune, practiceStyle);
   }
 
   submitAnswer(answer) {
