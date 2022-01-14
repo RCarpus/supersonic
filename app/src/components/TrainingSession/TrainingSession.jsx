@@ -94,7 +94,7 @@ export default class TrainingSession extends React.Component {
       case 'ASCENDING':
         return interval;
       case 'DESCENDING':
-        return -interval;
+        return - Math.abs(interval);
       case 'BOTH':
         return this.applyRandomDirection(interval);
       default:
