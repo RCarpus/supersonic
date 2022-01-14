@@ -8,6 +8,7 @@ import { notes, intervals, playNote, playNoteSequence, IntervalGroup } from '../
 // import necessary components
 // import SomeComponent from '../components/SomeComponent';
 import ResponseButton from '../response-button/ResponseButton';
+import SessionResults from '../SessionResults/SessionResults';
 /* ---------------------- */
 
 // import stylesheet
@@ -90,7 +91,7 @@ export default class TrainingSession extends React.Component {
      * Given the user's interval and direction choice,
      * transforms the interval into an ascending or descending interval
      */
-     switch (this.props.options.direction) {
+    switch (this.props.options.direction) {
       case 'ASCENDING':
         return interval;
       case 'DESCENDING':
@@ -141,7 +142,7 @@ export default class TrainingSession extends React.Component {
     const practiceStyle = this.state.settings.practiceStyle.value;
     let interval = this.state.interval;
 
-    
+
 
     switch (this.state.intervalGroup.intervals[index]) {
       case -1:
@@ -257,7 +258,7 @@ export default class TrainingSession extends React.Component {
      * and returns "Perfect 5th"
      */
     let updatedText = text.toLowerCase();
-    updatedText = updatedText.slice(0,1).toUpperCase() + updatedText.slice(1);
+    updatedText = updatedText.slice(0, 1).toUpperCase() + updatedText.slice(1);
     updatedText = updatedText.replace('-', ' ');
     return updatedText;
   }
@@ -268,9 +269,27 @@ export default class TrainingSession extends React.Component {
     const lastInterval = currentInterval === numIntervals - 1;
     const intervalText = this.formatOptionsText(this.props.options.interval);
     const difficultyText = this.formatOptionsText(this.props.options.difficulty);
-    const fixedStartNoteText = this.props.options.fixedStartNote === 'FIXED-FALSE' 
-      ? 'No' 
+    const directionText = this.formatOptionsText(this.props.options.direction);
+    const fixedStartNoteText = this.props.options.fixedStartNote === 'FIXED-FALSE'
+      ? 'No'
       : this.props.options.startNote;
+
+    // This object is sent to the SessionResults element for analysis
+    let stats;
+    if (grade) {
+      stats = {
+        reps: this.state.numIntervals,
+        submittedAnswers: this.state.submittedAnswers,
+        correctAnswers: this.state.intervalGroup.intervals,
+        detuneMagnitude: this.state.detuneMagnitude,
+        direction: this.props.options.direction,
+        difficulty: this.props.options.difficulty,
+        fixedStartNote: this.props.options.fixedStartNote,
+        interval: this.props.options.interval,
+        startNote: this.props.options.startNote, 
+      }
+
+    }
 
     return (
       <div>
@@ -279,6 +298,7 @@ export default class TrainingSession extends React.Component {
           {currentAnswerCorrect && <p className='message correct'>Correct!</p>}
           {currentAnswerCorrect === false && <p className='message incorrect'>Incorrect</p>}
           {grade && <p>Finished! You got {Math.round(grade * 100)}% correct.</p>}
+          {grade && <SessionResults stats={stats} formatOptionsText={text => this.formatOptionsText(text)}/>}
         </div>
 
         {!started && !finished &&
@@ -287,6 +307,8 @@ export default class TrainingSession extends React.Component {
             <h2>{intervalText}</h2>
             <h1>Difficulty</h1>
             <h2>{difficultyText}</h2>
+            <h1>Direction</h1>
+            <h2>{directionText}</h2>
             <h1>Fixed start note</h1>
             <h2>{fixedStartNoteText}</h2>
             <h1>Number of reps</h1>
@@ -354,8 +376,4 @@ export default class TrainingSession extends React.Component {
     })
   }
 
-  componentDidUpdate() {
-    console.log('logging updated state');
-    console.log(this.state);
-  }
 }
