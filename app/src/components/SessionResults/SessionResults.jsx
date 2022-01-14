@@ -1,5 +1,6 @@
 // import libraries
 import React from 'react';
+import Axios from 'axios';
 
 import './SessionResults.scss';
 
@@ -74,6 +75,74 @@ export default class SessionResults extends React.Component {
      * converts a decimal number to a percent
      */
     return Math.round(value * 100) || 'N/A';
+  }
+
+  async uploadSession(session) {
+    /**
+     * Uploads the finished practice session to the Atlus server.
+     * This should fire when the SessionResults component is mounted.
+     * We are not saving any of the calculated results to the server.
+     * We will have to recalculate things when pulling from the server,
+     * but it will cut down on data transfer.
+     * 
+     * If the upload fails for any reason, the session should be saved to 
+     * localStorage to be uploaded later.
+     */
+    let user = JSON.parse(localStorage.getItem('userData')).Username;
+    let token = JSON.parse(localStorage.getItem('token'));
+    let authHeader = { headers: { Authorization: `Bearer ${token}` } };
+
+    return await Axios.post(`https://supersonic-api.herokuapp.com/users/${user}/records`, { session }, authHeader)
+      .then(response => {
+        console.log(response.data);
+        console.log('successfully saved session to server');
+        return true;
+      })
+      .catch(function (error) {
+        console.log(error);
+        saveSessionOffline(session);
+        return false;
+      });
+
+  }
+
+  saveSessionOffline(session) {
+    /**
+     * If the session upload fails for some reason, save the session to localStorage instead.
+     * Then, next time the user is online and tries to save a session, 
+     * the saved sessions can be uploaded at the same time.
+     */
+    let localSessions = JSON.parse(localStorage.getItem('offlineSessions')) || [];
+    localSessions.push(session);
+    localStorage.setItem('offlineSessions', JSON.stringify(localSessions));
+  }
+
+  uploadOfflineSessions() {
+    /**
+     * upload any sessions saved in localStorage.
+     * After a successful upload, remove that session from local storage.
+     * Work through the offline sessions until either an upload failure occurs 
+     * or all of the sessions are uploaded.
+     */
+    let localSessions = JSON.parse(localStorage.getItem('offlineSessions')) || [];
+    let unsavedLocalSessions = [];
+    localSessions.forEach(session => {
+      let upload = this.uploadSession(session);
+      if (!upload) {
+        unsavedLocalSessions.push(session);
+      }
+    })
+    if (unsavedLocalSessions.length > 0) {
+      localStorage.setItem('offlineSessions', JSON.stringify(unsavedLocalSessions));
+    } else {
+      localStorage.removeItem('offlineSessions');
+    }
+  }
+
+  componentDidMount() {
+    console.log('session results mounted');
+    this.uploadOfflineSessions();
+    this.uploadSession(this.props.stats);
   }
 
 
