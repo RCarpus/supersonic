@@ -40,7 +40,7 @@ export default class TrainingSession extends React.Component {
       intervalGroup: undefined,
       currentAnswerCorrect: undefined, // This is boolean, not to be confused with currentCorrectAnswer
       settings: settings,
-      grade: undefined,
+      showResults: undefined,
       baseNote: 440,
     };
   }
@@ -209,28 +209,12 @@ export default class TrainingSession extends React.Component {
   }
 
   handleFinish() {
-    const grade = this.calculateGrade();
     this.setState({
-      grade,
+      showResults: true,
       currentAnswerCorrect: null,
       started: false,
       finished: true
     });
-  }
-
-  calculateGrade() {
-    /**
-     * Calculates the user's grade and returns as a decimal between 0 and 1.
-     * This works the same as the grade() function within the IntervalGroup class,
-     * But because this app isn't saving the submitted answers in that instance,
-     * we need to calcuate the grade outside of the class as well.
-     */
-    let correctArray = this.state.intervalGroup.intervals.map((interval, index) => {
-      return interval === this.state.submittedAnswers[index] ? 1 : 0;
-    });
-    let total = correctArray.reduce((x, y) => { return x + y });
-    let grade = total / this.state.numIntervals;
-    return grade;
   }
 
   handleRestart() {
@@ -247,7 +231,7 @@ export default class TrainingSession extends React.Component {
       submittedAnswers: [],
       intervalGroup: undefined,
       currentAnswerCorrect: undefined, // This is boolean, not to be confused with currentCorrectAnswer
-      grade: undefined,
+      showResults: false,
     }, this.props.returnToSetup())
   }
 
@@ -264,7 +248,7 @@ export default class TrainingSession extends React.Component {
 
   render() {
     const { started, finished, currentAnswerCorrect, currentInterval, numIntervals,
-      currentCorrectAnswer, currentSubmittedAnswer, grade } = this.state;
+      currentCorrectAnswer, currentSubmittedAnswer, showResults } = this.state;
     const lastInterval = currentInterval === numIntervals - 1;
     const intervalText = this.formatOptionsText(this.props.options.interval);
     const difficultyText = this.formatOptionsText(this.props.options.difficulty);
@@ -275,7 +259,7 @@ export default class TrainingSession extends React.Component {
 
     // This object is sent to the SessionResults element for analysis
     let stats;
-    if (grade) {
+    if (showResults) {
       stats = {
         reps: this.state.numIntervals,
         submittedAnswers: this.state.submittedAnswers,
@@ -296,8 +280,7 @@ export default class TrainingSession extends React.Component {
         <div className='message-container'>
           {currentAnswerCorrect && <p className='message correct'>Correct!</p>}
           {currentAnswerCorrect === false && <p className='message incorrect'>Incorrect</p>}
-          {grade && <p>Finished! You got {Math.round(grade * 100)}% correct.</p>}
-          {grade && <SessionResults stats={stats} formatOptionsText={text => this.formatOptionsText(text)}/>}
+          {showResults && <SessionResults stats={stats} formatOptionsText={text => this.formatOptionsText(text)}/>}
         </div>
 
         {!started && !finished &&
