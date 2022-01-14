@@ -20,8 +20,6 @@ export default class ResponseButton extends React.Component {
       currentCorrectAnswer !== buttonAnswer &&
       currentSubmittedAnswer === buttonAnswer) grade = '-incorrect';
 
-
-    console.log('flat button props', currentCorrectAnswer, buttonAnswer, grade);
     return(
       <button className={`response-button${grade}`} onClick={this.props.onClick}>{text}</button>
     );
