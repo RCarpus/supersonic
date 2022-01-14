@@ -86,10 +86,6 @@ app.post('/users/register',
             Username: req.body.Username,
             Password: hashedPassword,
             Email: req.body.Email,
-            Settings: {
-              NoteDuration: 1000,
-              SoundWaveType: 'SINE'
-            },
             Stats: []
           })
             // send the new user data back in the response
@@ -154,7 +150,6 @@ app.get('/users/:Username', passport.authenticate('jwt', { session: false }), (r
   Username: String, (optional)
   Password: String, (optional)
   Email: String, (optional)
-  Settings: object (optional)
 }
 */
 app.put('/users/:Username', passport.authenticate('jwt', { session: false }),
@@ -182,7 +177,6 @@ app.put('/users/:Username', passport.authenticate('jwt', { session: false }),
         Username: req.body.Username,
         Password: hashedPassword,
         Email: req.body.Email,
-        Settings: req.body.Settings
       }
     },
       { new: true })
