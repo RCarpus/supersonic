@@ -19,6 +19,7 @@ export default class PracticeOptionsMenu extends React.Component {
       interval: props.options.interval,
       fixedStartNote: props.options.fixedStartNote,
       startNote: props.options.startNote,
+      direction: props.options.direction,
     }
   }
 
@@ -26,6 +27,7 @@ export default class PracticeOptionsMenu extends React.Component {
     document.getElementById(`${this.state.difficulty}`).classList.add('active');
     document.getElementById(`${this.state.interval}`).classList.add('active');
     document.getElementById(`${this.state.fixedStartNote}`).classList.add('active');
+    document.getElementById(`${this.state.direction}`).classList.add('active');
   }
 
   clickDifficulty(value) {
@@ -62,7 +64,15 @@ export default class PracticeOptionsMenu extends React.Component {
     document.querySelectorAll('.practice-setup__start-note__button')
       .forEach(elem => { elem.classList.remove('active') });
     document.getElementById(`${value}`).classList.add('active');
+  }
 
+  clickDirection(value) {
+    // updates the direction value in state
+    // updates the UI accordingly
+    this.setState({ direction: value });
+    document.querySelectorAll('.practice-setup__direction__button')
+      .forEach(elem => { elem.classList.remove('active') });
+    document.getElementById(`${value}`).classList.add('active');
   }
 
   render() {
@@ -91,6 +101,12 @@ export default class PracticeOptionsMenu extends React.Component {
           <button className="practice-setup__interval__button" id="MINOR-7TH" onClick={() => this.clickInterval('MINOR-7TH')}>Minor 7th</button>
           <button className="practice-setup__interval__button" id="MAJOR-7TH" onClick={() => this.clickInterval('MAJOR-7TH')}>Major 7th</button>
           <button className="practice-setup__interval__button" id="OCTAVE" onClick={() => this.clickInterval('OCTAVE')}>Octave</button>
+        </div>
+        <div className="practice-setup__direction">
+          <h3 className="practice-setup__category-header">Direction</h3>
+          <button className="practice-setup__direction__button" id="ASCENDING" onClick={() => this.clickDirection('ASCENDING')}>Ascending</button>
+          <button className="practice-setup__direction__button" id="DESCENDING" onClick={() => this.clickDirection('DESCENDING')}>Descending</button>
+          <button className="practice-setup__direction__button" id="BOTH" onClick={() => this.clickDirection('BOTH')}>Both</button>
         </div>
         <div className="practice-setup__fixed-start-note">
           <h3 className="practice-setup__category-header">Fixed start note</h3>

@@ -25,6 +25,7 @@ class PracticePage extends React.Component {
         interval: 'PERFECT-5TH',
         fixedStartNote: 'FIXED-FALSE',
         startNote: 'A4',
+        direction: 'ASCENDING',
       },
     }
   }

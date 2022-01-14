@@ -73,6 +73,35 @@ export default class TrainingSession extends React.Component {
     return notes[Object.keys(notes)[index]];
   }
 
+  applyRandomDirection(interval) {
+    /**
+     * Helper function for applyDirectionChoice()
+     * Takes in the interval as an integer and applies a random sign to it.
+     * This is used when the user has selected "BOTH" directions for intervals
+     * returns the integer unchanges if ascending is selected.
+     * returns negative integer if descending is selected.
+     */
+    const direction = Math.random();
+    return direction < 0.5 ? -interval : interval;
+  }
+
+  applyDirectionChoice(interval) {
+    /**
+     * Given the user's interval and direction choice,
+     * transforms the interval into an ascending or descending interval
+     */
+     switch (this.props.options.direction) {
+      case 'ASCENDING':
+        return interval;
+      case 'DESCENDING':
+        return -interval;
+      case 'BOTH':
+        return this.applyRandomDirection(interval);
+      default:
+        return interval;
+    }
+  }
+
   startPractice() {
     /**
      * Starts the practice session.
@@ -85,10 +114,13 @@ export default class TrainingSession extends React.Component {
       baseNote = this.randomNote();
     }
 
+    let interval = this.applyDirectionChoice(this.state.interval);
+
     this.setState({
       started: true,
       finished: false,
       baseNote,
+      interval,
       intervalGroup: new IntervalGroup(5),
     }, () => {
       this.state.intervalGroup.generateIntervals();
@@ -98,10 +130,7 @@ export default class TrainingSession extends React.Component {
 
   playCurrentInterval() {
     /**
-     * Plays the current interval.
-     * This should take user settings into account,
-     * but as this is just a mockup,
-     * settings are hardcoded.
+     * Plays the current interval taking user settings into account
      */
     let index = this.state.currentInterval;
     let detuneMagnitude = this.state.detuneMagnitude;
@@ -110,7 +139,9 @@ export default class TrainingSession extends React.Component {
     const noteDuration = this.state.settings.noteDuration.value;
     const soundWaveType = this.state.settings.soundWaveType;
     const practiceStyle = this.state.settings.practiceStyle.value;
-    const interval = this.state.interval;
+    let interval = this.state.interval;
+
+    
 
     switch (this.state.intervalGroup.intervals[index]) {
       case -1:
@@ -164,9 +195,11 @@ export default class TrainingSession extends React.Component {
     if (this.props.options.fixedStartNote === 'FIXED-FALSE') {
       baseNote = this.randomNote();
     }
+    let interval = this.applyDirectionChoice(this.state.interval);
     this.setState({
       currentInterval: updatedIndex,
       baseNote,
+      interval,
       currentAnswerCorrect: null,
       currentSubmittedAnswer: null,
     }, () => {
@@ -326,13 +359,3 @@ export default class TrainingSession extends React.Component {
     console.log(this.state);
   }
 }
-
-// Add anything needed in this component from the global state
-// let mapStateToProps = state => {
-//   return {
-//     userData: state.userData,
-//   }
-// }
-
-// The second parameter object contains the state actions we imported at the top
-// export default connect(mapStateToProps, null)(PracticeSetupPage);
