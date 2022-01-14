@@ -58,7 +58,7 @@ export default class SessionResults extends React.Component {
     }
     let correctTrimmedSubmitted = trimmedSubmitted.filter(answer => { return answer === subset });
     let numCorrect = correctTrimmedSubmitted.length;
-    let percentCorrect = numCorrect / trimmedSubmitted.length;
+    let percentCorrect = numCorrect / trimmedSubmitted.length || 'N/A';
     let numTested = trimmedSubmitted.length;
     let falseNegatives = numTested - numCorrect;
 
@@ -73,13 +73,12 @@ export default class SessionResults extends React.Component {
     /**
      * converts a decimal number to a percent
      */
-    return Math.round(value * 100);
+    return Math.round(value * 100) || 'N/A';
   }
 
 
   render() {
     const { stats } = this.props;
-    console.log(stats);
     const overallGrade = this.calculateOverallGrade(stats.submittedAnswers, stats.correctAnswers);
     const flatGrade = this.gradeSubset(stats.submittedAnswers, stats.correctAnswers, -1);
     const perfectGrade = this.gradeSubset(stats.submittedAnswers, stats.correctAnswers, 0);
