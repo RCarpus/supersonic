@@ -39,6 +39,7 @@ export default class RegistrationView extends React.Component {
     return (
       <div className="registration-view">
         <h2 className="display-4">Sign up for a free Supersonic account</h2>
+        <p>Signing up for a free account allows you to save your practice statistics and track your improvement over time. We will never share your account information with anybody.</p>
 
         <Form className="registration-form" ref={this.form} onSubmit={e => e.preventDefault()}>
 
