@@ -20,6 +20,7 @@ export default class PracticeOptionsMenu extends React.Component {
       fixedStartNote: props.options.fixedStartNote,
       startNote: props.options.startNote,
       direction: props.options.direction,
+      numReps: props.options.numReps,
     }
   }
 
@@ -28,6 +29,7 @@ export default class PracticeOptionsMenu extends React.Component {
     document.getElementById(`${this.state.interval}`).classList.add('active');
     document.getElementById(`${this.state.fixedStartNote}`).classList.add('active');
     document.getElementById(`${this.state.direction}`).classList.add('active');
+    document.getElementById(`${this.state.numReps.name}`).classList.add('active');
   }
 
   clickDifficulty(value) {
@@ -73,6 +75,15 @@ export default class PracticeOptionsMenu extends React.Component {
     document.querySelectorAll('.practice-setup__direction__button')
       .forEach(elem => { elem.classList.remove('active') });
     document.getElementById(`${value}`).classList.add('active');
+  }
+
+  clickNumReps(value) {
+    // updates the numReps value in state
+    // updates the UI accordingly
+    this.setState({ numReps: value });
+    document.querySelectorAll('.practice-setup__num-reps__button')
+      .forEach(elem => { elem.classList.remove('active') });
+    document.getElementById(`${value.name}`).classList.add('active');
   }
 
   render() {
@@ -142,8 +153,14 @@ export default class PracticeOptionsMenu extends React.Component {
             <button className="practice-setup__start-note__button black-key" id="Ab5" onClick={() => this.clickStartNote('Ab5')}>Ab5</button>
             <button className="practice-setup__start-note__button white-key" id="A5" onClick={() => this.clickStartNote('A5')}>A5</button>
           </div>
-
         }
+        <div className="practice-setup__num-reps">
+          <h3 className="practice-setup__category-header">Number of reps</h3>
+          <button className="practice-setup__num-reps__button" id="reps-5" onClick={() => this.clickNumReps({name: 'reps-5', value: 5})}>5</button>
+          <button className="practice-setup__num-reps__button" id="reps-10" onClick={() => this.clickNumReps({name: 'reps-10', value: 10})}>10</button>
+          <button className="practice-setup__num-reps__button" id="reps-20" onClick={() => this.clickNumReps({name: 'reps-20', value: 20})}>20</button>
+          <button className="practice-setup__num-reps__button" id="reps-50" onClick={() => this.clickNumReps({name: 'reps-50', value: 50})}>50</button>
+        </div>
         <button onClick={() => this.props.confirmSetupOptions(this.state)}>Practice</button>
       </div>
 

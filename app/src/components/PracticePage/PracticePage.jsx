@@ -1,11 +1,7 @@
 // import libraries
 import React from 'react';
-import Axios from 'axios';
 import { connect } from 'react-redux';
-import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 
-// import actions
-// no actions needed for this element
 
 // import necessary components
 // import SomeComponent from '../components/SomeComponent';
@@ -26,6 +22,7 @@ class PracticePage extends React.Component {
         fixedStartNote: 'FIXED-FALSE',
         startNote: 'A4',
         direction: 'ASCENDING',
+        numReps: { name: 'reps-10', value: 10},
       },
     }
   }

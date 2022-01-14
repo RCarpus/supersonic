@@ -29,14 +29,13 @@ export default class TrainingSession extends React.Component {
 
     // Try to pull settings from localStorage, uses defaults if not found
     let settings = JSON.parse(localStorage.getItem('settings')) || defaultSettings;
-
     this.state = {
       started: false,
       finished: false,
       currentInterval: 0,
       currentCorrectAnswer: undefined, // This is -1, 0, or 1, not to be confused with currentAnswerCorrect
       currentSubmittedAnswer: undefined,
-      numIntervals: 5,
+      numIntervals: props.options.numReps.value,
       submittedAnswers: [],
       intervalGroup: undefined,
       currentAnswerCorrect: undefined, // This is boolean, not to be confused with currentCorrectAnswer
@@ -116,13 +115,14 @@ export default class TrainingSession extends React.Component {
     }
 
     let interval = this.applyDirectionChoice(this.state.interval);
+    let numReps = this.state.numIntervals;
 
     this.setState({
       started: true,
       finished: false,
       baseNote,
       interval,
-      intervalGroup: new IntervalGroup(5),
+      intervalGroup: new IntervalGroup(numReps),
     }, () => {
       this.state.intervalGroup.generateIntervals();
       this.playCurrentInterval();
@@ -209,7 +209,6 @@ export default class TrainingSession extends React.Component {
   }
 
   handleFinish() {
-    console.log('finished');
     const grade = this.calculateGrade();
     this.setState({
       grade,
