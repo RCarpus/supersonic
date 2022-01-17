@@ -1,10 +1,16 @@
+:root {
+  // colors
+  --color-supersonic-green: #3B7A00;
+  --color-logout-blue: blue;
+}
+
 #home-page {
   // display: block;
   // font-family: 'Abel', sans-serif;
 }
 
 h1 {
-  color: #3B7A00;
+  color: var(--color-supersonic-green);
 }
 
 #home-page__title {
@@ -37,4 +43,8 @@ h1 {
 
 button {
   width: 100px;
+}
+
+.logout-button {
+  color: var(--color-logout-blue)
 }
