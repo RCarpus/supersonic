@@ -19,6 +19,7 @@
   },
   "devDependencies": {
     "@parcel/transformer-sass": "^2.2.1",
+    "follow-redirects": "^1.14.7",
     "parcel": "^2.2.1"
   }
 }
