@@ -42,8 +42,12 @@ class HomePage extends React.Component {
             <Link to='/settings'>
               <button className="home-page__button">Settings</button>
             </Link>
+            <div>
+              <button className="home-page__button" onClick={this.props.handleLogout}>logout</button>
+            </div>
+            
           </div>
-          <button className="logout-button" onClick={this.props.handleLogout}>logout</button>
+          
         </div>
 
 
