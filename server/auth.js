@@ -7,7 +7,15 @@ require('./passport'); // My local passport file, not the package
 
 
 let generateJWTToken = (user) => {
-  return jwt.sign(user, jwtSecret, {
+  /**
+   * I only want to encode the username and _id because
+   * If I encode the whole user data, the JWT will get very large and will stop working.
+   */
+  let encodedData = {
+    Username: user.Username,
+    _id: user._id,
+  };
+  return jwt.sign(encodedData, jwtSecret, {
     subject: user.Username, // This is the username you’re encoding in the JWT
     expiresIn: '7d', // This specifies that the token will expire in 7 days
     algorithm: 'HS256' // This is the algorithm used to “sign” or encode the values of the JWT
