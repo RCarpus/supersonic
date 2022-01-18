@@ -40,12 +40,18 @@ export default class LandingPage extends React.Component {
     const { showLoginView, showRegisterView } = this.state;
     return (
       <div id="landing-page">
-        <h1>Supersonic</h1>
+        <div id='landing-page__welcome-img-container'>
+          <div id='landing-page__welcome-img-background-color'>
+            <p id='landing-page__welcome-img__title'>Supersonic Ear Training</p>
+          </div>
+          
+
+        </div>
         <h2>Fined-tuned ear training</h2>
         <p>Some cool info about this app</p>
-        {showLoginView && <LoginView handleLogin={this.props.handleLogin} 
-          showRegisterView={() => this.showRegisterView()}/>}
-        {showRegisterView && <RegisterView showLoginView={() => this.showLoginView()}/>}
+        {showLoginView && <LoginView handleLogin={this.props.handleLogin}
+          showRegisterView={() => this.showRegisterView()} />}
+        {showRegisterView && <RegisterView showLoginView={() => this.showLoginView()} />}
       </div >
     )
   }
