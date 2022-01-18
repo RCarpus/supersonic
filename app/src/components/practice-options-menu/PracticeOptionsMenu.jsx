@@ -90,7 +90,7 @@ export default class PracticeOptionsMenu extends React.Component {
     const { fixedStartNote } = this.state;
     return (
       <div className="practice-setup">
-        <h2>Setup</h2>
+        <h1>Practice Setup</h1>
         <div className="practice-setup__difficulty">
           <h3 className="practice-setup__category-header">Difficulty</h3>
           <button className="practice-setup__difficulty__button" id="EASY" onClick={() => this.clickDifficulty('EASY')}>Easy</button>
@@ -161,7 +161,7 @@ export default class PracticeOptionsMenu extends React.Component {
           <button className="practice-setup__num-reps__button" id="reps-20" onClick={() => this.clickNumReps({name: 'reps-20', value: 20})}>20</button>
           <button className="practice-setup__num-reps__button" id="reps-50" onClick={() => this.clickNumReps({name: 'reps-50', value: 50})}>50</button>
         </div>
-        <button onClick={() => this.props.confirmSetupOptions(this.state)}>Practice</button>
+        <button id="begin-practice-button" onClick={() => this.props.confirmSetupOptions(this.state)}>Begin Practice</button>
       </div>
 
     )

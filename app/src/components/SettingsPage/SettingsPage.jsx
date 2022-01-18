@@ -83,9 +83,9 @@ export default class SettingsPage extends React.Component {
 
     return (
       <div className="settings">
-        <h2 className="settings__title">Settings</h2>
+        <h1 className="settings__title">Settings</h1>
         <div className="settings__note-duration">
-          <p className="settings__note-duration__label">Note duration:</p>
+          <p className="settings__label">Note duration:</p>
           <button onClick={() => { this.clickNoteDuration(short) }}
             className="settings__note-duration__button"
             id="SHORT-button">short</button>
@@ -97,7 +97,7 @@ export default class SettingsPage extends React.Component {
             id="LONG-button">long</button>
         </div>
         <div className="settings__sound-wave-type">
-          <p className="settings__sound-wave-type__label">Sound wave type</p>
+          <p className="settings__label">Sound wave type</p>
           <button onClick={() => { this.clickSoundWaveType("sine") }}
             className="settings__sound-wave-button"
             id="sine-button">sine</button>
@@ -109,7 +109,7 @@ export default class SettingsPage extends React.Component {
             id="sawtooth-button">sawtooth</button>
         </div>
         <div className="settings__practice-style">
-          <p className="settings__practice-style__label">Practice style:</p>
+          <p className="settings__label">Practice style:</p>
           <button onClick={() => { this.clickPracticeStyle(melodic) }}
             className="settings__practice-style__button"
             id="MELODIC-button">melodic</button>

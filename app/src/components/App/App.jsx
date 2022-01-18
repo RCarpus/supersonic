@@ -7,6 +7,7 @@ import {
   Routes,
   Route,
 } from "react-router-dom";
+import { Container } from 'react-bootstrap';
 
 // import actions
 import { setUserData } from '../../actions/actions';
@@ -75,14 +76,17 @@ class App extends React.Component {
     if (!loggedIn) {
       return (
         <BrowserRouter>
-          <TopBanner loggedIn={loggedIn} handleLogout={() => this.handleLogout()}/>
-          <Routes>
-            <Route path="/" element={<LandingPage handleLogin={() => this.handleLogin()} />} />
-            <Route path="/profile" element={<LandingPage handleLogin={() => this.handleLogin()} />} />
-            <Route path="/settings" element={<LandingPage handleLogin={() => this.handleLogin()} />} />
-            <Route path="/practice" element={<LandingPage handleLogin={() => this.handleLogin()} />} />
-            <Route path="/stats" element={<LandingPage handleLogin={() => this.handleLogin()} />} />
-          </Routes>
+          <TopBanner loggedIn={loggedIn} handleLogout={() => this.handleLogout()} />
+          <Container>
+            <Routes>
+              <Route path="/" element={<LandingPage handleLogin={() => this.handleLogin()} />} />
+              <Route path="/profile" element={<LandingPage handleLogin={() => this.handleLogin()} />} />
+              <Route path="/settings" element={<LandingPage handleLogin={() => this.handleLogin()} />} />
+              <Route path="/practice" element={<LandingPage handleLogin={() => this.handleLogin()} />} />
+              <Route path="/stats" element={<LandingPage handleLogin={() => this.handleLogin()} />} />
+            </Routes>
+          </Container>
+
         </BrowserRouter>
       )
 
@@ -90,14 +94,16 @@ class App extends React.Component {
 
     return (
       <BrowserRouter>
-        <TopBanner loggedIn={loggedIn} handleLogout={() => this.handleLogout()}/>
-        <Routes>
-          <Route path="/" element={<HomePage/>} />
-          <Route path="/profile" element={<ProfilePage/>} />
-          <Route path="/settings" element={<SettingsPage/>} />
-          <Route path="/practice" element={<PracticePage/>} />
-          <Route path="/stats" element={<StatsPage/>} />
-        </Routes>
+        <TopBanner loggedIn={loggedIn} handleLogout={() => this.handleLogout()} />
+        <Container>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/settings" element={<SettingsPage />} />
+            <Route path="/practice" element={<PracticePage />} />
+            <Route path="/stats" element={<StatsPage />} />
+          </Routes>
+        </Container>
       </BrowserRouter>
 
     )

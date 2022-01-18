@@ -269,44 +269,61 @@ export default class TrainingSession extends React.Component {
         difficulty: this.props.options.difficulty,
         fixedStartNote: this.props.options.fixedStartNote,
         interval: this.props.options.interval,
-        startNote: this.props.options.startNote, 
+        startNote: this.props.options.startNote,
       }
 
     }
 
     return (
-      <div>
-        {/* Message container displays various messages to the user depending on content*/}
-        <div className='message-container'>
-          {currentAnswerCorrect && <p className='message correct'>Correct!</p>}
-          {currentAnswerCorrect === false && <p className='message incorrect'>Incorrect</p>}
-          {showResults && <SessionResults stats={stats} formatOptionsText={text => this.formatOptionsText(text)}/>}
-        </div>
+      <div id='training-session'>
+        {showResults && <SessionResults stats={stats} formatOptionsText={text => this.formatOptionsText(text)} />}
 
         {!started && !finished &&
           <div>
-            <h1>Practice Type</h1>
-            <h2>{intervalText}</h2>
-            <h1>Difficulty</h1>
-            <h2>{difficultyText}</h2>
-            <h1>Direction</h1>
-            <h2>{directionText}</h2>
-            <h1>Fixed start note</h1>
-            <h2>{fixedStartNoteText}</h2>
-            <h1>Number of reps</h1>
-            <h2>{numIntervals}</h2>
-
-            <button onClick={() => this.startPractice()}>click to start</button>
+            <table class="table practice-setup-table">
+              <tbody>
+                <tr>
+                  <th context="row">Practice Type</th>
+                  <td>{intervalText}</td>
+                </tr>
+                <tr>
+                  <th context="row">Difficulty</th>
+                  <td>{difficultyText}</td>
+                </tr>
+                <tr>
+                  <th context="row">Direction</th>
+                  <td>{directionText}</td>
+                </tr>
+                <tr>
+                  <th context="row">Fixed Start Note</th>
+                  <td>{fixedStartNoteText}</td>
+                </tr>
+                <tr>
+                  <th context="row">Number of Reps</th>
+                  <td>{numIntervals}</td>
+                </tr>
+              </tbody>
+            </table>
+            <button id="begin-practice-button" onClick={() => this.startPractice()}>click to start</button>
+            <button onClick={() => this.props.returnToSetup()}>back</button>
           </div>
 
         }
         {started && !finished &&
           <div>
 
-            <h3>The session has begun</h3>
+            <p id="interval-count-message">Interval {currentInterval + 1} of {numIntervals}</p>
+            <p id="divider"></p>
 
 
-            <button onClick={() => this.playCurrentInterval()}>hear again</button>
+            <button className="wide-button" onClick={() => this.playCurrentInterval()}>hear again</button>
+            {/* Message container displays various messages to the user depending on content*/}
+            <div className='message-container'>
+              {currentAnswerCorrect && <p className='message correct'>Correct!</p>}
+              {currentAnswerCorrect === false && <p className='message incorrect'>Incorrect</p>}
+              
+            </div>
+
 
             {/* The response buttons submit the user's answer and change style to indicate 
               whether the submitted answer was correct or incorrect */}
@@ -334,13 +351,13 @@ export default class TrainingSession extends React.Component {
           </div>
         }
         {started && currentAnswerCorrect != null && !lastInterval &&
-          <button onClick={() => this.nextInterval()}>next</button>
+          <button className='wide-button' onClick={() => this.nextInterval()}>next</button>
         }
         {started && currentAnswerCorrect != null && lastInterval &&
-          <button onClick={() => this.handleFinish()}>finish</button>
+          <button className='wide-button' onClick={() => this.handleFinish()}>finish</button>
         }
         {finished &&
-          <button onClick={() => this.handleRestart()}>Restart</button>
+          <button id='begin-practice-button' onClick={() => this.handleRestart()}>Restart</button>
         }
 
 

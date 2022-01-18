@@ -12,3 +12,95 @@ body {
 button:hover {
   background-color: #3b7a0050;
 }
+
+.settings {
+  display: block;
+  max-width: 400px;
+  margin: auto;
+}
+
+.settings button {
+  width: 90px;
+  margin-bottom: 10px;
+}
+
+.settings__label {
+  margin-bottom: 0;
+}
+
+.settings__back-button {
+  background-color: var(--color-supersonic-purple);
+  color: white;
+}
+
+.update-button:hover, .settings__back-button:hover {
+  background-color: var(--color-supersonic-brown);
+}
+
+#profile-page {
+  max-width: 300px;
+  display: block;
+  margin: auto;
+}
+
+.update-button, .settings__back-button {
+  margin-top: 15px;
+  background-color: var(--color-supersonic-purple);
+  color: white;
+}
+
+.practice-setup {
+  max-width: 700px;
+  margin: auto;
+}
+
+.practice-setup-table {
+  max-width: 350px;
+}
+
+.practice-setup__category-header {
+  margin-top: 15px;
+}
+
+.practice-setup button {
+  font-size: 14.2px;
+  width: 90px;
+}
+
+#begin-practice-button {
+  display: block;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  min-width: 300px;
+  width: 50%;
+  background-color: var(--color-supersonic-purple);
+  color: white;
+  font-weight: bold;
+}
+
+#training-session {
+  max-width: 700px;
+  margin: auto;
+}
+
+#interval-count-message {
+  font-size: 20px;
+}
+
+#divider {
+  width: 100%;
+  height: 5px;
+  background: linear-gradient(25deg, rgba(59,122,0,1) 0%, rgba(63,0,122,1) 100%);
+  margin-bottom: 30px;
+}
+
+.wide-button {
+  display: block;
+  width: 300px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+.results-table {
+  max-width: 400px;
+}

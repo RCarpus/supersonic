@@ -192,7 +192,6 @@ class StatsSetupPage extends React.Component {
 
         <div className='stats__parameters'>
           <div className='stats__parameters__difficulty'>
-            <p>Difficulty</p>
             <button className='stats__parameters__difficulty__button' onClick={() => this.clickDifficulty({ name: 'EASY', value: 50 })} id='EASY'>Easy</button>
             <button className='stats__parameters__difficulty__button' onClick={() => this.clickDifficulty({ name: 'MEDIUM', value: 25 })} id='MEDIUM'>Medium</button>
             <button className='stats__parameters__difficulty__button' onClick={() => this.clickDifficulty({ name: 'HARD', value: 10 })} id='HARD'>Hard</button>
@@ -201,7 +200,7 @@ class StatsSetupPage extends React.Component {
           {/* TODO -- CREATE THIS TABLE PROGRAMMATICALLY. tHIS IS STUPID. */}
 
           {stats && difficulty.name === 'MEDIUM' &&
-            <table className='stats__table__medium'>
+            <table className='stats__table__medium table'>
               <thead>
                 <tr>
                   <td></td>
@@ -351,7 +350,7 @@ class StatsSetupPage extends React.Component {
           }
 
           {stats && difficulty.name === 'EASY' &&
-            <table className='stats__table__EASY'>
+            <table className='stats__table__EASY table'>
               <thead>
                 <tr>
                   <td></td>
@@ -502,7 +501,7 @@ class StatsSetupPage extends React.Component {
 
 
           {stats && difficulty.name === 'HARD' &&
-            <table className='stats__table__HARD'>
+            <table className='stats__table__HARD table'>
               <thead>
                 <tr>
                   <td></td>

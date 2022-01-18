@@ -11,7 +11,7 @@ import PracticeOptionsMenu from '../practice-options-menu/PracticeOptionsMenu';
 
 // import stylesheet
 
-class PracticePage extends React.Component {
+export default class PracticePage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -59,13 +59,3 @@ class PracticePage extends React.Component {
     )
   }
 }
-
-// Add anything needed in this component from the global state
-let mapStateToProps = state => {
-  return {
-    userData: state.userData,
-  }
-}
-
-// The second parameter object contains the state actions we imported at the top
-export default connect(mapStateToProps, null)(PracticePage);

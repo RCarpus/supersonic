@@ -1,9 +1,14 @@
 :root {
   // colors
   --color-supersonic-green: #3B7A00;
-  --color-logout-blue: blue;
+  --color-supersonic-purple: #3f007a;
+  --color-supersonic-brown: #7a1f00;
 }
 
 html {
   font-family: 'Abel', sans-serif;
+}
+
+input {
+  width: 250px !important;
 }

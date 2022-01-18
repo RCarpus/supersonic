@@ -56,12 +56,12 @@ export default class ProfilePage extends React.Component {
   render() {
     const userData = JSON.parse(localStorage.getItem('userData'));
     const username = userData.Username;
-    const password = '*****';
+    const password = '******** (min 8 chars)';
     const email = userData.Email;
     return (
-      <div>
+      <div id='profile-page'>
         <div className="user-info">
-          <h2>Profile</h2>
+          <h1>Profile</h1>
           <Form className="update-info-form" ref={this.form} onSubmit={e => e.preventDefault()}>
 
             <Form.Group>
@@ -90,7 +90,7 @@ export default class ProfilePage extends React.Component {
             </Form.Group>
 
 
-            <Button className="btn btn-secondary btn-sm" variant="primary" type="submit" onClick={this.updateUserData} >Update</Button>
+            <button className="update-button" type="submit" onClick={this.updateUserData} >Update</button>
 
           </Form>
 

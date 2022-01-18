@@ -160,7 +160,7 @@ export default class SessionResults extends React.Component {
         <h2>Session Results</h2>
         <p>You scored {overallGrade.total}/{stats.correctAnswers.length}</p>
         <p>{this.asPercent(overallGrade.grade)}%</p>
-        <table>
+        <table className="table results-table">
           <thead>
             <tr>
               <td></td>
@@ -204,7 +204,7 @@ export default class SessionResults extends React.Component {
           </tbody>
         </table>
 
-        <table>
+        <table className="table results-table">
           <tbody>
             <tr>
               <th scope="row">Practice type</th>
