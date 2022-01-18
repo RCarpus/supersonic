@@ -83,7 +83,6 @@ export default class SettingsPage extends React.Component {
 
     return (
       <div className="settings">
-        <button className="logout-button" onClick={this.props.handleLogout}>logout</button>
         <h2 className="settings__title">Settings</h2>
         <div className="settings__note-duration">
           <p className="settings__note-duration__label">Note duration:</p>

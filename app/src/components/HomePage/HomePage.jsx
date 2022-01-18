@@ -21,34 +21,28 @@ class HomePage extends React.Component {
   render() {
     return (
       <div id="home-page">
-        <div id="home-page__banner">
-          <h1 id="home-page__title">Supersonic</h1>
-        </div>
-        <div id="home-page__content">
-          <div id="home-page__content__info">
-            <h2 id="home-page__subtitle">Fined-tuned ear training</h2>
-            <p>By Ryan Carpus</p>
-          </div>
-          <div id="home-page__button-grid">
-            <Link to='/practice'>
-              <button className="home-page__button">Practice</button>
-            </Link>
-            <Link to='/profile'>
-              <button className="home-page__button">Profile</button>
-            </Link>
-            <Link to='/stats'>
-              <button className="home-page__button">Stats</button>
-            </Link>
-            <Link to='/settings'>
-              <button className="home-page__button">Settings</button>
-            </Link>
-            <div>
-              <button className="home-page__button" onClick={this.props.handleLogout}>logout</button>
+          <div id="home-page__content">
+            <div id="home-page__content__info">
+              <h2 id="home-page__subtitle">Fined-tuned ear training</h2>
+              <p>By Ryan Carpus</p>
             </div>
-            
+            <div id="home-page__button-grid">
+              <Link to='/practice'>
+                <button className="home-page__button">Practice</button>
+              </Link>
+              <Link to='/profile'>
+                <button className="home-page__button">Profile</button>
+              </Link>
+              <Link to='/stats'>
+                <button className="home-page__button">Stats</button>
+              </Link>
+              <Link to='/settings'>
+                <button className="home-page__button">Settings</button>
+              </Link>
+
+            </div>
+
           </div>
-          
-        </div>
 
 
       </div >

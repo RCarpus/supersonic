@@ -1,0 +1,36 @@
+#banner {
+  background-color: black;
+}
+
+#banner-title {
+  text-align: center;
+}
+
+#collapsible-nav-dropdown {
+  color: white;
+}
+
+.navbar-brand {
+  min-width: 60%;
+}
+
+button.navbar-toggler {
+  background-color: var(--color-supersonic-green);
+  width: 50px;
+}
+
+
+a.nav-link {
+  color: var(--color-supersonic-green) !important;
+}
+
+.home-link, .navbar-button {
+  color: var(--color-supersonic-green);
+  text-decoration: none;
+}
+
+.navbar-button {
+  border: none;
+  background-color: inherit;
+  float: right;
+}

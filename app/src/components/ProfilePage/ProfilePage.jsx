@@ -60,7 +60,6 @@ export default class ProfilePage extends React.Component {
     const email = userData.Email;
     return (
       <div>
-        <button className="logout-button" onClick={this.props.handleLogout}>logout</button>
         <div className="user-info">
           <h2>Profile</h2>
           <Form className="update-info-form" ref={this.form} onSubmit={e => e.preventDefault()}>
