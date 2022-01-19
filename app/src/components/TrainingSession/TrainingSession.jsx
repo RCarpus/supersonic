@@ -281,7 +281,7 @@ export default class TrainingSession extends React.Component {
 
         {!started && !finished &&
           <div>
-            <table class="table practice-setup-table">
+            <table className="table practice-setup-table">
               <tbody>
                 <tr>
                   <th context="row">Practice Type</th>
