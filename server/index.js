@@ -21,9 +21,9 @@ const { check, validationResult } = require('express-validator');
 /* This is an example connection if we are using a locally installed DB */
 // mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
 /* This is the line I will use when pushing to the host site */
-// mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 /* This is the connection I will use when developing and using online database */
-mongoose.connect('mongodb+srv://user:10cryingPENs@cluster0.yvlij.mongodb.net/supersonic?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true });
+// mongoose.connect('redacted', { useNewUrlParser: true, useUnifiedTopology: true });
 
 /* CORS configuration. Currently set to allow access from all origings.
   I can change this by uncommenting the code block beneath. */
@@ -151,6 +151,15 @@ app.get('/users/:Username', passport.authenticate('jwt', { session: false }), (r
       console.error(err);
       res.status(500).send('Error: ' + err);
     });
+});
+
+// endpoint to check if token is valid
+app.get('/checktoken', passport.authenticate('jwt', { session: false }), (req, res) => {
+  /**
+   * The only purpose of this enpoint is to check if a token is still valid. 
+   * On the client side, this is used when a logged in user reloads the page to make sure their token hasn't expired.
+   */
+  res.send('valid');
 });
 
 
