@@ -3,7 +3,7 @@ import React from 'react';
 import Axios from 'axios';
 import { connect } from 'react-redux';
 import {
-  BrowserRouter,
+  HashRouter,
   Routes,
   Route,
 } from "react-router-dom";
@@ -75,7 +75,7 @@ class App extends React.Component {
     // If the user is not logged in, they should be forced to see the landing page
     if (!loggedIn) {
       return (
-        <BrowserRouter>
+        <HashRouter>
           <TopBanner loggedIn={loggedIn} handleLogout={() => this.handleLogout()} />
           <Container>
             <Routes>
@@ -87,13 +87,13 @@ class App extends React.Component {
             </Routes>
           </Container>
 
-        </BrowserRouter>
+        </HashRouter>
       )
 
     }
 
     return (
-      <BrowserRouter>
+      <HashRouter>
         <TopBanner loggedIn={loggedIn} handleLogout={() => this.handleLogout()} />
         <Container>
           <Routes>
@@ -104,7 +104,7 @@ class App extends React.Component {
             <Route path="/stats" element={<StatsPage />} />
           </Routes>
         </Container>
-      </BrowserRouter>
+      </HashRouter>
 
     )
   }
