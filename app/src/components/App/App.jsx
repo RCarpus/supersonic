@@ -1,6 +1,6 @@
 // import libraries
 import React from 'react';
-import Axios from 'axios';
+import axios from 'axios';
 import { connect } from 'react-redux';
 import {
   HashRouter,
@@ -47,12 +47,28 @@ class App extends React.Component {
   handleLogin() {
     /**
      * Pulls the token from localStorage.
-     * If there is a token, sets the state to logged in.
+     * If there is a token, checks the token to make sure it is valid.
+     * If the token is valid, loggedIn is set to true.
      * This function is called when the app mounts or when the user logs in
      */
     const token = localStorage.getItem('token');
     if (token) {
-      this.setState({ loggedIn: true });
+      let parsedToken = JSON.parse(token);
+      const authHeader = { headers: { Authorization: `Bearer ${parsedToken}` } };
+      axios.get('https://supersonic-api.herokuapp.com/checktoken', authHeader)
+        .then(response => {
+          this.setState({ loggedIn: true });
+          return response;
+        })
+        .catch(e => {
+          console.log('invalid token. Maybe it expired.');
+          localStorage.removeItem('token');
+          localStorage.removeItem('userData');
+          this.setState({ loggedIn: false });
+          return false;
+        });
+
+
     } else {
       this.setState({ loggedIn: false });
     }
