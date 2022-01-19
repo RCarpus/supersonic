@@ -102,19 +102,6 @@ app.post('/users/register',
       });
   });
 
-// test endpoint to check connection to DB
-// endpoint to get all users
-app.get('/users', (req, res) => {
-  Users.find()
-    .then((users) => {
-      res.status(201).json(users);
-    })
-    .catch((err) => {
-      console.error(err);
-      res.status(500).send('Error: ' + err);
-    });
-});
-
 // endpoint to delete a user
 app.delete('/users/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
   Users.findOneAndRemove({ Username: req.params.Username })
@@ -180,8 +167,13 @@ app.put('/users/:Username', passport.authenticate('jwt', { session: false }),
       }
     },
       { new: true })
-      .then((updatedUser) => {
-        res.status(201).json({updatedUser});
+      .then((updatedUserData) => {
+        let updatedUser = {
+          _id: updatedUserData._id,
+          Username: updatedUserData.Username,
+          Email: updatedUserData.Email,
+        }
+        res.status(201).json({ updatedUser });
       })
       .catch((err) => {
         console.error(err);
@@ -196,33 +188,17 @@ app.post('/users/:Username/records', passport.authenticate('jwt', { session: fal
   },
     { new: true })
     .then((updatedUser) => {
-      res.json(updatedUser);
+      res.send('Successfully uploaded practice session.');
     })
     .catch((err) => {
       console.error(err);
       res.status(500).send('Error: ' + err);
     });
 });
-
-// endpoint to remove a group of records from a user's list of favorites
-// This removes all records from a certain session type
-app.delete('/users/:Username/records/:recordName', passport.authenticate('jwt', { session: false }), (req, res) => {
-  Users.findOneAndUpdate({ Username: req.params.Username },
-    { "$pull": { "Stats": { "name": req.params.recordName } } },
-    { new: true })
-    .then((updatedUser) => {
-      res.json(updatedUser);
-    })
-    .catch((err) => {
-      console.error(err);
-      res.status(500).send('Error: ' + err);
-    });
-});
-
 
 // endpoint for home page
 app.get('/', (req, res) => {
-  let responseText = 'This is the API for the Supersonic ear training app, created by Ryan Carpus!';
+  let responseText = 'This is the API for the Supersonic ear training app, created by Ryan Carpus! Check out the <a href="https://supersonic-api.herokuapp.com/documentation.html">documentation</a>.';
   res.send(responseText);
 });
 

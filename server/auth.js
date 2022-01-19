@@ -37,7 +37,13 @@ module.exports = (router) => {
           res.send(error);
         }
         let token = generateJWTToken(user.toJSON());
-        return res.json({ user, token });
+        // I want to exclude the practice data from the return object
+        let trimmedUser = {
+          _id: user._id,
+          Username: user.Username,
+          Email: user.Email,
+        }
+        return res.json({ user : trimmedUser, token });
       });
     })(req, res);
   });
