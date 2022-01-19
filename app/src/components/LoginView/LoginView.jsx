@@ -42,7 +42,7 @@ export default class LoginView extends React.Component {
     return (
       <div className="login-view">
 
-        <h2 className="display-4">Login to Supersonic</h2>
+        <h2 className="display-4">Login</h2>
         <Form className="login-form" ref={this.form} onSubmit={e => e.preventDefault()}>
           <Form.Group controlId="formUsername">
             <Form.Label>Username:</Form.Label>
@@ -54,12 +54,12 @@ export default class LoginView extends React.Component {
             <Form.Control type="password" required />
           </Form.Group>
 
-          <Button variant="primary" type="submit" onClick={this.handleSubmit}>
+          <Button id='login-button' variant="primary" type="submit" onClick={this.handleSubmit}>
             Log in
           </Button>
 
         </Form>
-        <button onClick={this.props.showRegisterView}>Register</button>
+        <Button id='to-registration-view-button' onClick={this.props.showRegisterView}>Register</Button>
       </div>
     )
   }

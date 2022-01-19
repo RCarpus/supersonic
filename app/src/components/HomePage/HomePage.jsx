@@ -23,7 +23,7 @@ class HomePage extends React.Component {
       <div id="home-page">
           <div id="home-page" className="page-content">
             <div id="home-page__content__info">
-              <h2 id="home-page__subtitle">Fined-tuned ear training</h2>
+              <h2 id="home-page__subtitle">fine-tuned ear training</h2>
               <p>By Ryan Carpus</p>
             </div>
             <div id="home-page__button-grid">

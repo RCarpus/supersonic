@@ -39,7 +39,7 @@ export default class RegistrationView extends React.Component {
     return (
       <div className="registration-view">
         <h2 className="display-4">Sign up for a free Supersonic account</h2>
-        <p>Signing up for a free account allows you to save your practice statistics and track your improvement over time. We will never share your account information with anybody.</p>
+        <p>Signing up for a free account allows you to save your practice statistics and track your improvement over time. We will never share your account information with anybody. Honestly, that would be super lame.</p>
 
         <Form className="registration-form" ref={this.form} onSubmit={e => e.preventDefault()}>
 
@@ -64,7 +64,7 @@ export default class RegistrationView extends React.Component {
             <Form.Control className="registration-form__line__input-field" pattern=".*@.*\..*" required />
           </Form.Group>
 
-          <Button className="register-button" variant="primary" type="submit" onClick={this.handleSubmit}>Register</Button>
+          <Button id="register-button" variant="primary" type="submit" onClick={this.handleSubmit}>Register</Button>
           <Button id="already-registered-button" onClick={this.props.showLoginView} className="btn btn-secondary">I already have an account</Button>
         </Form>
       </div>
