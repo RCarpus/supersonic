@@ -21,9 +21,9 @@ const { check, validationResult } = require('express-validator');
 /* This is an example connection if we are using a locally installed DB */
 // mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
 /* This is the line I will use when pushing to the host site */
-mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+// mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 /* This is the connection I will use when developing and using online database */
-// mongoose.connect('redacted', { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect('mongodb+srv://user:10cryingPENs@cluster0.yvlij.mongodb.net/supersonic?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true });
 
 /* CORS configuration. Currently set to allow access from all origings.
   I can change this by uncommenting the code block beneath. */
@@ -104,6 +104,18 @@ app.post('/users/register',
 
 // endpoint to delete a user
 app.delete('/users/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
+  /**
+ * I only want users to be able to access their own data. 
+ * To achieve this, I am checking the Username from the user data sent from the
+ * JWTStrategy middleware against the username in request.
+ * If they don't match, the user is likely malicious,
+ * so they should not be able to access the data.
+ */
+  const loggedInUser = req.user.Username;
+  const searchedUser = req.params.Username;
+  if (loggedInUser !== searchedUser) return res.status(401).send('Hey, how about you try accessing your own data?');
+
+
   Users.findOneAndRemove({ Username: req.params.Username })
     .then((user) => {
       if (!user) {
@@ -120,6 +132,17 @@ app.delete('/users/:Username', passport.authenticate('jwt', { session: false }),
 
 // endpoint to get a specific user
 app.get('/users/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
+  /**
+   * I only want users to be able to access their own data. 
+   * To achieve this, I am checking the Username from the user data sent from the
+   * JWTStrategy middleware against the username in request.
+   * If they don't match, the user is likely malicious,
+   * so they should not be able to access the data.
+   */
+  const loggedInUser = req.user.Username;
+  const searchedUser = req.params.Username;
+  if (loggedInUser !== searchedUser) return res.status(401).send('Hey, how about you try accessing your own data?');
+
   Users.findOne({ Username: req.params.Username })
     .then((user) => {
       res.json(user);
@@ -146,6 +169,18 @@ app.put('/users/:Username', passport.authenticate('jwt', { session: false }),
     check('Password', 'Password must be at least 8 characters').optional().isLength({ min: 8 }),
     check('Email', 'Email does not appear to be valid').optional().isEmail()
   ], (req, res) => {
+    /**
+     * I only want users to be able to access their own data. 
+     * To achieve this, I am checking the Username from the user data sent from the
+     * JWTStrategy middleware against the username in request.
+     * If they don't match, the user is likely malicious,
+     * so they should not be able to access the data.
+     */
+    const loggedInUser = req.user.Username;
+    const searchedUser = req.params.Username;
+    if (loggedInUser !== searchedUser) return res.status(401).send('Hey, how about you try accessing your own data?');
+
+
     // send back list of errors if present, for parameters that were entered
     let errors = validationResult(req);
 
@@ -183,6 +218,17 @@ app.put('/users/:Username', passport.authenticate('jwt', { session: false }),
 
 // endpoint to add a record to a user's records
 app.post('/users/:Username/records', passport.authenticate('jwt', { session: false }), (req, res) => {
+  /**
+ * I only want users to be able to access their own data. 
+ * To achieve this, I am checking the Username from the user data sent from the
+ * JWTStrategy middleware against the username in request.
+ * If they don't match, the user is likely malicious,
+ * so they should not be able to access the data.
+ */
+  const loggedInUser = req.user.Username;
+  const searchedUser = req.params.Username;
+  if (loggedInUser !== searchedUser) return res.status(401).send('Hey, how about you try accessing your own data?');
+
   Users.findOneAndUpdate({ Username: req.params.Username }, {
     $push: { Stats: req.body }
   },
