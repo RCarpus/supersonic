@@ -118,6 +118,7 @@ export default class PracticeOptionsMenu extends React.Component {
           <button className="practice-setup__direction__button" id="ASCENDING" onClick={() => this.clickDirection('ASCENDING')}>Ascending</button>
           <button className="practice-setup__direction__button" id="DESCENDING" onClick={() => this.clickDirection('DESCENDING')}>Descending</button>
           <button className="practice-setup__direction__button" id="BOTH" onClick={() => this.clickDirection('BOTH')}>Both</button>
+          <button className="practice-setup__direction__button" id="SIMULTANEOUS" onClick={() => this.clickDirection('SIMULTANEOUS')}>Simultaneous</button>
         </div>
         <div className="practice-setup__fixed-start-note">
           <h3 className="practice-setup__category-header">Fixed start note</h3>

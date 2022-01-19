@@ -24,7 +24,6 @@ export default class SettingsPage extends React.Component {
       settings: {
         noteDuration: settings.noteDuration,
         soundWaveType: settings.soundWaveType,
-        practiceStyle: settings.practiceStyle,
       }
     };
   }
@@ -32,7 +31,6 @@ export default class SettingsPage extends React.Component {
   componentDidMount() {
     document.getElementById(`${this.state.settings.noteDuration.name}-button`).classList.add('active');
     document.getElementById(`${this.state.settings.soundWaveType}-button`).classList.add('active');
-    document.getElementById(`${this.state.settings.practiceStyle.name}-button`).classList.add('active');
   }
 
   clickNoteDuration(value) {
@@ -55,16 +53,6 @@ export default class SettingsPage extends React.Component {
     document.getElementById(`${value}-button`).classList.add('active');
   }
 
-  clickPracticeStyle(value) {
-    // updates the practiceStyle setting in localStorage
-    // updates the UI accordingly
-    this.updateSettings('practiceStyle', value);
-
-    document.querySelectorAll('.settings__practice-style__button')
-      .forEach(elem => { elem.classList.remove('active') });
-    document.getElementById(`${value.name}-button`).classList.add('active');
-  }
-
   updateSettings(setting, value) {
     // updates the setting in localStorage
     let updatedSettings = this.state.settings;
@@ -78,8 +66,6 @@ export default class SettingsPage extends React.Component {
     const short = { name: 'SHORT', value: 500 };
     const medium = { name: 'MEDIUM', value: 1000 };
     const long = { name: 'LONG', value: 2000 };
-    const melodic = { name: 'MELODIC', value: false};
-    const harmonic = { name: 'HARMONIC', value: true};
 
     return (
       <div className="settings">
@@ -107,15 +93,6 @@ export default class SettingsPage extends React.Component {
           <button onClick={() => { this.clickSoundWaveType("sawtooth") }}
             className="settings__sound-wave-button"
             id="sawtooth-button">sawtooth</button>
-        </div>
-        <div className="settings__practice-style">
-          <p className="settings__label">Practice style:</p>
-          <button onClick={() => { this.clickPracticeStyle(melodic) }}
-            className="settings__practice-style__button"
-            id="MELODIC-button">melodic</button>
-          <button onClick={() => { this.clickPracticeStyle(harmonic) }}
-            className="settings__practice-style__button"
-            id="HARMONIC-button">harmonic</button>
         </div>
         <button onClick={() => { history.back() }}
           className="settings__back-button">Back</button>

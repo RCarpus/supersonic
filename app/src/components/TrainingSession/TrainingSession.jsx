@@ -24,7 +24,6 @@ export default class TrainingSession extends React.Component {
        */
       noteDuration: { name: 'MEDIUM', value: 1000 },
       soundWaveType: 'sine',
-      practiceStyle: { name: 'MELODIC', value: false },
     };
 
     // Try to pull settings from localStorage, uses defaults if not found
@@ -93,6 +92,8 @@ export default class TrainingSession extends React.Component {
     switch (this.props.options.direction) {
       case 'ASCENDING':
         return interval;
+      case 'SIMULTANEOUS':
+        return interval;
       case 'DESCENDING':
         return - Math.abs(interval);
       case 'BOTH':
@@ -139,7 +140,7 @@ export default class TrainingSession extends React.Component {
     let detune;
     const noteDuration = this.state.settings.noteDuration.value;
     const soundWaveType = this.state.settings.soundWaveType;
-    const practiceStyle = this.state.settings.practiceStyle.value;
+    const harmonic = this.props.options.direction === 'SIMULTANEOUS' ? true : false;
     let interval = this.state.interval;
 
 
@@ -157,7 +158,7 @@ export default class TrainingSession extends React.Component {
       default:
         detune = 0;
     }
-    playNoteSequence(soundWaveType, noteDuration, baseNote, interval, detune, practiceStyle);
+    playNoteSequence(soundWaveType, noteDuration, baseNote, interval, detune, harmonic);
   }
 
   submitAnswer(answer) {

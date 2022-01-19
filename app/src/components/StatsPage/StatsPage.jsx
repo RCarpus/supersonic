@@ -167,6 +167,8 @@ class StatsSetupPage extends React.Component {
         table[`${difficulty}-${interval}-DESCENDING`] = this.calculateOverallGrade(combinedSession.submitted, combinedSession.correct);
         combinedSession = this.combineSessions(data, difficulty, interval, 'BOTH');
         table[`${difficulty}-${interval}-BOTH`] = this.calculateOverallGrade(combinedSession.submitted, combinedSession.correct);
+        combinedSession = this.combineSessions(data, difficulty, interval, 'SIMULTANEOUS');
+        table[`${difficulty}-${interval}-SIMULTANEOUS`] = this.calculateOverallGrade(combinedSession.submitted, combinedSession.correct);
       })
     })
     console.log(table);
@@ -211,6 +213,7 @@ class StatsSetupPage extends React.Component {
                   <th>Ascending</th>
                   <th>Descending</th>
                   <th>Combined</th>
+                  <th>Simultaneous</th>
                 </tr>
               </thead>
               <tbody>
@@ -223,6 +226,7 @@ class StatsSetupPage extends React.Component {
                   <td>{table['MEDIUM-UNISON-ASCENDING'].grade}</td>
                   <td>{table['MEDIUM-UNISON-DESCENDING'].grade}</td>
                   <td>{table['MEDIUM-UNISON-BOTH'].grade}</td>
+                  <td>{table['MEDIUM-UNISON-SIMULTANEOUS'].grade}</td>
                 </tr>
                 <tr>
                   <th context='row'>Minor 2nd</th>
@@ -233,6 +237,7 @@ class StatsSetupPage extends React.Component {
                   <td>{table['MEDIUM-MINOR-2ND-ASCENDING'].grade}</td>
                   <td>{table['MEDIUM-MINOR-2ND-DESCENDING'].grade}</td>
                   <td>{table['MEDIUM-MINOR-2ND-BOTH'].grade}</td>
+                  <td>{table['MEDIUM-MINOR-2ND-SIMULTANEOUS'].grade}</td>
                 </tr>
                 <tr>
                   <th context='row'>Major 2nd</th>
@@ -243,6 +248,7 @@ class StatsSetupPage extends React.Component {
                   <td>{table['MEDIUM-MAJOR-2ND-ASCENDING'].grade}</td>
                   <td>{table['MEDIUM-MAJOR-2ND-DESCENDING'].grade}</td>
                   <td>{table['MEDIUM-MAJOR-2ND-BOTH'].grade}</td>
+                  <td>{table['MEDIUM-MAJOR-2ND-SIMULTANEOUS'].grade}</td>
                 </tr>
                 <tr>
                   <th context='row'>Minor 3rd</th>
@@ -253,6 +259,7 @@ class StatsSetupPage extends React.Component {
                   <td>{table['MEDIUM-MINOR-3RD-ASCENDING'].grade}</td>
                   <td>{table['MEDIUM-MINOR-3RD-DESCENDING'].grade}</td>
                   <td>{table['MEDIUM-MINOR-3RD-BOTH'].grade}</td>
+                  <td>{table['MEDIUM-MINOR-3RD-SIMULTANEOUS'].grade}</td>
                 </tr>
                 <tr>
                   <th context='row'>Major 3rd</th>
@@ -263,6 +270,7 @@ class StatsSetupPage extends React.Component {
                   <td>{table['MEDIUM-MAJOR-3RD-ASCENDING'].grade}</td>
                   <td>{table['MEDIUM-MAJOR-3RD-DESCENDING'].grade}</td>
                   <td>{table['MEDIUM-MAJOR-3RD-BOTH'].grade}</td>
+                  <td>{table['MEDIUM-MAJOR-3RD-SIMULTANEOUS'].grade}</td>
                 </tr>
                 <tr>
                   <th context='row'>Perfect 4th</th>
@@ -273,6 +281,7 @@ class StatsSetupPage extends React.Component {
                   <td>{table['MEDIUM-PERFECT-4TH-ASCENDING'].grade}</td>
                   <td>{table['MEDIUM-PERFECT-4TH-DESCENDING'].grade}</td>
                   <td>{table['MEDIUM-PERFECT-4TH-BOTH'].grade}</td>
+                  <td>{table['MEDIUM-PERFECT-4TH-SIMULTANEOUS'].grade}</td>
                 </tr>
                 <tr>
                   <th context='row'>Tritone</th>
@@ -283,6 +292,7 @@ class StatsSetupPage extends React.Component {
                   <td>{table['MEDIUM-TRITONE-ASCENDING'].grade}</td>
                   <td>{table['MEDIUM-TRITONE-DESCENDING'].grade}</td>
                   <td>{table['MEDIUM-TRITONE-BOTH'].grade}</td>
+                  <td>{table['MEDIUM-TRITONE-SIMULTANEOUS'].grade}</td>
                 </tr>
                 <tr>
                   <th context='row'>Perfect 5th</th>
@@ -293,6 +303,7 @@ class StatsSetupPage extends React.Component {
                   <td>{table['MEDIUM-PERFECT-5TH-ASCENDING'].grade}</td>
                   <td>{table['MEDIUM-PERFECT-5TH-DESCENDING'].grade}</td>
                   <td>{table['MEDIUM-PERFECT-5TH-BOTH'].grade}</td>
+                  <td>{table['MEDIUM-PERFECT-5TH-SIMULTANEOUS'].grade}</td>
                 </tr>
                 <tr>
                   <th context='row'>Minor 6th</th>
@@ -303,6 +314,7 @@ class StatsSetupPage extends React.Component {
                   <td>{table['MEDIUM-MINOR-6TH-ASCENDING'].grade}</td>
                   <td>{table['MEDIUM-MINOR-6TH-DESCENDING'].grade}</td>
                   <td>{table['MEDIUM-MINOR-6TH-BOTH'].grade}</td>
+                  <td>{table['MEDIUM-MINOR-6TH-SIMULTANEOUS'].grade}</td>
                 </tr>
                 <tr>
                   <th context='row'>Major 6th</th>
@@ -313,6 +325,7 @@ class StatsSetupPage extends React.Component {
                   <td>{table['MEDIUM-MAJOR-6TH-ASCENDING'].grade}</td>
                   <td>{table['MEDIUM-MAJOR-6TH-DESCENDING'].grade}</td>
                   <td>{table['MEDIUM-MAJOR-6TH-BOTH'].grade}</td>
+                  <td>{table['MEDIUM-MAJOR-6TH-SIMULTANEOUS'].grade}</td>
                 </tr>
                 <tr>
                   <th context='row'>Minor 7th</th>
@@ -323,6 +336,7 @@ class StatsSetupPage extends React.Component {
                   <td>{table['MEDIUM-MINOR-7TH-ASCENDING'].grade}</td>
                   <td>{table['MEDIUM-MINOR-7TH-DESCENDING'].grade}</td>
                   <td>{table['MEDIUM-MINOR-7TH-BOTH'].grade}</td>
+                  <td>{table['MEDIUM-MINOR-7TH-SIMULTANEOUS'].grade}</td>
                 </tr>
                 <tr>
                   <th context='row'>Major 7th</th>
@@ -333,6 +347,7 @@ class StatsSetupPage extends React.Component {
                   <td>{table['MEDIUM-MAJOR-7TH-ASCENDING'].grade}</td>
                   <td>{table['MEDIUM-MAJOR-7TH-DESCENDING'].grade}</td>
                   <td>{table['MEDIUM-MAJOR-7TH-BOTH'].grade}</td>
+                  <td>{table['MEDIUM-MAJOR-7TH-SIMULTANEOUS'].grade}</td>
                 </tr>
                 <tr>
                   <th context='row'>Octave</th>
@@ -343,6 +358,7 @@ class StatsSetupPage extends React.Component {
                   <td>{table['MEDIUM-OCTAVE-ASCENDING'].grade}</td>
                   <td>{table['MEDIUM-OCTAVE-DESCENDING'].grade}</td>
                   <td>{table['MEDIUM-OCTAVE-BOTH'].grade}</td>
+                  <td>{table['MEDIUM-OCTAVE-SIMULTANEOUS'].grade}</td>
                 </tr>
               </tbody>
             </table>
@@ -361,6 +377,7 @@ class StatsSetupPage extends React.Component {
                   <th>Ascending</th>
                   <th>Descending</th>
                   <th>Combined</th>
+                  <th>Simultaneous</th>
                 </tr>
               </thead>
               <tbody>
@@ -373,6 +390,7 @@ class StatsSetupPage extends React.Component {
                   <td>{table['EASY-UNISON-ASCENDING'].grade}</td>
                   <td>{table['EASY-UNISON-DESCENDING'].grade}</td>
                   <td>{table['EASY-UNISON-BOTH'].grade}</td>
+                  <td>{table['EASY-UNISON-SIMULTANEOUS'].grade}</td>
                 </tr>
                 <tr>
                   <th context='row'>Minor 2nd</th>
@@ -383,6 +401,7 @@ class StatsSetupPage extends React.Component {
                   <td>{table['EASY-MINOR-2ND-ASCENDING'].grade}</td>
                   <td>{table['EASY-MINOR-2ND-DESCENDING'].grade}</td>
                   <td>{table['EASY-MINOR-2ND-BOTH'].grade}</td>
+                  <td>{table['EASY-MINOR-2ND-SIMULTANEOUS'].grade}</td>
                 </tr>
                 <tr>
                   <th context='row'>Major 2nd</th>
@@ -393,6 +412,7 @@ class StatsSetupPage extends React.Component {
                   <td>{table['EASY-MAJOR-2ND-ASCENDING'].grade}</td>
                   <td>{table['EASY-MAJOR-2ND-DESCENDING'].grade}</td>
                   <td>{table['EASY-MAJOR-2ND-BOTH'].grade}</td>
+                  <td>{table['EASY-MAJOR-2ND-SIMULTANEOUS'].grade}</td>
                 </tr>
                 <tr>
                   <th context='row'>Minor 3rd</th>
@@ -403,6 +423,7 @@ class StatsSetupPage extends React.Component {
                   <td>{table['EASY-MINOR-3RD-ASCENDING'].grade}</td>
                   <td>{table['EASY-MINOR-3RD-DESCENDING'].grade}</td>
                   <td>{table['EASY-MINOR-3RD-BOTH'].grade}</td>
+                  <td>{table['EASY-MINOR-3RD-SIMULTANEOUS'].grade}</td>
                 </tr>
                 <tr>
                   <th context='row'>Major 3rd</th>
@@ -413,6 +434,7 @@ class StatsSetupPage extends React.Component {
                   <td>{table['EASY-MAJOR-3RD-ASCENDING'].grade}</td>
                   <td>{table['EASY-MAJOR-3RD-DESCENDING'].grade}</td>
                   <td>{table['EASY-MAJOR-3RD-BOTH'].grade}</td>
+                  <td>{table['EASY-MAJOR-3RD-SIMULTANEOUS'].grade}</td>
                 </tr>
                 <tr>
                   <th context='row'>Perfect 4th</th>
@@ -423,6 +445,7 @@ class StatsSetupPage extends React.Component {
                   <td>{table['EASY-PERFECT-4TH-ASCENDING'].grade}</td>
                   <td>{table['EASY-PERFECT-4TH-DESCENDING'].grade}</td>
                   <td>{table['EASY-PERFECT-4TH-BOTH'].grade}</td>
+                  <td>{table['EASY-PERFECT-4TH-SIMULTANEOUS'].grade}</td>
                 </tr>
                 <tr>
                   <th context='row'>Tritone</th>
@@ -433,6 +456,7 @@ class StatsSetupPage extends React.Component {
                   <td>{table['EASY-TRITONE-ASCENDING'].grade}</td>
                   <td>{table['EASY-TRITONE-DESCENDING'].grade}</td>
                   <td>{table['EASY-TRITONE-BOTH'].grade}</td>
+                  <td>{table['EASY-TRITONE-SIMULTANEOUS'].grade}</td>
                 </tr>
                 <tr>
                   <th context='row'>Perfect 5th</th>
@@ -443,6 +467,7 @@ class StatsSetupPage extends React.Component {
                   <td>{table['EASY-PERFECT-5TH-ASCENDING'].grade}</td>
                   <td>{table['EASY-PERFECT-5TH-DESCENDING'].grade}</td>
                   <td>{table['EASY-PERFECT-5TH-BOTH'].grade}</td>
+                  <td>{table['EASY-PERFECT-5TH-SIMULTANEOUS'].grade}</td>
                 </tr>
                 <tr>
                   <th context='row'>Minor 6th</th>
@@ -453,6 +478,7 @@ class StatsSetupPage extends React.Component {
                   <td>{table['EASY-MINOR-6TH-ASCENDING'].grade}</td>
                   <td>{table['EASY-MINOR-6TH-DESCENDING'].grade}</td>
                   <td>{table['EASY-MINOR-6TH-BOTH'].grade}</td>
+                  <td>{table['EASY-MINOR-6TH-SIMULTANEOUS'].grade}</td>
                 </tr>
                 <tr>
                   <th context='row'>Major 6th</th>
@@ -463,6 +489,7 @@ class StatsSetupPage extends React.Component {
                   <td>{table['EASY-MAJOR-6TH-ASCENDING'].grade}</td>
                   <td>{table['EASY-MAJOR-6TH-DESCENDING'].grade}</td>
                   <td>{table['EASY-MAJOR-6TH-BOTH'].grade}</td>
+                  <td>{table['EASY-MAJOR-6TH-SIMULTANEOUS'].grade}</td>
                 </tr>
                 <tr>
                   <th context='row'>Minor 7th</th>
@@ -473,6 +500,7 @@ class StatsSetupPage extends React.Component {
                   <td>{table['EASY-MINOR-7TH-ASCENDING'].grade}</td>
                   <td>{table['EASY-MINOR-7TH-DESCENDING'].grade}</td>
                   <td>{table['EASY-MINOR-7TH-BOTH'].grade}</td>
+                  <td>{table['EASY-MINOR-7TH-SIMULTANEOUS'].grade}</td>
                 </tr>
                 <tr>
                   <th context='row'>Major 7th</th>
@@ -483,6 +511,7 @@ class StatsSetupPage extends React.Component {
                   <td>{table['EASY-MAJOR-7TH-ASCENDING'].grade}</td>
                   <td>{table['EASY-MAJOR-7TH-DESCENDING'].grade}</td>
                   <td>{table['EASY-MAJOR-7TH-BOTH'].grade}</td>
+                  <td>{table['EASY-MAJOR-7TH-SIMULTANEOUS'].grade}</td>
                 </tr>
                 <tr>
                   <th context='row'>Octave</th>
@@ -493,6 +522,7 @@ class StatsSetupPage extends React.Component {
                   <td>{table['EASY-OCTAVE-ASCENDING'].grade}</td>
                   <td>{table['EASY-OCTAVE-DESCENDING'].grade}</td>
                   <td>{table['EASY-OCTAVE-BOTH'].grade}</td>
+                  <td>{table['EASY-OCTAVE-SIMULTANEOUS'].grade}</td>
                 </tr>
               </tbody>
             </table>
@@ -512,6 +542,7 @@ class StatsSetupPage extends React.Component {
                   <th>Ascending</th>
                   <th>Descending</th>
                   <th>Combined</th>
+                  <th>Simultaneous</th>
                 </tr>
               </thead>
               <tbody>
@@ -524,6 +555,7 @@ class StatsSetupPage extends React.Component {
                   <td>{table['HARD-UNISON-ASCENDING'].grade}</td>
                   <td>{table['HARD-UNISON-DESCENDING'].grade}</td>
                   <td>{table['HARD-UNISON-BOTH'].grade}</td>
+                  <td>{table['HARD-UNISON-SIMULTANEOUS'].grade}</td>
                 </tr>
                 <tr>
                   <th context='row'>Minor 2nd</th>
@@ -534,6 +566,7 @@ class StatsSetupPage extends React.Component {
                   <td>{table['HARD-MINOR-2ND-ASCENDING'].grade}</td>
                   <td>{table['HARD-MINOR-2ND-DESCENDING'].grade}</td>
                   <td>{table['HARD-MINOR-2ND-BOTH'].grade}</td>
+                  <td>{table['HARD-MINOR-2ND-SIMULTANEOUS'].grade}</td>
                 </tr>
                 <tr>
                   <th context='row'>Major 2nd</th>
@@ -544,6 +577,7 @@ class StatsSetupPage extends React.Component {
                   <td>{table['HARD-MAJOR-2ND-ASCENDING'].grade}</td>
                   <td>{table['HARD-MAJOR-2ND-DESCENDING'].grade}</td>
                   <td>{table['HARD-MAJOR-2ND-BOTH'].grade}</td>
+                  <td>{table['HARD-MAJOR-2ND-SIMULTANEOUS'].grade}</td>
                 </tr>
                 <tr>
                   <th context='row'>Minor 3rd</th>
@@ -554,6 +588,7 @@ class StatsSetupPage extends React.Component {
                   <td>{table['HARD-MINOR-3RD-ASCENDING'].grade}</td>
                   <td>{table['HARD-MINOR-3RD-DESCENDING'].grade}</td>
                   <td>{table['HARD-MINOR-3RD-BOTH'].grade}</td>
+                  <td>{table['HARD-MINOR-3RD-SIMULTANEOUS'].grade}</td>
                 </tr>
                 <tr>
                   <th context='row'>Major 3rd</th>
@@ -564,6 +599,7 @@ class StatsSetupPage extends React.Component {
                   <td>{table['HARD-MAJOR-3RD-ASCENDING'].grade}</td>
                   <td>{table['HARD-MAJOR-3RD-DESCENDING'].grade}</td>
                   <td>{table['HARD-MAJOR-3RD-BOTH'].grade}</td>
+                  <td>{table['HARD-MAJOR-3RD-SIMULTANEOUS'].grade}</td>
                 </tr>
                 <tr>
                   <th context='row'>Perfect 4th</th>
@@ -574,6 +610,7 @@ class StatsSetupPage extends React.Component {
                   <td>{table['HARD-PERFECT-4TH-ASCENDING'].grade}</td>
                   <td>{table['HARD-PERFECT-4TH-DESCENDING'].grade}</td>
                   <td>{table['HARD-PERFECT-4TH-BOTH'].grade}</td>
+                  <td>{table['HARD-PERFECT-4TH-SIMULTANEOUS'].grade}</td>
                 </tr>
                 <tr>
                   <th context='row'>Tritone</th>
@@ -584,6 +621,7 @@ class StatsSetupPage extends React.Component {
                   <td>{table['HARD-TRITONE-ASCENDING'].grade}</td>
                   <td>{table['HARD-TRITONE-DESCENDING'].grade}</td>
                   <td>{table['HARD-TRITONE-BOTH'].grade}</td>
+                  <td>{table['HARD-TRITONE-SIMULTANEOUS'].grade}</td>
                 </tr>
                 <tr>
                   <th context='row'>Perfect 5th</th>
@@ -594,6 +632,7 @@ class StatsSetupPage extends React.Component {
                   <td>{table['HARD-PERFECT-5TH-ASCENDING'].grade}</td>
                   <td>{table['HARD-PERFECT-5TH-DESCENDING'].grade}</td>
                   <td>{table['HARD-PERFECT-5TH-BOTH'].grade}</td>
+                  <td>{table['HARD-PERFECT-5TH-SIMULTANEOUS'].grade}</td>
                 </tr>
                 <tr>
                   <th context='row'>Minor 6th</th>
@@ -604,6 +643,7 @@ class StatsSetupPage extends React.Component {
                   <td>{table['HARD-MINOR-6TH-ASCENDING'].grade}</td>
                   <td>{table['HARD-MINOR-6TH-DESCENDING'].grade}</td>
                   <td>{table['HARD-MINOR-6TH-BOTH'].grade}</td>
+                  <td>{table['HARD-MINOR-6TH-SIMULTANEOUS'].grade}</td>
                 </tr>
                 <tr>
                   <th context='row'>Major 6th</th>
@@ -614,6 +654,7 @@ class StatsSetupPage extends React.Component {
                   <td>{table['HARD-MAJOR-6TH-ASCENDING'].grade}</td>
                   <td>{table['HARD-MAJOR-6TH-DESCENDING'].grade}</td>
                   <td>{table['HARD-MAJOR-6TH-BOTH'].grade}</td>
+                  <td>{table['HARD-MAJOR-6TH-SIMULTANEOUS'].grade}</td>
                 </tr>
                 <tr>
                   <th context='row'>Minor 7th</th>
@@ -624,6 +665,7 @@ class StatsSetupPage extends React.Component {
                   <td>{table['HARD-MINOR-7TH-ASCENDING'].grade}</td>
                   <td>{table['HARD-MINOR-7TH-DESCENDING'].grade}</td>
                   <td>{table['HARD-MINOR-7TH-BOTH'].grade}</td>
+                  <td>{table['HARD-MINOR-7TH-SIMULTANEOUS'].grade}</td>
                 </tr>
                 <tr>
                   <th context='row'>Major 7th</th>
@@ -634,6 +676,7 @@ class StatsSetupPage extends React.Component {
                   <td>{table['HARD-MAJOR-7TH-ASCENDING'].grade}</td>
                   <td>{table['HARD-MAJOR-7TH-DESCENDING'].grade}</td>
                   <td>{table['HARD-MAJOR-7TH-BOTH'].grade}</td>
+                  <td>{table['HARD-MAJOR-7TH-SIMULTANEOUS'].grade}</td>
                 </tr>
                 <tr>
                   <th context='row'>Octave</th>
@@ -644,6 +687,7 @@ class StatsSetupPage extends React.Component {
                   <td>{table['HARD-OCTAVE-ASCENDING'].grade}</td>
                   <td>{table['HARD-OCTAVE-DESCENDING'].grade}</td>
                   <td>{table['HARD-OCTAVE-BOTH'].grade}</td>
+                  <td>{table['HARD-OCTAVE-SIMULTANEOUS'].grade}</td>
                 </tr>
               </tbody>
             </table>
