@@ -65,6 +65,5 @@ The client application is built using React as a framework. Routing is handled w
 ![A diagram showing the hierarchy of custom React Components for Supersonic](./app/img/Supersonic_component_hierarchy.svg)
 
 ## Coming Improvements
-- Refactor the stats table
 - Explore more pleasant tones
 - Explore buggy mobile performance for web audio api
