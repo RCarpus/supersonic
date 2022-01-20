@@ -2,12 +2,16 @@ import React from 'react';
 import axios from 'axios';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import LoadingIndicator from '../LoadingIndicator/LoadingIndicator';
 
 export default class RegistrationView extends React.Component {
   constructor() {
     super();
     this.form = React.createRef();
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.state = {
+      loading: false,
+    }
   }
 
   handleSubmit() {
@@ -19,25 +23,30 @@ export default class RegistrationView extends React.Component {
     let newUserInfo = {};
 
     if (this.form.current.reportValidity()) {
-      newUserInfo.Username = this.form.current[0].value;
-      newUserInfo.Password = this.form.current[1].value;
-      newUserInfo.Email = this.form.current[2].value;
+      this.setState({ loading: true }, () => {
+        newUserInfo.Username = this.form.current[0].value;
+        newUserInfo.Password = this.form.current[1].value;
+        newUserInfo.Email = this.form.current[2].value;
 
-      axios.post('https://supersonic-api.herokuapp.com/users/register', newUserInfo)
-        .then(response => {
-          console.log(response.data);
-          this.props.showLoginView();
-        })
-        .catch(e => {
-          console.log('something went wrong. Maybe some info was missing.')
-        });
+        axios.post('https://supersonic-api.herokuapp.com/users/register', newUserInfo)
+          .then(response => {
+            console.log(response.data);
+            this.props.showLoginView();
+          })
+          .catch(e => {
+            console.log('something went wrong. Maybe some info was missing.')
+          });
+      });
+      this.setState({ loading: false });
     }
   };
 
   render() {
+    const { loading } = this.state;
 
     return (
       <div className="registration-view">
+        {loading && <LoadingIndicator />}
         <h2 className="display-4">Sign up for a free Supersonic account</h2>
         <p>Signing up for a free account allows you to save your practice statistics and track your improvement over time. We will never share your account information with anybody. Honestly, that would be super lame.</p>
 

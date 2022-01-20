@@ -3,6 +3,7 @@ import React from 'react';
 import Axios from 'axios';
 import { connect } from 'react-redux';
 import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
+import LoadingIndicator from '../LoadingIndicator/LoadingIndicator';
 
 // import actions
 // no actions needed for this element
@@ -19,6 +20,7 @@ class StatsSetupPage extends React.Component {
     this.state = {
       stats: undefined,
       difficulty: { name: 'MEDIUM', value: 25 },
+      loading: true,
     };
   }
 
@@ -43,7 +45,8 @@ class StatsSetupPage extends React.Component {
         return false;
       });
 
-    this.setState({ stats });
+    this.setState({ stats, loading: false });
+
   }
 
   clickDifficulty(value) {
@@ -176,7 +179,7 @@ class StatsSetupPage extends React.Component {
   }
 
   render() {
-    const { stats, difficulty } = this.state;
+    const { stats, difficulty, loading } = this.state;
     console.log(stats);
     let table;
     if (stats) {
@@ -186,6 +189,7 @@ class StatsSetupPage extends React.Component {
 
     return (
       <div className='stats'>
+        {loading && <LoadingIndicator />}
         <h1>Stats</h1>
         <div className='stats__messages'>
           {!stats && <p className='stats__messages__loading'>Loading stats from the server</p>}

@@ -20,6 +20,7 @@ import ProfilePage from '../ProfilePage/ProfilePage';
 import StatsPage from '../StatsPage/StatsPage';
 import LandingPage from '../LandingPage/LandingPage';
 import TopBanner from '../TopBanner/TopBanner';
+import LoadingIndicator from '../LoadingIndicator/LoadingIndicator';
 
 // import stylesheet
 import './App.scss';
@@ -32,7 +33,8 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      loggedIn: undefined
+      loggedIn: undefined,
+      loading: false,
     }
   };
 
@@ -51,27 +53,28 @@ class App extends React.Component {
      * If the token is valid, loggedIn is set to true.
      * This function is called when the app mounts or when the user logs in
      */
-    const token = localStorage.getItem('token');
-    if (token) {
-      let parsedToken = JSON.parse(token);
-      const authHeader = { headers: { Authorization: `Bearer ${parsedToken}` } };
-      axios.get('https://supersonic-api.herokuapp.com/checktoken', authHeader)
-        .then(response => {
-          this.setState({ loggedIn: true });
-          return response;
-        })
-        .catch(e => {
-          console.log('invalid token. Maybe it expired.');
-          localStorage.removeItem('token');
-          localStorage.removeItem('userData');
-          this.setState({ loggedIn: false });
-          return false;
-        });
+    this.setState({ loading: true }, () => {
+      const token = localStorage.getItem('token');
+      if (token) {
+        let parsedToken = JSON.parse(token);
+        const authHeader = { headers: { Authorization: `Bearer ${parsedToken}` } };
+        axios.get('https://supersonic-api.herokuapp.com/checktoken', authHeader)
+          .then(response => {
+            this.setState({ loggedIn: true, loading: false });
+            return response;
+          })
+          .catch(e => {
+            console.log('invalid token. Maybe it expired.');
+            localStorage.removeItem('token');
+            localStorage.removeItem('userData');
+            this.setState({ loggedIn: false, loading: false });
+            return false;
+          });
+      } else {
+        this.setState({ loggedIn: false, loading: false });
+      }
+    })
 
-
-    } else {
-      this.setState({ loggedIn: false });
-    }
   }
 
   handleLogout() {
@@ -86,13 +89,14 @@ class App extends React.Component {
   }
 
   render() {
-    const { loggedIn } = this.state;
+    const { loggedIn, loading } = this.state;
 
     // If the user is not logged in, they should be forced to see the landing page
     if (!loggedIn) {
       return (
         <HashRouter>
           <TopBanner loggedIn={loggedIn} handleLogout={() => this.handleLogout()} />
+          {loading && <LoadingIndicator /> }
           <Container>
             <Routes>
               <Route path="/" element={<LandingPage handleLogin={() => this.handleLogin()} />} />
@@ -102,7 +106,6 @@ class App extends React.Component {
               <Route path="/stats" element={<LandingPage handleLogin={() => this.handleLogin()} />} />
             </Routes>
           </Container>
-
         </HashRouter>
       )
 
@@ -111,6 +114,7 @@ class App extends React.Component {
     return (
       <HashRouter>
         <TopBanner loggedIn={loggedIn} handleLogout={() => this.handleLogout()} />
+        {loading && <LoadingIndicator /> }
         <Container>
           <Routes>
             <Route path="/" element={<HomePage />} />
