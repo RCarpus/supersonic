@@ -8,6 +8,7 @@ My hope is that by using this app, intermediate level musicians who already have
 ## How It Works
 ### Practice Sessions
 The user of the app will hear a series of "intervals", which are two notes played in succession or simultaneously. The two notes will either be perfectly in-tune according to equal temperament or out-of-tune by some number of cents. The user must determine if the second note they heard (or the higher frequency note if they are heard simultaneously) is in-tune, flat, or sharp.
+
 ![A screenshot of an interval that has been correctly identified as flat](app/img/interval_example_screen.png)
 
 _**Background info**: In equal temperament, each of the twelve notes are considered to be 100 "cents" away from the next adjacent note. Therefor, a note halfway between two notes would be 50 cents out-of-tune. If the note is lower in pitch compared to the target note, that note is "flat". If the note is higher in pitch compared to the target note, that note is "sharp"._
@@ -64,9 +65,6 @@ The client application is built using React as a framework. Routing is handled w
 ![A diagram showing the hierarchy of custom React Components for Supersonic](./app/img/Supersonic_component_hierarchy.svg)
 
 ## Coming Improvements
-- Add a loading animation to display when the app is loggin in the user
 - Refactor the stats table
-- Add useful error messages to Ajax functions when they don't work
-- Fix bug when saving sessions to localStorage
 - Explore more pleasant tones
 - Explore buggy mobile performance for web audio api
