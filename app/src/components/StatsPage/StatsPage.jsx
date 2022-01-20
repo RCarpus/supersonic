@@ -1,20 +1,10 @@
 // import libraries
 import React from 'react';
 import Axios from 'axios';
-import { connect } from 'react-redux';
-import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 import LoadingIndicator from '../LoadingIndicator/LoadingIndicator';
+import HoverInfo from '../HoverInfo/HoverInfo';
 
-// import actions
-// no actions needed for this element
-
-// import necessary components
-// import SomeComponent from '../components/SomeComponent';
-/* ---------------------- */
-
-// import stylesheet
-
-class StatsSetupPage extends React.Component {
+export default class StatsSetupPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -36,8 +26,6 @@ class StatsSetupPage extends React.Component {
 
     const stats = await Axios.get(`https://supersonic-api.herokuapp.com/users/${user}`, authHeader)
       .then(response => {
-        console.log(response.data);
-        console.log('successfully loaded user stats from the server');
         return response.data.Stats;
       })
       .catch(function (error) {
@@ -58,9 +46,7 @@ class StatsSetupPage extends React.Component {
     document.getElementById(`${value.name}`).classList.add('active');
   }
 
-
   componentDidMount() {
-    console.log('attempting to load in user data');
     this.getStats();
     document.getElementById(`${this.state.difficulty.name}`).classList.add('active');
   }
@@ -174,17 +160,77 @@ class StatsSetupPage extends React.Component {
         table[`${difficulty}-${interval}-SIMULTANEOUS`] = this.calculateOverallGrade(combinedSession.submitted, combinedSession.correct);
       })
     })
-    console.log(table);
     return table;
+  }
+
+  formatOptionsText(text) {
+    /**
+     * takes in an option formatted like "PERFECT-5TH"
+     * and returns "Perfect 5th"
+     */
+    let updatedText = text.toLowerCase();
+    updatedText = updatedText.slice(0, 1).toUpperCase() + updatedText.slice(1);
+    updatedText = updatedText.replace('-', ' ');
+    return updatedText;
   }
 
   render() {
     const { stats, difficulty, loading } = this.state;
-    console.log(stats);
     let table;
+    let tables = [];
+    const intervals = [
+      'UNISON', 'MINOR-2ND', 'MAJOR-2ND', 'MINOR-3RD', 'MAJOR-3RD', 'PERFECT-4TH',
+      'TRITONE', 'PERFECT-5TH', 'MINOR-6TH', 'MAJOR-6TH', 'MINOR-7TH', 'MAJOR-7TH', 'OCTAVE'
+    ];
+
+    // Wait until the stats are loaded in to build the table
     if (stats) {
       table = this.generateStatsTable(stats);
-      console.log(Object.keys(table));
+      let difficulties = ['EASY', 'MEDIUM', 'HARD'];
+
+      // Generate the stats table html from the calculated stats
+      for (let i = 0; i < difficulties.length; i++) { // iterate over the difficulties
+        // Create each table row which will be inserted into the new table when it is built
+        let tableRows = [];
+        intervals.forEach(interval => {
+          tableRows.push(
+            <tr>
+              <th context='row'>{this.formatOptionsText(interval)}</th>
+              <td>{table[`${difficulties[i]}-${interval}-OVERALL`].grade}</td>
+              <td>{table[`${difficulties[i]}-${interval}-FLAT`].percentCorrect}</td>
+              <td>{table[`${difficulties[i]}-${interval}-PERFECT`].percentCorrect}</td>
+              <td>{table[`${difficulties[i]}-${interval}-SHARP`].percentCorrect}</td>
+              <td>{table[`${difficulties[i]}-${interval}-ASCENDING`].grade}</td>
+              <td>{table[`${difficulties[i]}-${interval}-DESCENDING`].grade}</td>
+              <td>{table[`${difficulties[i]}-${interval}-BOTH`].grade}</td>
+              <td>{table[`${difficulties[i]}-${interval}-SIMULTANEOUS`].grade}</td>
+            </tr>
+          );
+        })
+
+        // Set up a new table with headers
+        let builtUpTable = (
+          <table className={`stats__table__${difficulties[i]} table`}>
+            <thead>
+              <tr>
+                <td></td>
+                <th><HoverInfo title="Overall" text="total percent correct for Unison at this difficulty" /></th>
+                <th><HoverInfo title="Flat" text="total percent correct for Unison at this difficulty" /></th>
+                <th><HoverInfo title="Perfect" text="total percent correct for Unison at this difficulty" /></th>
+                <th><HoverInfo title="Sharp" text="total percent correct for Unison at this difficulty" /></th>
+                <th><HoverInfo title="Ascending" text="total percent correct for Unison at this difficulty" /></th>
+                <th><HoverInfo title="Descending" text="total percent correct for Unison at this difficulty" /></th>
+                <th><HoverInfo title="Combined" text="total percent correct for Unison at this difficulty" /></th>
+                <th><HoverInfo title="Simultaneous" text="total percent correct for Unison at this difficulty" /></th>
+              </tr>
+            </thead>
+            {/* Insert the table row that we generated before */}
+            <tbody>{tableRows}</tbody>
+          </table>
+        );
+        tables.push(builtUpTable);
+      }
+
     }
 
     return (
@@ -203,518 +249,12 @@ class StatsSetupPage extends React.Component {
             <button className='stats__parameters__difficulty__button' onClick={() => this.clickDifficulty({ name: 'HARD', value: 10 })} id='HARD'>Hard</button>
           </div>
 
-          {/* TODO -- CREATE THIS TABLE PROGRAMMATICALLY. tHIS IS STUPID. */}
-
-          {stats && difficulty.name === 'MEDIUM' &&
-            <table className='stats__table__medium table'>
-              <thead>
-                <tr>
-                  <td></td>
-                  <th>Overall</th>
-                  <th>Flat</th>
-                  <th>Perfect</th>
-                  <th>Sharp</th>
-                  <th>Ascending</th>
-                  <th>Descending</th>
-                  <th>Combined</th>
-                  <th>Simultaneous</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <th context='row'>Unison</th>
-                  <td>{table['MEDIUM-UNISON-OVERALL'].grade}</td>
-                  <td>{table['MEDIUM-UNISON-FLAT'].percentCorrect}</td>
-                  <td>{table['MEDIUM-UNISON-PERFECT'].percentCorrect}</td>
-                  <td>{table['MEDIUM-UNISON-SHARP'].percentCorrect}</td>
-                  <td>{table['MEDIUM-UNISON-ASCENDING'].grade}</td>
-                  <td>{table['MEDIUM-UNISON-DESCENDING'].grade}</td>
-                  <td>{table['MEDIUM-UNISON-BOTH'].grade}</td>
-                  <td>{table['MEDIUM-UNISON-SIMULTANEOUS'].grade}</td>
-                </tr>
-                <tr>
-                  <th context='row'>Minor 2nd</th>
-                  <td>{table['MEDIUM-MINOR-2ND-OVERALL'].grade}</td>
-                  <td>{table['MEDIUM-MINOR-2ND-FLAT'].percentCorrect}</td>
-                  <td>{table['MEDIUM-MINOR-2ND-PERFECT'].percentCorrect}</td>
-                  <td>{table['MEDIUM-MINOR-2ND-SHARP'].percentCorrect}</td>
-                  <td>{table['MEDIUM-MINOR-2ND-ASCENDING'].grade}</td>
-                  <td>{table['MEDIUM-MINOR-2ND-DESCENDING'].grade}</td>
-                  <td>{table['MEDIUM-MINOR-2ND-BOTH'].grade}</td>
-                  <td>{table['MEDIUM-MINOR-2ND-SIMULTANEOUS'].grade}</td>
-                </tr>
-                <tr>
-                  <th context='row'>Major 2nd</th>
-                  <td>{table['MEDIUM-MAJOR-2ND-OVERALL'].grade}</td>
-                  <td>{table['MEDIUM-MAJOR-2ND-FLAT'].percentCorrect}</td>
-                  <td>{table['MEDIUM-MAJOR-2ND-PERFECT'].percentCorrect}</td>
-                  <td>{table['MEDIUM-MAJOR-2ND-SHARP'].percentCorrect}</td>
-                  <td>{table['MEDIUM-MAJOR-2ND-ASCENDING'].grade}</td>
-                  <td>{table['MEDIUM-MAJOR-2ND-DESCENDING'].grade}</td>
-                  <td>{table['MEDIUM-MAJOR-2ND-BOTH'].grade}</td>
-                  <td>{table['MEDIUM-MAJOR-2ND-SIMULTANEOUS'].grade}</td>
-                </tr>
-                <tr>
-                  <th context='row'>Minor 3rd</th>
-                  <td>{table['MEDIUM-MINOR-3RD-OVERALL'].grade}</td>
-                  <td>{table['MEDIUM-MINOR-3RD-FLAT'].percentCorrect}</td>
-                  <td>{table['MEDIUM-MINOR-3RD-PERFECT'].percentCorrect}</td>
-                  <td>{table['MEDIUM-MINOR-3RD-SHARP'].percentCorrect}</td>
-                  <td>{table['MEDIUM-MINOR-3RD-ASCENDING'].grade}</td>
-                  <td>{table['MEDIUM-MINOR-3RD-DESCENDING'].grade}</td>
-                  <td>{table['MEDIUM-MINOR-3RD-BOTH'].grade}</td>
-                  <td>{table['MEDIUM-MINOR-3RD-SIMULTANEOUS'].grade}</td>
-                </tr>
-                <tr>
-                  <th context='row'>Major 3rd</th>
-                  <td>{table['MEDIUM-MAJOR-3RD-OVERALL'].grade}</td>
-                  <td>{table['MEDIUM-MAJOR-3RD-FLAT'].percentCorrect}</td>
-                  <td>{table['MEDIUM-MAJOR-3RD-PERFECT'].percentCorrect}</td>
-                  <td>{table['MEDIUM-MAJOR-3RD-SHARP'].percentCorrect}</td>
-                  <td>{table['MEDIUM-MAJOR-3RD-ASCENDING'].grade}</td>
-                  <td>{table['MEDIUM-MAJOR-3RD-DESCENDING'].grade}</td>
-                  <td>{table['MEDIUM-MAJOR-3RD-BOTH'].grade}</td>
-                  <td>{table['MEDIUM-MAJOR-3RD-SIMULTANEOUS'].grade}</td>
-                </tr>
-                <tr>
-                  <th context='row'>Perfect 4th</th>
-                  <td>{table['MEDIUM-PERFECT-4TH-OVERALL'].grade}</td>
-                  <td>{table['MEDIUM-PERFECT-4TH-FLAT'].percentCorrect}</td>
-                  <td>{table['MEDIUM-PERFECT-4TH-PERFECT'].percentCorrect}</td>
-                  <td>{table['MEDIUM-PERFECT-4TH-SHARP'].percentCorrect}</td>
-                  <td>{table['MEDIUM-PERFECT-4TH-ASCENDING'].grade}</td>
-                  <td>{table['MEDIUM-PERFECT-4TH-DESCENDING'].grade}</td>
-                  <td>{table['MEDIUM-PERFECT-4TH-BOTH'].grade}</td>
-                  <td>{table['MEDIUM-PERFECT-4TH-SIMULTANEOUS'].grade}</td>
-                </tr>
-                <tr>
-                  <th context='row'>Tritone</th>
-                  <td>{table['MEDIUM-TRITONE-OVERALL'].grade}</td>
-                  <td>{table['MEDIUM-TRITONE-FLAT'].percentCorrect}</td>
-                  <td>{table['MEDIUM-TRITONE-PERFECT'].percentCorrect}</td>
-                  <td>{table['MEDIUM-TRITONE-SHARP'].percentCorrect}</td>
-                  <td>{table['MEDIUM-TRITONE-ASCENDING'].grade}</td>
-                  <td>{table['MEDIUM-TRITONE-DESCENDING'].grade}</td>
-                  <td>{table['MEDIUM-TRITONE-BOTH'].grade}</td>
-                  <td>{table['MEDIUM-TRITONE-SIMULTANEOUS'].grade}</td>
-                </tr>
-                <tr>
-                  <th context='row'>Perfect 5th</th>
-                  <td>{table['MEDIUM-PERFECT-5TH-OVERALL'].grade}</td>
-                  <td>{table['MEDIUM-PERFECT-5TH-FLAT'].percentCorrect}</td>
-                  <td>{table['MEDIUM-PERFECT-5TH-PERFECT'].percentCorrect}</td>
-                  <td>{table['MEDIUM-PERFECT-5TH-SHARP'].percentCorrect}</td>
-                  <td>{table['MEDIUM-PERFECT-5TH-ASCENDING'].grade}</td>
-                  <td>{table['MEDIUM-PERFECT-5TH-DESCENDING'].grade}</td>
-                  <td>{table['MEDIUM-PERFECT-5TH-BOTH'].grade}</td>
-                  <td>{table['MEDIUM-PERFECT-5TH-SIMULTANEOUS'].grade}</td>
-                </tr>
-                <tr>
-                  <th context='row'>Minor 6th</th>
-                  <td>{table['MEDIUM-MINOR-6TH-OVERALL'].grade}</td>
-                  <td>{table['MEDIUM-MINOR-6TH-FLAT'].percentCorrect}</td>
-                  <td>{table['MEDIUM-MINOR-6TH-PERFECT'].percentCorrect}</td>
-                  <td>{table['MEDIUM-MINOR-6TH-SHARP'].percentCorrect}</td>
-                  <td>{table['MEDIUM-MINOR-6TH-ASCENDING'].grade}</td>
-                  <td>{table['MEDIUM-MINOR-6TH-DESCENDING'].grade}</td>
-                  <td>{table['MEDIUM-MINOR-6TH-BOTH'].grade}</td>
-                  <td>{table['MEDIUM-MINOR-6TH-SIMULTANEOUS'].grade}</td>
-                </tr>
-                <tr>
-                  <th context='row'>Major 6th</th>
-                  <td>{table['MEDIUM-MAJOR-6TH-OVERALL'].grade}</td>
-                  <td>{table['MEDIUM-MAJOR-6TH-FLAT'].percentCorrect}</td>
-                  <td>{table['MEDIUM-MAJOR-6TH-PERFECT'].percentCorrect}</td>
-                  <td>{table['MEDIUM-MAJOR-6TH-SHARP'].percentCorrect}</td>
-                  <td>{table['MEDIUM-MAJOR-6TH-ASCENDING'].grade}</td>
-                  <td>{table['MEDIUM-MAJOR-6TH-DESCENDING'].grade}</td>
-                  <td>{table['MEDIUM-MAJOR-6TH-BOTH'].grade}</td>
-                  <td>{table['MEDIUM-MAJOR-6TH-SIMULTANEOUS'].grade}</td>
-                </tr>
-                <tr>
-                  <th context='row'>Minor 7th</th>
-                  <td>{table['MEDIUM-MINOR-7TH-OVERALL'].grade}</td>
-                  <td>{table['MEDIUM-MINOR-7TH-FLAT'].percentCorrect}</td>
-                  <td>{table['MEDIUM-MINOR-7TH-PERFECT'].percentCorrect}</td>
-                  <td>{table['MEDIUM-MINOR-7TH-SHARP'].percentCorrect}</td>
-                  <td>{table['MEDIUM-MINOR-7TH-ASCENDING'].grade}</td>
-                  <td>{table['MEDIUM-MINOR-7TH-DESCENDING'].grade}</td>
-                  <td>{table['MEDIUM-MINOR-7TH-BOTH'].grade}</td>
-                  <td>{table['MEDIUM-MINOR-7TH-SIMULTANEOUS'].grade}</td>
-                </tr>
-                <tr>
-                  <th context='row'>Major 7th</th>
-                  <td>{table['MEDIUM-MAJOR-7TH-OVERALL'].grade}</td>
-                  <td>{table['MEDIUM-MAJOR-7TH-FLAT'].percentCorrect}</td>
-                  <td>{table['MEDIUM-MAJOR-7TH-PERFECT'].percentCorrect}</td>
-                  <td>{table['MEDIUM-MAJOR-7TH-SHARP'].percentCorrect}</td>
-                  <td>{table['MEDIUM-MAJOR-7TH-ASCENDING'].grade}</td>
-                  <td>{table['MEDIUM-MAJOR-7TH-DESCENDING'].grade}</td>
-                  <td>{table['MEDIUM-MAJOR-7TH-BOTH'].grade}</td>
-                  <td>{table['MEDIUM-MAJOR-7TH-SIMULTANEOUS'].grade}</td>
-                </tr>
-                <tr>
-                  <th context='row'>Octave</th>
-                  <td>{table['MEDIUM-OCTAVE-OVERALL'].grade}</td>
-                  <td>{table['MEDIUM-OCTAVE-FLAT'].percentCorrect}</td>
-                  <td>{table['MEDIUM-OCTAVE-PERFECT'].percentCorrect}</td>
-                  <td>{table['MEDIUM-OCTAVE-SHARP'].percentCorrect}</td>
-                  <td>{table['MEDIUM-OCTAVE-ASCENDING'].grade}</td>
-                  <td>{table['MEDIUM-OCTAVE-DESCENDING'].grade}</td>
-                  <td>{table['MEDIUM-OCTAVE-BOTH'].grade}</td>
-                  <td>{table['MEDIUM-OCTAVE-SIMULTANEOUS'].grade}</td>
-                </tr>
-              </tbody>
-            </table>
-
-          }
-
-          {stats && difficulty.name === 'EASY' &&
-            <table className='stats__table__EASY table'>
-              <thead>
-                <tr>
-                  <td></td>
-                  <th>Overall</th>
-                  <th>Flat</th>
-                  <th>Perfect</th>
-                  <th>Sharp</th>
-                  <th>Ascending</th>
-                  <th>Descending</th>
-                  <th>Combined</th>
-                  <th>Simultaneous</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <th context='row'>Unison</th>
-                  <td>{table['EASY-UNISON-OVERALL'].grade}</td>
-                  <td>{table['EASY-UNISON-FLAT'].percentCorrect}</td>
-                  <td>{table['EASY-UNISON-PERFECT'].percentCorrect}</td>
-                  <td>{table['EASY-UNISON-SHARP'].percentCorrect}</td>
-                  <td>{table['EASY-UNISON-ASCENDING'].grade}</td>
-                  <td>{table['EASY-UNISON-DESCENDING'].grade}</td>
-                  <td>{table['EASY-UNISON-BOTH'].grade}</td>
-                  <td>{table['EASY-UNISON-SIMULTANEOUS'].grade}</td>
-                </tr>
-                <tr>
-                  <th context='row'>Minor 2nd</th>
-                  <td>{table['EASY-MINOR-2ND-OVERALL'].grade}</td>
-                  <td>{table['EASY-MINOR-2ND-FLAT'].percentCorrect}</td>
-                  <td>{table['EASY-MINOR-2ND-PERFECT'].percentCorrect}</td>
-                  <td>{table['EASY-MINOR-2ND-SHARP'].percentCorrect}</td>
-                  <td>{table['EASY-MINOR-2ND-ASCENDING'].grade}</td>
-                  <td>{table['EASY-MINOR-2ND-DESCENDING'].grade}</td>
-                  <td>{table['EASY-MINOR-2ND-BOTH'].grade}</td>
-                  <td>{table['EASY-MINOR-2ND-SIMULTANEOUS'].grade}</td>
-                </tr>
-                <tr>
-                  <th context='row'>Major 2nd</th>
-                  <td>{table['EASY-MAJOR-2ND-OVERALL'].grade}</td>
-                  <td>{table['EASY-MAJOR-2ND-FLAT'].percentCorrect}</td>
-                  <td>{table['EASY-MAJOR-2ND-PERFECT'].percentCorrect}</td>
-                  <td>{table['EASY-MAJOR-2ND-SHARP'].percentCorrect}</td>
-                  <td>{table['EASY-MAJOR-2ND-ASCENDING'].grade}</td>
-                  <td>{table['EASY-MAJOR-2ND-DESCENDING'].grade}</td>
-                  <td>{table['EASY-MAJOR-2ND-BOTH'].grade}</td>
-                  <td>{table['EASY-MAJOR-2ND-SIMULTANEOUS'].grade}</td>
-                </tr>
-                <tr>
-                  <th context='row'>Minor 3rd</th>
-                  <td>{table['EASY-MINOR-3RD-OVERALL'].grade}</td>
-                  <td>{table['EASY-MINOR-3RD-FLAT'].percentCorrect}</td>
-                  <td>{table['EASY-MINOR-3RD-PERFECT'].percentCorrect}</td>
-                  <td>{table['EASY-MINOR-3RD-SHARP'].percentCorrect}</td>
-                  <td>{table['EASY-MINOR-3RD-ASCENDING'].grade}</td>
-                  <td>{table['EASY-MINOR-3RD-DESCENDING'].grade}</td>
-                  <td>{table['EASY-MINOR-3RD-BOTH'].grade}</td>
-                  <td>{table['EASY-MINOR-3RD-SIMULTANEOUS'].grade}</td>
-                </tr>
-                <tr>
-                  <th context='row'>Major 3rd</th>
-                  <td>{table['EASY-MAJOR-3RD-OVERALL'].grade}</td>
-                  <td>{table['EASY-MAJOR-3RD-FLAT'].percentCorrect}</td>
-                  <td>{table['EASY-MAJOR-3RD-PERFECT'].percentCorrect}</td>
-                  <td>{table['EASY-MAJOR-3RD-SHARP'].percentCorrect}</td>
-                  <td>{table['EASY-MAJOR-3RD-ASCENDING'].grade}</td>
-                  <td>{table['EASY-MAJOR-3RD-DESCENDING'].grade}</td>
-                  <td>{table['EASY-MAJOR-3RD-BOTH'].grade}</td>
-                  <td>{table['EASY-MAJOR-3RD-SIMULTANEOUS'].grade}</td>
-                </tr>
-                <tr>
-                  <th context='row'>Perfect 4th</th>
-                  <td>{table['EASY-PERFECT-4TH-OVERALL'].grade}</td>
-                  <td>{table['EASY-PERFECT-4TH-FLAT'].percentCorrect}</td>
-                  <td>{table['EASY-PERFECT-4TH-PERFECT'].percentCorrect}</td>
-                  <td>{table['EASY-PERFECT-4TH-SHARP'].percentCorrect}</td>
-                  <td>{table['EASY-PERFECT-4TH-ASCENDING'].grade}</td>
-                  <td>{table['EASY-PERFECT-4TH-DESCENDING'].grade}</td>
-                  <td>{table['EASY-PERFECT-4TH-BOTH'].grade}</td>
-                  <td>{table['EASY-PERFECT-4TH-SIMULTANEOUS'].grade}</td>
-                </tr>
-                <tr>
-                  <th context='row'>Tritone</th>
-                  <td>{table['EASY-TRITONE-OVERALL'].grade}</td>
-                  <td>{table['EASY-TRITONE-FLAT'].percentCorrect}</td>
-                  <td>{table['EASY-TRITONE-PERFECT'].percentCorrect}</td>
-                  <td>{table['EASY-TRITONE-SHARP'].percentCorrect}</td>
-                  <td>{table['EASY-TRITONE-ASCENDING'].grade}</td>
-                  <td>{table['EASY-TRITONE-DESCENDING'].grade}</td>
-                  <td>{table['EASY-TRITONE-BOTH'].grade}</td>
-                  <td>{table['EASY-TRITONE-SIMULTANEOUS'].grade}</td>
-                </tr>
-                <tr>
-                  <th context='row'>Perfect 5th</th>
-                  <td>{table['EASY-PERFECT-5TH-OVERALL'].grade}</td>
-                  <td>{table['EASY-PERFECT-5TH-FLAT'].percentCorrect}</td>
-                  <td>{table['EASY-PERFECT-5TH-PERFECT'].percentCorrect}</td>
-                  <td>{table['EASY-PERFECT-5TH-SHARP'].percentCorrect}</td>
-                  <td>{table['EASY-PERFECT-5TH-ASCENDING'].grade}</td>
-                  <td>{table['EASY-PERFECT-5TH-DESCENDING'].grade}</td>
-                  <td>{table['EASY-PERFECT-5TH-BOTH'].grade}</td>
-                  <td>{table['EASY-PERFECT-5TH-SIMULTANEOUS'].grade}</td>
-                </tr>
-                <tr>
-                  <th context='row'>Minor 6th</th>
-                  <td>{table['EASY-MINOR-6TH-OVERALL'].grade}</td>
-                  <td>{table['EASY-MINOR-6TH-FLAT'].percentCorrect}</td>
-                  <td>{table['EASY-MINOR-6TH-PERFECT'].percentCorrect}</td>
-                  <td>{table['EASY-MINOR-6TH-SHARP'].percentCorrect}</td>
-                  <td>{table['EASY-MINOR-6TH-ASCENDING'].grade}</td>
-                  <td>{table['EASY-MINOR-6TH-DESCENDING'].grade}</td>
-                  <td>{table['EASY-MINOR-6TH-BOTH'].grade}</td>
-                  <td>{table['EASY-MINOR-6TH-SIMULTANEOUS'].grade}</td>
-                </tr>
-                <tr>
-                  <th context='row'>Major 6th</th>
-                  <td>{table['EASY-MAJOR-6TH-OVERALL'].grade}</td>
-                  <td>{table['EASY-MAJOR-6TH-FLAT'].percentCorrect}</td>
-                  <td>{table['EASY-MAJOR-6TH-PERFECT'].percentCorrect}</td>
-                  <td>{table['EASY-MAJOR-6TH-SHARP'].percentCorrect}</td>
-                  <td>{table['EASY-MAJOR-6TH-ASCENDING'].grade}</td>
-                  <td>{table['EASY-MAJOR-6TH-DESCENDING'].grade}</td>
-                  <td>{table['EASY-MAJOR-6TH-BOTH'].grade}</td>
-                  <td>{table['EASY-MAJOR-6TH-SIMULTANEOUS'].grade}</td>
-                </tr>
-                <tr>
-                  <th context='row'>Minor 7th</th>
-                  <td>{table['EASY-MINOR-7TH-OVERALL'].grade}</td>
-                  <td>{table['EASY-MINOR-7TH-FLAT'].percentCorrect}</td>
-                  <td>{table['EASY-MINOR-7TH-PERFECT'].percentCorrect}</td>
-                  <td>{table['EASY-MINOR-7TH-SHARP'].percentCorrect}</td>
-                  <td>{table['EASY-MINOR-7TH-ASCENDING'].grade}</td>
-                  <td>{table['EASY-MINOR-7TH-DESCENDING'].grade}</td>
-                  <td>{table['EASY-MINOR-7TH-BOTH'].grade}</td>
-                  <td>{table['EASY-MINOR-7TH-SIMULTANEOUS'].grade}</td>
-                </tr>
-                <tr>
-                  <th context='row'>Major 7th</th>
-                  <td>{table['EASY-MAJOR-7TH-OVERALL'].grade}</td>
-                  <td>{table['EASY-MAJOR-7TH-FLAT'].percentCorrect}</td>
-                  <td>{table['EASY-MAJOR-7TH-PERFECT'].percentCorrect}</td>
-                  <td>{table['EASY-MAJOR-7TH-SHARP'].percentCorrect}</td>
-                  <td>{table['EASY-MAJOR-7TH-ASCENDING'].grade}</td>
-                  <td>{table['EASY-MAJOR-7TH-DESCENDING'].grade}</td>
-                  <td>{table['EASY-MAJOR-7TH-BOTH'].grade}</td>
-                  <td>{table['EASY-MAJOR-7TH-SIMULTANEOUS'].grade}</td>
-                </tr>
-                <tr>
-                  <th context='row'>Octave</th>
-                  <td>{table['EASY-OCTAVE-OVERALL'].grade}</td>
-                  <td>{table['EASY-OCTAVE-FLAT'].percentCorrect}</td>
-                  <td>{table['EASY-OCTAVE-PERFECT'].percentCorrect}</td>
-                  <td>{table['EASY-OCTAVE-SHARP'].percentCorrect}</td>
-                  <td>{table['EASY-OCTAVE-ASCENDING'].grade}</td>
-                  <td>{table['EASY-OCTAVE-DESCENDING'].grade}</td>
-                  <td>{table['EASY-OCTAVE-BOTH'].grade}</td>
-                  <td>{table['EASY-OCTAVE-SIMULTANEOUS'].grade}</td>
-                </tr>
-              </tbody>
-            </table>
-
-          }
-
-
-          {stats && difficulty.name === 'HARD' &&
-            <table className='stats__table__HARD table'>
-              <thead>
-                <tr>
-                  <td></td>
-                  <th>Overall</th>
-                  <th>Flat</th>
-                  <th>Perfect</th>
-                  <th>Sharp</th>
-                  <th>Ascending</th>
-                  <th>Descending</th>
-                  <th>Combined</th>
-                  <th>Simultaneous</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <th context='row'>Unison</th>
-                  <td>{table['HARD-UNISON-OVERALL'].grade}</td>
-                  <td>{table['HARD-UNISON-FLAT'].percentCorrect}</td>
-                  <td>{table['HARD-UNISON-PERFECT'].percentCorrect}</td>
-                  <td>{table['HARD-UNISON-SHARP'].percentCorrect}</td>
-                  <td>{table['HARD-UNISON-ASCENDING'].grade}</td>
-                  <td>{table['HARD-UNISON-DESCENDING'].grade}</td>
-                  <td>{table['HARD-UNISON-BOTH'].grade}</td>
-                  <td>{table['HARD-UNISON-SIMULTANEOUS'].grade}</td>
-                </tr>
-                <tr>
-                  <th context='row'>Minor 2nd</th>
-                  <td>{table['HARD-MINOR-2ND-OVERALL'].grade}</td>
-                  <td>{table['HARD-MINOR-2ND-FLAT'].percentCorrect}</td>
-                  <td>{table['HARD-MINOR-2ND-PERFECT'].percentCorrect}</td>
-                  <td>{table['HARD-MINOR-2ND-SHARP'].percentCorrect}</td>
-                  <td>{table['HARD-MINOR-2ND-ASCENDING'].grade}</td>
-                  <td>{table['HARD-MINOR-2ND-DESCENDING'].grade}</td>
-                  <td>{table['HARD-MINOR-2ND-BOTH'].grade}</td>
-                  <td>{table['HARD-MINOR-2ND-SIMULTANEOUS'].grade}</td>
-                </tr>
-                <tr>
-                  <th context='row'>Major 2nd</th>
-                  <td>{table['HARD-MAJOR-2ND-OVERALL'].grade}</td>
-                  <td>{table['HARD-MAJOR-2ND-FLAT'].percentCorrect}</td>
-                  <td>{table['HARD-MAJOR-2ND-PERFECT'].percentCorrect}</td>
-                  <td>{table['HARD-MAJOR-2ND-SHARP'].percentCorrect}</td>
-                  <td>{table['HARD-MAJOR-2ND-ASCENDING'].grade}</td>
-                  <td>{table['HARD-MAJOR-2ND-DESCENDING'].grade}</td>
-                  <td>{table['HARD-MAJOR-2ND-BOTH'].grade}</td>
-                  <td>{table['HARD-MAJOR-2ND-SIMULTANEOUS'].grade}</td>
-                </tr>
-                <tr>
-                  <th context='row'>Minor 3rd</th>
-                  <td>{table['HARD-MINOR-3RD-OVERALL'].grade}</td>
-                  <td>{table['HARD-MINOR-3RD-FLAT'].percentCorrect}</td>
-                  <td>{table['HARD-MINOR-3RD-PERFECT'].percentCorrect}</td>
-                  <td>{table['HARD-MINOR-3RD-SHARP'].percentCorrect}</td>
-                  <td>{table['HARD-MINOR-3RD-ASCENDING'].grade}</td>
-                  <td>{table['HARD-MINOR-3RD-DESCENDING'].grade}</td>
-                  <td>{table['HARD-MINOR-3RD-BOTH'].grade}</td>
-                  <td>{table['HARD-MINOR-3RD-SIMULTANEOUS'].grade}</td>
-                </tr>
-                <tr>
-                  <th context='row'>Major 3rd</th>
-                  <td>{table['HARD-MAJOR-3RD-OVERALL'].grade}</td>
-                  <td>{table['HARD-MAJOR-3RD-FLAT'].percentCorrect}</td>
-                  <td>{table['HARD-MAJOR-3RD-PERFECT'].percentCorrect}</td>
-                  <td>{table['HARD-MAJOR-3RD-SHARP'].percentCorrect}</td>
-                  <td>{table['HARD-MAJOR-3RD-ASCENDING'].grade}</td>
-                  <td>{table['HARD-MAJOR-3RD-DESCENDING'].grade}</td>
-                  <td>{table['HARD-MAJOR-3RD-BOTH'].grade}</td>
-                  <td>{table['HARD-MAJOR-3RD-SIMULTANEOUS'].grade}</td>
-                </tr>
-                <tr>
-                  <th context='row'>Perfect 4th</th>
-                  <td>{table['HARD-PERFECT-4TH-OVERALL'].grade}</td>
-                  <td>{table['HARD-PERFECT-4TH-FLAT'].percentCorrect}</td>
-                  <td>{table['HARD-PERFECT-4TH-PERFECT'].percentCorrect}</td>
-                  <td>{table['HARD-PERFECT-4TH-SHARP'].percentCorrect}</td>
-                  <td>{table['HARD-PERFECT-4TH-ASCENDING'].grade}</td>
-                  <td>{table['HARD-PERFECT-4TH-DESCENDING'].grade}</td>
-                  <td>{table['HARD-PERFECT-4TH-BOTH'].grade}</td>
-                  <td>{table['HARD-PERFECT-4TH-SIMULTANEOUS'].grade}</td>
-                </tr>
-                <tr>
-                  <th context='row'>Tritone</th>
-                  <td>{table['HARD-TRITONE-OVERALL'].grade}</td>
-                  <td>{table['HARD-TRITONE-FLAT'].percentCorrect}</td>
-                  <td>{table['HARD-TRITONE-PERFECT'].percentCorrect}</td>
-                  <td>{table['HARD-TRITONE-SHARP'].percentCorrect}</td>
-                  <td>{table['HARD-TRITONE-ASCENDING'].grade}</td>
-                  <td>{table['HARD-TRITONE-DESCENDING'].grade}</td>
-                  <td>{table['HARD-TRITONE-BOTH'].grade}</td>
-                  <td>{table['HARD-TRITONE-SIMULTANEOUS'].grade}</td>
-                </tr>
-                <tr>
-                  <th context='row'>Perfect 5th</th>
-                  <td>{table['HARD-PERFECT-5TH-OVERALL'].grade}</td>
-                  <td>{table['HARD-PERFECT-5TH-FLAT'].percentCorrect}</td>
-                  <td>{table['HARD-PERFECT-5TH-PERFECT'].percentCorrect}</td>
-                  <td>{table['HARD-PERFECT-5TH-SHARP'].percentCorrect}</td>
-                  <td>{table['HARD-PERFECT-5TH-ASCENDING'].grade}</td>
-                  <td>{table['HARD-PERFECT-5TH-DESCENDING'].grade}</td>
-                  <td>{table['HARD-PERFECT-5TH-BOTH'].grade}</td>
-                  <td>{table['HARD-PERFECT-5TH-SIMULTANEOUS'].grade}</td>
-                </tr>
-                <tr>
-                  <th context='row'>Minor 6th</th>
-                  <td>{table['HARD-MINOR-6TH-OVERALL'].grade}</td>
-                  <td>{table['HARD-MINOR-6TH-FLAT'].percentCorrect}</td>
-                  <td>{table['HARD-MINOR-6TH-PERFECT'].percentCorrect}</td>
-                  <td>{table['HARD-MINOR-6TH-SHARP'].percentCorrect}</td>
-                  <td>{table['HARD-MINOR-6TH-ASCENDING'].grade}</td>
-                  <td>{table['HARD-MINOR-6TH-DESCENDING'].grade}</td>
-                  <td>{table['HARD-MINOR-6TH-BOTH'].grade}</td>
-                  <td>{table['HARD-MINOR-6TH-SIMULTANEOUS'].grade}</td>
-                </tr>
-                <tr>
-                  <th context='row'>Major 6th</th>
-                  <td>{table['HARD-MAJOR-6TH-OVERALL'].grade}</td>
-                  <td>{table['HARD-MAJOR-6TH-FLAT'].percentCorrect}</td>
-                  <td>{table['HARD-MAJOR-6TH-PERFECT'].percentCorrect}</td>
-                  <td>{table['HARD-MAJOR-6TH-SHARP'].percentCorrect}</td>
-                  <td>{table['HARD-MAJOR-6TH-ASCENDING'].grade}</td>
-                  <td>{table['HARD-MAJOR-6TH-DESCENDING'].grade}</td>
-                  <td>{table['HARD-MAJOR-6TH-BOTH'].grade}</td>
-                  <td>{table['HARD-MAJOR-6TH-SIMULTANEOUS'].grade}</td>
-                </tr>
-                <tr>
-                  <th context='row'>Minor 7th</th>
-                  <td>{table['HARD-MINOR-7TH-OVERALL'].grade}</td>
-                  <td>{table['HARD-MINOR-7TH-FLAT'].percentCorrect}</td>
-                  <td>{table['HARD-MINOR-7TH-PERFECT'].percentCorrect}</td>
-                  <td>{table['HARD-MINOR-7TH-SHARP'].percentCorrect}</td>
-                  <td>{table['HARD-MINOR-7TH-ASCENDING'].grade}</td>
-                  <td>{table['HARD-MINOR-7TH-DESCENDING'].grade}</td>
-                  <td>{table['HARD-MINOR-7TH-BOTH'].grade}</td>
-                  <td>{table['HARD-MINOR-7TH-SIMULTANEOUS'].grade}</td>
-                </tr>
-                <tr>
-                  <th context='row'>Major 7th</th>
-                  <td>{table['HARD-MAJOR-7TH-OVERALL'].grade}</td>
-                  <td>{table['HARD-MAJOR-7TH-FLAT'].percentCorrect}</td>
-                  <td>{table['HARD-MAJOR-7TH-PERFECT'].percentCorrect}</td>
-                  <td>{table['HARD-MAJOR-7TH-SHARP'].percentCorrect}</td>
-                  <td>{table['HARD-MAJOR-7TH-ASCENDING'].grade}</td>
-                  <td>{table['HARD-MAJOR-7TH-DESCENDING'].grade}</td>
-                  <td>{table['HARD-MAJOR-7TH-BOTH'].grade}</td>
-                  <td>{table['HARD-MAJOR-7TH-SIMULTANEOUS'].grade}</td>
-                </tr>
-                <tr>
-                  <th context='row'>Octave</th>
-                  <td>{table['HARD-OCTAVE-OVERALL'].grade}</td>
-                  <td>{table['HARD-OCTAVE-FLAT'].percentCorrect}</td>
-                  <td>{table['HARD-OCTAVE-PERFECT'].percentCorrect}</td>
-                  <td>{table['HARD-OCTAVE-SHARP'].percentCorrect}</td>
-                  <td>{table['HARD-OCTAVE-ASCENDING'].grade}</td>
-                  <td>{table['HARD-OCTAVE-DESCENDING'].grade}</td>
-                  <td>{table['HARD-OCTAVE-BOTH'].grade}</td>
-                  <td>{table['HARD-OCTAVE-SIMULTANEOUS'].grade}</td>
-                </tr>
-              </tbody>
-            </table>
-
-          }
-
-
+          {stats && difficulty.name === 'EASY' && tables[0]}
+          {stats && difficulty.name === 'MEDIUM' && tables[1]}
+          {stats && difficulty.name === 'HARD' && tables[2]}
         </div>
-
-
-
       </div>
-
     )
   }
 }
 
-// Add anything needed in this component from the global state
-let mapStateToProps = state => {
-  return {
-    userData: state.userData,
-  }
-}
-
-// The second parameter object contains the state actions we imported at the top
-export default connect(mapStateToProps, null)(StatsSetupPage);
