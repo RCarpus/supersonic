@@ -1,0 +1,19 @@
+.hover-info {
+  width: 300px;
+}
+
+.hover-info__text {
+  display: none;
+}
+
+.hover-info:hover {
+  .hover-info__text {
+    display: inline;
+    position: absolute;
+    background-color: var(--color-supersonic-green);
+    color: white;
+    border: solid black 1px;
+    max-width: 300px;
+    padding: 5px;
+  }
+}
