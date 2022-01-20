@@ -21,6 +21,7 @@ export default class PracticeOptionsMenu extends React.Component {
       startNote: props.options.startNote,
       direction: props.options.direction,
       numReps: props.options.numReps,
+      showInstructions: false,
     }
   }
 
@@ -86,19 +87,36 @@ export default class PracticeOptionsMenu extends React.Component {
     document.getElementById(`${value.name}`).classList.add('active');
   }
 
+  showInstructions() {
+    document.querySelectorAll('.instructions')
+      .forEach(elem => { elem.classList.add('show-instructions') });
+    this.setState({ showInstructions: true });
+  }
+
+  hideInstructions() {
+    document.querySelectorAll('.instructions')
+      .forEach(elem => { elem.classList.remove('show-instructions') });
+    this.setState({ showInstructions: false });
+  }
+
   render() {
-    const { fixedStartNote } = this.state;
+    const { fixedStartNote, showInstructions } = this.state;
     return (
       <div className="practice-setup">
         <h1>Practice Setup</h1>
+        {showInstructions && <button id="hide-instructions-button" onClick={() => this.hideInstructions()}>Hide Instructions</button>}
+        {!showInstructions && <button id="show-instruction-button" onClick={() => this.showInstructions()}>Show Instructions</button>}
+        
         <div className="practice-setup__difficulty">
           <h3 className="practice-setup__category-header">Difficulty</h3>
+          <p className="instructions">How out of tune the notes might be. Ranges from 50 cents (easy) to 25 cents (medium) to 10 cents (hard).</p>
           <button className="practice-setup__difficulty__button" id="EASY" onClick={() => this.clickDifficulty('EASY')}>Easy</button>
           <button className="practice-setup__difficulty__button" id="MEDIUM" onClick={() => this.clickDifficulty('MEDIUM')}>Medium</button>
           <button className="practice-setup__difficulty__button" id="HARD" onClick={() => this.clickDifficulty('HARD')}>Hard</button>
         </div>
         <div className="practice-setup__interval">
           <h3 className="practice-setup__category-header">Interval</h3>
+          <p className="instructions">This is the interval you'll be practicing with. If you don't already know what this means, you might want to <a href="https://en.wikipedia.org/wiki/Interval_(music)" target="_blank"> do some research</a> and come back later.</p>
           <button className="practice-setup__interval__button" id="UNISON" onClick={() => this.clickInterval('UNISON')}>Unison</button>
           <button className="practice-setup__interval__button" id="MINOR-2ND" onClick={() => this.clickInterval('MINOR-2ND')}>Minor 2nd</button>
           <button className="practice-setup__interval__button" id="MAJOR-2ND" onClick={() => this.clickInterval('MAJOR-2ND')}>Major 2nd</button>
@@ -115,6 +133,7 @@ export default class PracticeOptionsMenu extends React.Component {
         </div>
         <div className="practice-setup__direction">
           <h3 className="practice-setup__category-header">Direction</h3>
+          <p className="instructions">Unless you choose "Simultaneous", you'll hear two notes in sucession. This will determine if the second note will be higher or lower than the first. The first note you hear will always be in tune. The second note is the one that might be out of tune. If you choose "simultaneous", the top note is the one you want to listen for.</p>
           <button className="practice-setup__direction__button" id="ASCENDING" onClick={() => this.clickDirection('ASCENDING')}>Ascending</button>
           <button className="practice-setup__direction__button" id="DESCENDING" onClick={() => this.clickDirection('DESCENDING')}>Descending</button>
           <button className="practice-setup__direction__button" id="BOTH" onClick={() => this.clickDirection('BOTH')}>Both</button>
@@ -122,6 +141,7 @@ export default class PracticeOptionsMenu extends React.Component {
         </div>
         <div className="practice-setup__fixed-start-note">
           <h3 className="practice-setup__category-header">Fixed start note</h3>
+          <p className="instructions">If you choose yes, you will get to choose any note in a two octave range to start all of your intervals from. Otherwise, the starting note will be random. If you're not very confident in your ears yet, you probably want to use a fixed start note until you get the hang of things. This will help keep you keep a solid orientation of the base note in your mind.</p>
           <button className="practice-setup__fixed-start-note__button" id="FIXED-TRUE" onClick={() => this.clickFixedStartNote('FIXED-TRUE')}>Yes</button>
           <button className="practice-setup__fixed-start-note__button" id="FIXED-FALSE" onClick={() => this.clickFixedStartNote('FIXED-FALSE')}>No</button>
         </div>
@@ -157,6 +177,7 @@ export default class PracticeOptionsMenu extends React.Component {
         }
         <div className="practice-setup__num-reps">
           <h3 className="practice-setup__category-header">Number of reps</h3>
+          <p className="instructions">How long do you want to do this for? I've got all day, so it's up to you.</p>
           <button className="practice-setup__num-reps__button" id="reps-5" onClick={() => this.clickNumReps({name: 'reps-5', value: 5})}>5</button>
           <button className="practice-setup__num-reps__button" id="reps-10" onClick={() => this.clickNumReps({name: 'reps-10', value: 10})}>10</button>
           <button className="practice-setup__num-reps__button" id="reps-20" onClick={() => this.clickNumReps({name: 'reps-20', value: 20})}>20</button>
