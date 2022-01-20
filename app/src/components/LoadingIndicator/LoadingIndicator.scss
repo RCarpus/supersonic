@@ -1,0 +1,37 @@
+.loading-message {
+  z-index: 100;
+  width: 300px;
+  margin: auto;
+  animation-duration: 4s;
+  animation-name: gradient;
+  animation-iteration-count: infinite;
+  background: linear-gradient(45deg, var(--color-supersonic-green), white, var(--color-supersonic-purple));
+  background-size: 200%;
+
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  margin-left: -150px;
+
+  padding: 0;
+
+}
+
+.loading-message__text {
+  text-align: center;
+  font-size: 26px;
+  color: black;
+  margin: 0;
+}
+
+@keyframes gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
