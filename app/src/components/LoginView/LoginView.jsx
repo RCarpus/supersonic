@@ -42,7 +42,6 @@ export default class LoginView extends React.Component {
             window.alert('invalid username or password');
           });
       });
-      this.setState({ loading: false });
 
     }
   };
