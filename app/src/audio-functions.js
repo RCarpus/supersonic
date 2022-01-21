@@ -60,6 +60,7 @@ export const playNote = function (shape = 'sine', duration = 1000, frequency = 4
   oscillator.detune.setValueAtTime(detune, audioContext.currentTime);
   // The gain node is a modifier node
   let gainNode = audioContext.createGain();
+  gainNode.gain.value = .5;
   // connect the source to the modifier to the destination in a chain
   oscillator.connect(gainNode).connect(audioContext.destination);
   // start the note
