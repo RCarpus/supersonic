@@ -34,7 +34,8 @@ export default class RegistrationView extends React.Component {
             this.props.showLoginView();
           })
           .catch(e => {
-            console.log('something went wrong. Maybe some info was missing.')
+            console.log('something went wrong. Maybe some info was missing.');
+            window.alert('Unable to register, likely because that username has already been taken.');
           });
       });
       this.setState({ loading: false });
