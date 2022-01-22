@@ -1,13 +1,6 @@
 // import libraries
 import React from 'react';
 
-// import actions
-// no actions needed for this element
-
-// import necessary components
-// import SomeComponent from '../components/SomeComponent';
-/* ---------------------- */
-
 // import stylesheet
 import './PracticeOptionsMenu.scss';
 

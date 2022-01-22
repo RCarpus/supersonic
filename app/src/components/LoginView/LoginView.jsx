@@ -5,7 +5,6 @@ import Button from 'react-bootstrap/Button';
 import LoadingIndicator from '../LoadingIndicator/LoadingIndicator';
 
 export default class LoginView extends React.Component {
-
   constructor(props) {
     super(props);
     this.form = React.createRef();
@@ -42,7 +41,6 @@ export default class LoginView extends React.Component {
             window.alert('invalid username or password');
           });
       });
-
     }
   };
 
@@ -53,6 +51,7 @@ export default class LoginView extends React.Component {
         {loading && <LoadingIndicator/>}
         <h2 className="display-4">Login</h2>
         <Form className="login-form" ref={this.form} onSubmit={e => e.preventDefault()}>
+          
           <Form.Group controlId="formUsername">
             <Form.Label>Username:</Form.Label>
             <Form.Control required />

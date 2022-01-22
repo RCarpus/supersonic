@@ -1,5 +1,5 @@
 import React from 'react';
-import { Nav, Navbar, NavDropdown } from 'react-bootstrap';
+import { Nav, Navbar } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import "bootstrap/dist/css/bootstrap.min.css";
 import './TopBanner.scss';
@@ -34,8 +34,6 @@ export default class TopBanner extends React.Component {
             </Nav>
           </Navbar.Collapse>
         }
-
-
       </Navbar>
     )
   }

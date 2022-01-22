@@ -5,12 +5,6 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import LoadingIndicator from '../LoadingIndicator/LoadingIndicator';
 
-// import necessary components
-// import SomeComponent from '../components/SomeComponent';
-/* ---------------------- */
-
-// import stylesheet
-
 export default class ProfilePage extends React.Component {
   constructor() {
     super();
@@ -97,20 +91,8 @@ export default class ProfilePage extends React.Component {
             <button className="update-button" type="submit" onClick={this.updateUserData} >Update</button>
 
           </Form>
-
         </div>
-
-
       </div>
-
     )
   }
 }
-
-// Add anything needed in this component from the global state
-let mapStateToProps = state => {
-  return {
-    userData: state.userData,
-  }
-}
-

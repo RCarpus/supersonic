@@ -230,7 +230,6 @@ export default class StatsSetupPage extends React.Component {
         );
         tables.push(builtUpTable);
       }
-
     }
 
     return (

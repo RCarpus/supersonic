@@ -1,15 +1,9 @@
 // import libraries
 import React from 'react';
-import { connect } from 'react-redux';
-
 
 // import necessary components
-// import SomeComponent from '../components/SomeComponent';
 import TrainingSession from '../TrainingSession/TrainingSession';
 import PracticeOptionsMenu from '../practice-options-menu/PracticeOptionsMenu';
-/* ---------------------- */
-
-// import stylesheet
 
 export default class PracticePage extends React.Component {
   constructor(props) {
@@ -53,9 +47,7 @@ export default class PracticePage extends React.Component {
         {setupComplete && <TrainingSession options={this.state.options}
           returnToSetup={() => this.returnToSetup()}
         />}
-
       </div>
-
     )
   }
 }

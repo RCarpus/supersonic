@@ -1,15 +1,10 @@
 // import libraries
 import React from 'react';
 import { notes, intervals, playNote, playNoteSequence, IntervalGroup } from '../../audio-functions';
-// import { connect } from 'react-redux';
-
-// import actions
 
 // import necessary components
-// import SomeComponent from '../components/SomeComponent';
 import ResponseButton from '../response-button/ResponseButton';
 import SessionResults from '../SessionResults/SessionResults';
-/* ---------------------- */
 
 // import stylesheet
 import './TrainingSession.scss';
@@ -143,8 +138,6 @@ export default class TrainingSession extends React.Component {
     const harmonic = this.props.options.direction === 'SIMULTANEOUS' ? true : false;
     let interval = this.state.interval;
 
-
-
     switch (this.state.intervalGroup.intervals[index]) {
       case -1:
         detune = - detuneMagnitude;
@@ -182,7 +175,6 @@ export default class TrainingSession extends React.Component {
         this.setState({ currentAnswerCorrect: true }) :
         this.setState({ currentAnswerCorrect: false });
     }
-
   }
 
   nextInterval() {
@@ -272,7 +264,6 @@ export default class TrainingSession extends React.Component {
         interval: this.props.options.interval,
         startNote: this.props.options.startNote,
       }
-
     }
 
     return (
@@ -360,10 +351,7 @@ export default class TrainingSession extends React.Component {
         {finished &&
           <button id='begin-practice-button' onClick={() => this.handleRestart()}>Restart</button>
         }
-
-
       </div>
-
     )
   }
 
@@ -375,5 +363,4 @@ export default class TrainingSession extends React.Component {
       baseNote: notes[this.props.options.startNote],
     })
   }
-
 }

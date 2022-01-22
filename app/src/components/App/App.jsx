@@ -1,16 +1,12 @@
 // import libraries
 import React from 'react';
 import axios from 'axios';
-import { connect } from 'react-redux';
 import {
   HashRouter,
   Routes,
   Route,
 } from "react-router-dom";
 import { Container } from 'react-bootstrap';
-
-// import actions
-import { setUserData } from '../../actions/actions';
 
 // import necessary components
 import HomePage from '../HomePage/HomePage';
@@ -25,11 +21,7 @@ import LoadingIndicator from '../LoadingIndicator/LoadingIndicator';
 // import stylesheet
 import './App.scss';
 
-// import mockUserData
-import { mockUserData } from '../../mock-userData';
-
-class App extends React.Component {
-
+export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -74,7 +66,6 @@ class App extends React.Component {
         this.setState({ loggedIn: false, loading: false });
       }
     })
-
   }
 
   handleLogout() {
@@ -96,7 +87,7 @@ class App extends React.Component {
       return (
         <HashRouter>
           <TopBanner loggedIn={loggedIn} handleLogout={() => this.handleLogout()} />
-          {loading && <LoadingIndicator /> }
+          {loading && <LoadingIndicator />}
           <Container>
             <Routes>
               <Route path="/" element={<LandingPage handleLogin={() => this.handleLogin()} />} />
@@ -108,13 +99,12 @@ class App extends React.Component {
           </Container>
         </HashRouter>
       )
-
     }
 
     return (
       <HashRouter>
         <TopBanner loggedIn={loggedIn} handleLogout={() => this.handleLogout()} />
-        {loading && <LoadingIndicator /> }
+        {loading && <LoadingIndicator />}
         <Container>
           <Routes>
             <Route path="/" element={<HomePage />} />
@@ -125,17 +115,7 @@ class App extends React.Component {
           </Routes>
         </Container>
       </HashRouter>
-
     )
   }
 }
 
-// Add anything needed in this component from the global state
-let mapStateToProps = state => {
-  return {
-    userData: state.userData,
-  }
-}
-
-// The second parameter object contains the state actions we imported at the top
-export default connect(mapStateToProps, { setUserData })(App);

@@ -2,9 +2,6 @@
 import React from 'react';
 import Axios from 'axios';
 
-import './SessionResults.scss';
-
-
 const mockStats = {
   correctAnswers: [0, 1, 1, 1, -1],
   detuneMagnitude: 25,
@@ -145,7 +142,6 @@ export default class SessionResults extends React.Component {
     this.uploadOfflineSessions();
     this.uploadSession(session);
   }
-
 
   render() {
     const { stats } = this.props;

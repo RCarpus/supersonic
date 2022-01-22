@@ -1,6 +1,5 @@
 // import libraries
 import React from 'react';
-import { connect } from 'react-redux';
 
 // import stylesheet
 import './SettingsPage.scss';
@@ -98,7 +97,6 @@ export default class SettingsPage extends React.Component {
           className="settings__back-button">Back</button>
 
       </div>
-
     )
   }
 }

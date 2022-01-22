@@ -1,23 +1,13 @@
 // import libraries
 import React from 'react';
-import Axios from 'axios';
-import { connect } from 'react-redux';
-import { BrowserRouter as Router, Route, Redirect, Link } from "react-router-dom";
-
-// import actions
-// no actions needed for this element
+import { Link } from "react-router-dom";
 
 // import necessary components
-// import SomeComponent from '../components/SomeComponent';
-import PracticePage from '../PracticePage/PracticePage';
-import SettingsPage from '../SettingsPage/SettingsPage';
-import ProfilePage from '../ProfilePage/ProfilePage';
-import StatsPage from '../StatsPage/StatsPage';
 import Footer from '../Footer/Footer';
 // import stylesheet
 import './HomePage.scss';
 
-class HomePage extends React.Component {
+export default class HomePage extends React.Component {
 
   render() {
     return (
@@ -40,25 +30,10 @@ class HomePage extends React.Component {
             <Link to='/settings'>
               <button className="home-page__button">Settings</button>
             </Link>
-
-
           </div>
-
         </div>
-
         <Footer />
       </div >
-
     )
   }
 }
-
-// Add anything needed in this component from the global state
-let mapStateToProps = state => {
-  return {
-    userData: state.userData,
-  }
-}
-
-// The second parameter object contains the state actions we imported at the top
-export default connect(mapStateToProps, null)(HomePage);
