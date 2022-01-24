@@ -66,4 +66,3 @@ The client application is built using React as a framework. Routing is handled w
 
 ## Coming Improvements
 - Explore more pleasant tones
-- Explore buggy mobile performance for web audio api
