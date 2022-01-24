@@ -13,6 +13,8 @@ export default class TrainingSession extends React.Component {
   constructor(props) {
     super(props);
 
+    this.audioContext = new AudioContext();
+
     const defaultSettings = {
       /**
        * Default settings are used when no data is saved in localStorage
@@ -151,7 +153,7 @@ export default class TrainingSession extends React.Component {
       default:
         detune = 0;
     }
-    playNoteSequence(soundWaveType, noteDuration, baseNote, interval, detune, harmonic);
+    playNoteSequence(this.audioContext, soundWaveType, noteDuration, baseNote, interval, detune, harmonic);
   }
 
   submitAnswer(answer) {

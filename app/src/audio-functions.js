@@ -42,7 +42,7 @@ export const intervals = {
   'OCTAVE': 12,
 };
 
-export const playNote = function (shape = 'sine', duration = 1000, frequency = 440, detune = 0) {
+export const playNote = function (audioContext, shape = 'sine', duration = 1000, frequency = 440, detune = 0) {
   /**
  * Play a sound with a specified wave form, with a specific duration, 
  * with a specific frequency,
@@ -50,8 +50,6 @@ export const playNote = function (shape = 'sine', duration = 1000, frequency = 4
  * Gain node is currently doing nothing, but ideally
  * I want to use this to gently fade the note
  */
-  // start by creating a new AudioContext
-  let audioContext = new AudioContext();
   // create the audio source. In this case it is an oscillator,
   // but it could also be an mp3 or other 
   let oscillator = audioContext.createOscillator();
@@ -60,7 +58,7 @@ export const playNote = function (shape = 'sine', duration = 1000, frequency = 4
   oscillator.detune.setValueAtTime(detune, audioContext.currentTime);
   // The gain node is a modifier node
   let gainNode = audioContext.createGain();
-  gainNode.gain.value = .5;
+  gainNode.gain.value = .4;
   // connect the source to the modifier to the destination in a chain
   oscillator.connect(gainNode).connect(audioContext.destination);
   // start the note
@@ -71,7 +69,7 @@ export const playNote = function (shape = 'sine', duration = 1000, frequency = 4
   }, duration);
 }
 
-export const playNoteSequence = async function (shape = 'sine', duration = 1000, frequency1 = 440, interval = 7, detune = 0, harmonic = true) {
+export const playNoteSequence = async function (audioContext, shape = 'sine', duration = 1000, frequency1 = 440, interval = 7, detune = 0, harmonic = true) {
   /**
    * Play two notes in sequence OR simultaneously.
    * Interval is the number of semitones
@@ -80,9 +78,9 @@ export const playNoteSequence = async function (shape = 'sine', duration = 1000,
    * If harmonic is true, the notes play simultaneously.
    * Otherwise, the notes play in sequence
    */
-  playNote(shape, duration, frequency1, 0);
+  playNote(audioContext, shape, duration, frequency1, 0);
   setTimeout(() => {
-    playNote(shape, duration, frequency1, interval*100 + detune);
+    playNote(audioContext, shape, duration, frequency1, interval*100 + detune);
   }, harmonic ? 0 : duration);
 }
 
