@@ -1,14 +1,18 @@
+.hover-info {
+  user-select: none;
+}
+
 .hover-info__text {
-  display: none;
+  opacity: 0;
+  position: absolute;
 }
 
 .hover-info:hover {
   .hover-info__text {
-    display: inline;
-    position: absolute;
+    opacity: 1;
     background-color: var(--color-supersonic-green);
-    color: white;
     border: solid black 1px;
+    color: white;
     max-width: 300px;
     padding: 5px;
   }
