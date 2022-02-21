@@ -1,6 +1,7 @@
 #banner {
   background-color: black;
   margin-bottom: 25px;
+  padding-right: 1em;
 }
 
 #banner-title {
@@ -20,17 +21,19 @@ button.navbar-toggler {
   width: 50px;
 }
 
-a.nav-link {
+.nav-link {
   color: var(--color-supersonic-green) !important;
-}
-
-.home-link, .navbar-button {
-  color: var(--color-supersonic-green);
   text-decoration: none;
-}
-
-.navbar-button {
   border: none;
   background-color: inherit;
   float: right;
+  display: block;
+  margin-right: 0;
+  margin-left: auto;
+  width: 75px;
+  text-align: center;
+}
+
+.nav-link:hover {
+  background-color: #3b7a0050;
 }

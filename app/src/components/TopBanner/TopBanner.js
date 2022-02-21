@@ -19,20 +19,17 @@ export default class TopBanner extends React.Component {
         <Navbar.Brand>
           <h1 id="banner-title">Supersonic</h1>
         </Navbar.Brand>
-        <Navbar.Toggle aria-controls='responsive-navbar-nav' />
+
         {loggedIn &&
-          <Navbar.Collapse id='responsive-navbar-nav'>
-            <Nav className='ms-auto'>
-              <Nav.Link>
-                <button className='navbar-button'>
-                  <Link className='home-link' to="/">Home</Link>
-                </button>
-              </Nav.Link>
-              <Nav.Link>
-                <button className='navbar-button' onClick={this.props.handleLogout}>logout</button>
-              </Nav.Link>
-            </Nav>
-          </Navbar.Collapse>
+          <>
+            <Navbar.Toggle aria-controls='responsive-navbar-nav' />
+            <Navbar.Collapse id='responsive-navbar-nav'>
+              <Nav className='ms-auto'>
+                <Link className='nav-link' to="/">Home</Link>
+                <button className='nav-link' onClick={this.props.handleLogout}>logout</button>
+              </Nav>
+            </Navbar.Collapse>
+          </>
         }
       </Navbar>
     )
