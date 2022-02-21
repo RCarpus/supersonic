@@ -17,11 +17,10 @@
     "react-router-dom": "^6.0.2",
     "redux": "^4.1.2",
     "redux-devtools-extension": "^2.13.9",
-    "follow-redirects": ">=1.14.8"
   },
   "devDependencies": {
     "@parcel/transformer-sass": "^2.2.1",
-    "follow-redirects": "^>=1.14.8",
+    "follow-redirects": "^1.14.8",
     "parcel": "^2.2.1"
   }
 }
