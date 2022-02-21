@@ -18,17 +18,17 @@ export default class HomePage extends React.Component {
             <p>By Ryan Carpus</p>
           </div>
           <div id="home-page__button-grid">
-            <Link to='/practice'>
-              <button className="home-page__button">Practice</button>
+            <Link to='/practice' className="home-page__link link-big">
+              Practice
             </Link>
-            <Link to='/profile'>
-              <button className="home-page__button">Profile</button>
+            <Link to='/stats' className="home-page__link">
+              Stats
             </Link>
-            <Link to='/stats'>
-              <button className="home-page__button">Stats</button>
+            <Link to='/settings' className="home-page__link">
+              Settings
             </Link>
-            <Link to='/settings'>
-              <button className="home-page__button">Settings</button>
+            <Link to='/profile' className="home-page__link">
+              Profile
             </Link>
           </div>
         </div>

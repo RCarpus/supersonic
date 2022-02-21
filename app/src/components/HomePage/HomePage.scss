@@ -38,11 +38,31 @@ h1 {
 #home-page__button-grid {
   display: grid;
   grid-template-columns: 1fr;
+  justify-content: center;
   row-gap: 10px;
 }
 
-button {
-  width: 100px;
+.home-page__link {
+  border: outset 2px var(--color-supersonic-green);
+  text-decoration: none;
+  color: black;
+  width: 150px;
+  display: block;
+  margin: auto;
+}
+
+.link-big {
+  width: 300px;
+  display: block;
+  margin: auto;
+  height: 3em;
+  padding-top: .7em;
+  font-size: 1.5em;
+}
+
+.home-page__link:hover {
+  color: black;
+  background-color: #3b7a0050;
 }
 
 .logout-button {
