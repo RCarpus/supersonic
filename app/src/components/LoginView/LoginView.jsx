@@ -37,7 +37,6 @@ export default class LoginView extends React.Component {
             this.props.handleLogin(); // Tells the main App component that we have logged in.
           })
           .catch(e => {
-            console.log('no such user')
             window.alert('invalid username or password');
           });
       });

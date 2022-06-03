@@ -37,7 +37,7 @@ export default class ProfilePage extends React.Component {
             localStorage.setItem('userData', JSON.stringify(response.data.updatedUser));
           })
           .catch(function (error) {
-            console.log(error);
+            console.error(error);
             window.alert('Something went wrong. Check your internet connection or try again later.');
           });
         this.setState({ loading: false });

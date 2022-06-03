@@ -30,11 +30,9 @@ export default class RegistrationView extends React.Component {
 
         axios.post('https://supersonic-api.herokuapp.com/users/register', newUserInfo)
           .then(response => {
-            console.log(response.data);
             this.props.showLoginView();
           })
           .catch(e => {
-            console.log('something went wrong. Maybe some info was missing.');
             window.alert('Unable to register, likely because that username has already been taken.');
           });
       });

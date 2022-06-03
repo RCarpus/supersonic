@@ -91,11 +91,10 @@ export default class SessionResults extends React.Component {
 
     return await Axios.post(`https://supersonic-api.herokuapp.com/users/${user}/records`, { session }, authHeader)
       .then(response => {
-        console.log('successfully saved session to server');
         return true;
       })
       .catch(function (error) {
-        console.log(error);
+        console.error(error);
         this.saveSessionOffline(session);
         return false;
       });
@@ -138,7 +137,6 @@ export default class SessionResults extends React.Component {
   componentDidMount() {
     const session = this.props.stats;
     session.time = new Date();
-    console.log('session results mounted');
     this.uploadOfflineSessions();
     this.uploadSession(session);
   }

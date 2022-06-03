@@ -56,7 +56,6 @@ export default class App extends React.Component {
             return response;
           })
           .catch(e => {
-            console.log('invalid token. Maybe it expired.');
             localStorage.removeItem('token');
             localStorage.removeItem('userData');
             this.setState({ loggedIn: false, loading: false });
