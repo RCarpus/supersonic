@@ -74,6 +74,7 @@ export default class RegistrationView extends React.Component {
 
           <Button id="register-button" variant="primary" type="submit" onClick={this.handleSubmit}>Register</Button>
           <Button id="already-registered-button" onClick={this.props.showLoginView} className="btn btn-secondary">I already have an account</Button>
+          <Button onClick={this.props.loginAsGuest}>Continue as guest</Button>
         </Form>
       </div>
     )

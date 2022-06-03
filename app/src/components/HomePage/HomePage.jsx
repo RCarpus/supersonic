@@ -10,6 +10,7 @@ import './HomePage.scss';
 export default class HomePage extends React.Component {
 
   render() {
+    const { loggedIn } = this.props;
     return (
       <div id="home-page">
         <div id="home-page" className="page-content">
@@ -21,15 +22,19 @@ export default class HomePage extends React.Component {
             <Link to='/practice' className="home-page__link link-big">
               Practice
             </Link>
-            <Link to='/stats' className="home-page__link">
-              Stats
-            </Link>
+            {loggedIn &&
+              <Link to='/stats' className="home-page__link">
+                Stats
+              </Link>
+            }
             <Link to='/settings' className="home-page__link">
               Settings
             </Link>
-            <Link to='/profile' className="home-page__link">
-              Profile
-            </Link>
+            {loggedIn &&
+              <Link to='/profile' className="home-page__link">
+                Profile
+              </Link>
+            }
           </div>
         </div>
         <Footer />

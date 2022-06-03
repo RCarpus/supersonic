@@ -137,8 +137,17 @@ export default class SessionResults extends React.Component {
   componentDidMount() {
     const session = this.props.stats;
     session.time = new Date();
-    this.uploadOfflineSessions();
-    this.uploadSession(session);
+
+    const guestUser = localStorage.getItem('guestUser');
+    // Upload the session if we are logged in.
+    // Otherwise, save it to local storage.
+    if (!guestUser) {
+      this.uploadOfflineSessions();
+      this.uploadSession(session);
+    }
+    else {
+      this.saveSessionOffline(session);
+    }
   }
 
   render() {

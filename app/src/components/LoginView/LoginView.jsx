@@ -67,6 +67,7 @@ export default class LoginView extends React.Component {
 
         </Form>
         <Button id='to-registration-view-button' onClick={this.props.showRegisterView}>Register</Button>
+        <Button onClick={this.props.loginAsGuest}>Continue as guest</Button>
       </div>
     )
   }

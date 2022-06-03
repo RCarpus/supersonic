@@ -20,6 +20,8 @@ import LoadingIndicator from '../LoadingIndicator/LoadingIndicator';
 
 // import stylesheet
 import './App.scss';
+import LoginView from '../LoginView/LoginView';
+import RegistrationView from '../RegisterView/RegisterView';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -27,6 +29,7 @@ export default class App extends React.Component {
     this.state = {
       loggedIn: undefined,
       loading: false,
+      guestUser: undefined,
     }
   };
 
@@ -46,19 +49,38 @@ export default class App extends React.Component {
      * This function is called when the app mounts or when the user logs in
      */
     this.setState({ loading: true }, () => {
+      const guestUser = localStorage.getItem('guestUser');
+      console.log(guestUser);
       const token = localStorage.getItem('token');
+      if (guestUser) {
+        console.log('logged in as a guest');
+        this.setState({
+          loggedIn: false,
+          loading: false,
+          guestUser: true
+        })
+      }
       if (token) {
         let parsedToken = JSON.parse(token);
+        console.log(parsedToken);
         const authHeader = { headers: { Authorization: `Bearer ${parsedToken}` } };
         axios.get('https://supersonic-api.herokuapp.com/checktoken', authHeader)
           .then(response => {
-            this.setState({ loggedIn: true, loading: false });
+            this.setState({
+              loggedIn: true,
+              loading: false,
+              guestUser: false
+            });
+            localStorage.removeItem('guestUser');
             return response;
           })
           .catch(e => {
             localStorage.removeItem('token');
             localStorage.removeItem('userData');
-            this.setState({ loggedIn: false, loading: false });
+            this.setState({
+              loggedIn: false,
+              loading: false,
+            });
             return false;
           });
       } else {
@@ -75,14 +97,16 @@ export default class App extends React.Component {
      */
     localStorage.removeItem('token');
     localStorage.removeItem('userData');
-    this.handleLogin();
+    localStorage.removeItem('guestUser');
+    this.setState({ guestUser: false }, () => this.handleLogin());
+    // this.handleLogin();
   }
 
   render() {
-    const { loggedIn, loading } = this.state;
+    const { loggedIn, loading, guestUser } = this.state;
 
     // If the user is not logged in, they should be forced to see the landing page
-    if (!loggedIn) {
+    if (!loggedIn && !guestUser) {
       return (
         <HashRouter>
           <TopBanner loggedIn={loggedIn} handleLogout={() => this.handleLogout()} />
@@ -102,15 +126,19 @@ export default class App extends React.Component {
 
     return (
       <HashRouter>
-        <TopBanner loggedIn={loggedIn} handleLogout={() => this.handleLogout()} />
+        <TopBanner loggedIn={loggedIn} guestUser={guestUser} handleLogout={() => this.handleLogout()} />
         {loading && <LoadingIndicator />}
         <Container>
           <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/" element={<HomePage loggedIn={loggedIn}/>} />
             <Route path="/settings" element={<SettingsPage />} />
             <Route path="/practice" element={<PracticePage />} />
-            <Route path="/stats" element={<StatsPage />} />
+            {loggedIn &&
+              <>
+                <Route path="/stats" element={<StatsPage />} />
+                <Route path="/profile" element={<ProfilePage />} />
+              </>
+            }
           </Routes>
         </Container>
       </HashRouter>

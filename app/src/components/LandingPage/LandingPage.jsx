@@ -34,6 +34,12 @@ export default class LandingPage extends React.Component {
     })
   }
 
+  loginAsGuest() {
+    localStorage.setItem('guestUser', true);
+    console.log('logging in as guest');
+    this.props.handleLogin();
+  }
+
   render() {
     const { showLoginView, showRegisterView } = this.state;
     return (
@@ -82,8 +88,10 @@ export default class LandingPage extends React.Component {
           </div>
 
           {showLoginView && <LoginView handleLogin={this.props.handleLogin}
-            showRegisterView={() => this.showRegisterView()} />}
-          {showRegisterView && <RegisterView showLoginView={() => this.showLoginView()} />}
+            showRegisterView={() => this.showRegisterView()} 
+            loginAsGuest={() => this.loginAsGuest()}/>}
+          {showRegisterView && <RegisterView showLoginView={() => this.showLoginView()} 
+            loginAsGuest={() => this.loginAsGuest()}/>}
         </div>
 
       </div >
